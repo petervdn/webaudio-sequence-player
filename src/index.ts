@@ -1,1 +1,1 @@
-export default {};
+export { ISequence } from './lib/sequence';

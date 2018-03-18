@@ -1,0 +1,18 @@
+import Scheduler from "./scheduler";
+import { SampleManager } from "sample-manager";
+
+export default class SequencePlayer {
+  public sampleManager: SampleManager;
+
+  private context: AudioContext;
+  private scheduler: Scheduler;
+
+
+  constructor(context: AudioContext, sampleManager: SampleManager) {
+    this.context = context;
+
+    // when no sampleManager is supplied, create a new one
+    this.sampleManager = sampleManager || new SampleManager(context);
+    // this.sampleManager
+  }
+}

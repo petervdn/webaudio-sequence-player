@@ -827,6 +827,12 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+audiobuffer-loader@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/audiobuffer-loader/-/audiobuffer-loader-1.0.1.tgz#95e3d76dfb36812f47a1565fa22e5068704b85bb"
+  dependencies:
+    "@babel/runtime" "^7.0.0-beta.35"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
@@ -2952,6 +2958,12 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
+musictime@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/musictime/-/musictime-1.0.6.tgz#12d3bc9426bae9a4228f8b44047f08effe54da4b"
+  dependencies:
+    "@babel/runtime" "^7.0.0-beta.35"
+
 mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
@@ -3745,6 +3757,13 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
+sample-manager@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/sample-manager/-/sample-manager-1.0.2.tgz#8bf63739f935f96de520932f37cff15471d234d8"
+  dependencies:
+    "@babel/runtime" "^7.0.0-beta.35"
+    audiobuffer-loader "^1.0.1"
+
 samsam@1.x:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.3.0.tgz#8d1d9350e25622da30de3e44ba692b5221ab7c50"
@@ -4336,6 +4355,12 @@ w3c-hr-time@^1.0.1:
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.1.tgz#82ac2bff63d950ea9e3189a58a65625fedf19045"
   dependencies:
     browser-process-hrtime "^0.1.2"
+
+webaudio-sample-loader@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/webaudio-sample-loader/-/webaudio-sample-loader-1.0.2.tgz#eeebc36f9114662e3e3e5e884944876e203ebbf5"
+  dependencies:
+    "@babel/runtime" "^7.0.0-beta.35"
 
 webidl-conversions@^4.0.1, webidl-conversions@^4.0.2:
   version "4.0.2"
