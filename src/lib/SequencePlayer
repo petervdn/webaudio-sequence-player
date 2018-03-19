@@ -1,5 +1,7 @@
 import Scheduler from "./scheduler";
 import { SampleManager } from "sample-manager";
+import {ISong} from "./interface";
+import {getSequenceEvents} from "./schedulerUtils";
 
 export default class SequencePlayer {
   public sampleManager: SampleManager;
@@ -7,12 +9,57 @@ export default class SequencePlayer {
   private context: AudioContext;
   private scheduler: Scheduler;
 
+  private playStartTime: number;
+  private scheduleInterval = 1;
+  private scheduleIntervalId: number;
+  private lookAheadTime = 1.5;
+  private bpm: number;
+  private song:ISong;
+  private isPlaying = false;
 
   constructor(context: AudioContext, sampleManager: SampleManager) {
     this.context = context;
 
     // when no sampleManager is supplied, create a new one
     this.sampleManager = sampleManager || new SampleManager(context);
+    this.scheduler = new Scheduler();
     // this.sampleManager
+  }
+
+  public play(song: ISong, bpm: number):void {
+    if (this.isPlaying) {
+      throw new Error('Already playing.')
+    }
+
+    this.song = song;
+    this.bpm = bpm;
+
+    this.isPlaying = true;
+
+    // store starttime, so we know where we are in the song
+    this.playStartTime = this.context.currentTime;
+
+    // create the scheduler interval
+    this.scheduleIntervalId = window.setInterval(() => {
+      const songPlayTime = this.getSongPlayTime();
+      getSequenceEvents(songPlayTime, songPlayTime + this.lookAheadTime, this.song);
+    }, this.scheduleInterval * 1000);
+  }
+
+  public stop():void {
+    if (!this.isPlaying) {
+      return;
+    }
+    this.isPlaying = false;
+
+    clearInterval(this.scheduleIntervalId);
+  }
+
+  /**
+   * Returns the time in seconds that the song is playing.
+   * @returns {number}
+   */
+  private getSongPlayTime(): number {
+    return this.context.currentTime - this.playStartTime;
   }
 }

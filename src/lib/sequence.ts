@@ -1,31 +1,5 @@
 import MusicTime from 'musictime';
-import { ISample } from 'webaudio-sample-loader';
-
-export interface ISong {
-  sequences: ISequence[];
-}
-
-export interface ISequence {
-  id: string;
-  events: ISequenceEvent[];
-  outputId?: string;
-  target: any; // todo iinstrument?
-}
-
-export enum SequenceEventType {
-  SAMPLE = 'play-sample',
-  NOTE = 'note',
-}
-
-export interface ISequenceEvent {
-  type: SequenceEventType;
-  time: MusicTime;
-}
-
-export interface ISampleEvent extends ISequenceEvent {
-  sample: ISample;
-  volume: number;
-}
+import { ISampleEvent, ISequence, SequenceEventType } from './interface';
 
 /*
  {
@@ -54,7 +28,7 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
 
     // todo check datalist is correct length (even)
     for (let i = 0; i < dataList.length; i += 2) {
-      const sampleName = dataList[i]; // todo check type of these two
+      // const sampleName = dataList[i]; // todo check type and correct values of these two
       const volume = dataList[i + 1];
 
       const sampleEvent: ISampleEvent = {
