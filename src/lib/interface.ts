@@ -1,9 +1,10 @@
 import MusicTime from 'musictime';
 import { ISample } from 'webaudio-sample-loader';
+import { SequenceEventType } from './enum';
 
-export interface ISong {
-  sequences: ISequence[];
-}
+// export interface ISong {
+//   timedSequences: ITimedSequence[];
+// }
 
 export interface ISequence {
   id: string;
@@ -12,9 +13,10 @@ export interface ISequence {
   target: any; // todo iinstrument?
 }
 
-export enum SequenceEventType {
-  SAMPLE = 'play-sample',
-  NOTE = 'note',
+export interface ITimedSequence {
+  id: string;
+  time: MusicTime;
+  sequence: ISequence;
 }
 
 export interface ISequenceEvent {

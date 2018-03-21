@@ -1,5 +1,5 @@
-import { ISong } from './interface';
+import Song from './Song';
 
-export function getSequenceEvents(fromTime: number, toTime: number, song: ISong): void {
-  // console.log(fromTime, toTime, song);
+export function getSequenceEvents(fromTime: number, toTime: number, song: Song): void {
+  console.log(fromTime, toTime, song);
 }
