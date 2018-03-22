@@ -3757,9 +3757,9 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-sample-manager@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/sample-manager/-/sample-manager-1.0.2.tgz#8bf63739f935f96de520932f37cff15471d234d8"
+sample-manager@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/sample-manager/-/sample-manager-1.0.3.tgz#69d0cede2527a21108a4de9fff62567d06192643"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.35"
     audiobuffer-loader "^1.0.1"
