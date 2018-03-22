@@ -2,10 +2,6 @@ import { SequenceEventType } from './enum';
 import MusicTime from 'musictime';
 import { ISample } from 'sample-manager';
 
-// export interface ISong {
-//   timedSequences: ITimedSequence[];
-// }
-
 export interface ISequence {
   id: string;
   events: ISequenceEvent[];
@@ -25,6 +21,7 @@ export interface ISequenceEvent {
 }
 
 export interface ISampleEvent extends ISequenceEvent {
+  sampleName: string;
   sample: ISample;
   volume: number;
 }

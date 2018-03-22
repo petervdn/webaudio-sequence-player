@@ -18,10 +18,11 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
 
     // todo check datalist is correct length (even)
     for (let i = 0; i < dataList.length; i += 2) {
-      // const sampleName = dataList[i]; // todo check type and correct values of these two
+      const sampleName = dataList[i]; // todo check type and correct values of these two
       const volume = dataList[i + 1];
 
       const sampleEvent: ISampleEvent = {
+        sampleName,
         volume,
         time: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
         type: SequenceEventType.SAMPLE,

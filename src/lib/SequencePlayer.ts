@@ -1,12 +1,13 @@
-import Scheduler from './scheduler';
 import { getSequenceEvents } from './schedulerUtils';
 import Song from './Song';
 import { PlayMode } from './enum';
 import Interval from './Interval';
+import SampleManager from 'sample-manager';
 
 export default class SequencePlayer {
-  private context: AudioContext;
+  public sampleManager: SampleManager;
 
+  private context: AudioContext;
   private playStartTime: number;
   private scheduleInterval: Interval;
   private scheduleIntervalTime = 1;
@@ -16,10 +17,15 @@ export default class SequencePlayer {
   private isPlaying = false;
   private playMode: PlayMode;
 
-  constructor(context: AudioContext) {
+  constructor(context: AudioContext, sampleManager?: SampleManager) {
     this.context = context;
+    this.sampleManager = sampleManager || new SampleManager(this.context);
 
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleIntervalTime);
+  }
+
+  public loadSong(song: Song, extension: string, onProgress?: () => void): Promise<void> {
+    return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), extension, onProgress);
   }
 
   public play(song: Song, bpm: number, playMode: PlayMode): void {
@@ -28,6 +34,7 @@ export default class SequencePlayer {
       return;
     }
 
+    console.log(song.getIsLoaded());
     this.isPlaying = true;
 
     this.song = song;
