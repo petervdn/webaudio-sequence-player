@@ -1,5 +1,4 @@
 import MusicTime from 'musictime';
-import { ISample } from 'webaudio-sample-loader';
 import { SequenceEventType } from './enum';
 
 // export interface ISong {
@@ -25,6 +24,6 @@ export interface ISequenceEvent {
 }
 
 export interface ISampleEvent extends ISequenceEvent {
-  sample: ISample;
+  sample: any; // ISample;
   volume: number;
 }
