@@ -1,7 +1,7 @@
 import Song from '../../src/lib/Song';
-import { createSampleSequence } from '../../src/lib/sequenceUtils';
+import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
 import SequencePlayer, { SequencePlayerEvent } from '../../src/lib/SequencePlayer';
-import {PlayMode} from "../../src/lib/enum";
+import {PlayMode} from "../../src/lib/data/enum";
 import MusicTime from "musictime";
 import SampleManager from "sample-manager";
 

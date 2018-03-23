@@ -1,11 +1,11 @@
-import { getSequenceEvents } from './schedulerUtils';
+import { getSequenceEvents } from './util/schedulerUtils';
 import Song from './Song';
-import { PlayMode } from './enum';
-import Interval from './Interval';
+import { PlayMode } from './data/enum';
+import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
-import { IScheduleTiming } from './interface';
+import { IScheduleTiming } from './data/interface';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;

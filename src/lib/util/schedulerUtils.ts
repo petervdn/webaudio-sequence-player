@@ -1,5 +1,5 @@
-import Song from './Song';
-import { ISequenceEvent } from './interface';
+import Song from '../Song';
+import { ISequenceEvent } from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window

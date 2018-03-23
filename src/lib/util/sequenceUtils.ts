@@ -1,5 +1,5 @@
-import { ISampleEvent, ISequence, ICreateSampleEvents } from './interface';
-import { SequenceEventType } from './enum';
+import { ISampleEvent, ISequence, ICreateSampleEvents } from '../data/interface';
+import { SequenceEventType } from '../data/enum';
 import MusicTime from 'musictime';
 
 export function createSampleSequence(id: string, events: ICreateSampleEvents): ISequence {

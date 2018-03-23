@@ -1,6 +1,6 @@
-import { ISampleEvent, ISequence, ISequenceEvent, ITimedSequence } from './interface';
+import { ISampleEvent, ISequence, ISequenceEvent, ITimedSequence } from './data/interface';
 import MusicTime from 'musictime';
-import { SequenceEventType } from './enum';
+import { SequenceEventType } from './data/enum';
 
 export default class Song {
   public timedSequences: ITimedSequence[] = [];
