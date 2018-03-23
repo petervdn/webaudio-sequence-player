@@ -4183,9 +4183,9 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-sample-manager@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/sample-manager/-/sample-manager-1.1.1.tgz#96890bb46cb470ac51fd737f5aa2242f11df1546"
+sample-manager@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/sample-manager/-/sample-manager-2.1.0.tgz#603ce0e40843ceb8778542177b82282885d0de53"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.35"
     audiobuffer-loader "^1.0.1"
