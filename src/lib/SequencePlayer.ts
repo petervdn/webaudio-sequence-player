@@ -6,6 +6,7 @@ import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
 import { IScheduleTiming } from './data/interface';
+import { setSamplesOnSampleEvents } from './util/songUtils';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
@@ -41,7 +42,7 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
-   * Loads all samples in a song
+   * Loads all samples in a song, and sets a reference to the sample on all SampleEvents in each sequence.
    * @param {Song} song
    * @param {string} extension
    * @param {() => void} onProgress
@@ -56,6 +57,7 @@ export default class SequencePlayer extends EventDispatcher {
     this.setState(SequencePlayerState.LOADING);
 
     return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), onProgress).then(() => {
+      setSamplesOnSampleEvents(song, this.sampleManager);
       this.setState(SequencePlayerState.IDLE);
     });
   }
@@ -83,29 +85,34 @@ export default class SequencePlayer extends EventDispatcher {
       loadPromise = this.loadSong(song);
     }
 
-    loadPromise.then(() => {
-      this.setState(SequencePlayerState.PLAYING);
+    loadPromise
+      .then(() => {
+        this.setState(SequencePlayerState.PLAYING);
 
-      // store start time, so we know where we are in the song
-      this.playStartTime = this.context.currentTime;
+        // store start time, so we know where we are in the song
+        this.playStartTime = this.context.currentTime;
 
-      switch (this.playMode) {
-        case PlayMode.ONCE: {
-          break;
-        }
-        case PlayMode.LIVE: {
-          // do one schedule call for time=0
-          this.scheduleAtTime(0);
+        switch (this.playMode) {
+          case PlayMode.ONCE: {
+            break;
+          }
+          case PlayMode.LIVE: {
+            // do one schedule call for time=0
+            this.scheduleAtTime(0);
 
-          // and more on interval
-          this.scheduleInterval.start();
-          break;
+            // and more on interval
+            this.scheduleInterval.start();
+            break;
+          }
+          default: {
+            throw new Error(`Unknown playmode ${this.playMode}`);
+          }
         }
-        default: {
-          throw new Error(`Unknown playmode ${this.playMode}`);
-        }
-      }
-    });
+      })
+      .catch(e => {
+        // todo
+        console.error(e);
+      });
   }
 
   onScheduleInterval = () => {
