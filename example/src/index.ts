@@ -6,11 +6,10 @@ import MusicTime from "musictime";
 import SampleManager from "sample-manager";
 
 const context = new AudioContext();
-const manager = new SampleManager(context, 'samples/');
-manager.addSamplesFromNames(['kick', 'clap']);
 
-const player = new SequencePlayer(context);
-player.sampleManager.basePath = 'samples/';
+
+const player = new SequencePlayer(context, 'samples/', 'wav');
+console.log(player);
 player.sampleManager.addSamplesFromNames(['kick', 'clap']);
 
 const data = {
@@ -26,10 +25,11 @@ console.log(song);
 
 
 document.querySelector('#start').addEventListener('click', () => {
-  player.loadSong(song, 'wav').then(() => {
-    // player.play(song, 120, PlayMode.LIVE);
-    console.log('done');
-  });
+  // player.loadSong(song).then(() => {
+  //
+  //   console.log('done');
+  // });
+  player.play(song, 120, PlayMode.LIVE);
 });
 
 document.querySelector('#stop').addEventListener('click', () => {
