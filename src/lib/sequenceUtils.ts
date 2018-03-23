@@ -20,7 +20,8 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
-        time: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+        relativeStart: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+        absoluteStart: null, // will be set once the sequence is added to a song (only then do we know the actual start time)
         type: SequenceEventType.SAMPLE,
         sample: null,
       };

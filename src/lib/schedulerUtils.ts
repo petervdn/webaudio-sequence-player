@@ -19,7 +19,7 @@ export function getSequenceEvents(
   for (let ts = 0; ts < song.timedSequences.length; ts++) {
     for (let e = 0; e < song.timedSequences[ts].sequence.events.length; e++) {
       const event: ISequenceEvent = song.timedSequences[ts].sequence.events[e];
-      const eventTime = event.time.toTime(bpm);
+      const eventTime = event.absoluteStart.toTime(bpm);
       if (eventTime >= fromTime && eventTime < toTime) {
         results.push(event);
       }

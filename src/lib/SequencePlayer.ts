@@ -97,7 +97,10 @@ export default class SequencePlayer extends EventDispatcher {
     const endTime = playTime + this.scheduleTime.lookAhead;
     const events = getSequenceEvents(playTime, endTime, this.song, this.bpm);
 
-    console.log(playTime, endTime, events);
+    console.log('from', playTime, 'to', endTime);
+    if (events.length) {
+      events.forEach(event => console.log(event.absoluteStart.toTime(this.bpm), event));
+    }
   }
 
   public stop(): void {

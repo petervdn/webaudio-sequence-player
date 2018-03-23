@@ -16,13 +16,14 @@ export interface ISequence {
 
 export interface ITimedSequence {
   id: string;
-  time: MusicTime;
+  absoluteStart: MusicTime;
   sequence: ISequence;
 }
 
 export interface ISequenceEvent {
   type: SequenceEventType;
-  time: MusicTime;
+  relativeStart: MusicTime;
+  absoluteStart: MusicTime;
 }
 
 export interface ISampleEvent extends ISequenceEvent {
