@@ -1,30 +1,32 @@
 import { ISampleEvent, ISequence, ISequenceEvent, ITimedSequence } from './interface';
 import MusicTime from 'musictime';
 import { SequenceEventType } from './enum';
-import { ISample } from 'sample-manager';
 
 export default class Song {
-  private timedSequences: ITimedSequence[] = [];
-  private usedSampleNames: string[] = [];
+  public timedSequences: ITimedSequence[] = [];
+  public usedSampleNames: string[] = [];
 
   constructor() {}
 
   public addSequenceAtTime(sequence: ISequence, time: MusicTime): void {
     // add sequence with time, and give an id to the combination
     this.timedSequences.push({
-      time,
       sequence,
+      absoluteStart: time,
       id: `${this.timedSequences.length + 1}`,
     });
 
-    // if there are samples in the sequence, add their name to the list
     sequence.events.forEach(event => {
+      // if there are samples in the sequence, add their name to the list
       if (
         event.type === SequenceEventType.SAMPLE &&
         this.usedSampleNames.indexOf((<ISampleEvent>event).sampleName) === -1
       ) {
         this.usedSampleNames.push((<ISampleEvent>event).sampleName);
       }
+
+      // and set the correct absolute time
+      event.absoluteStart = time.add(event.relativeStart);
     });
   }
 
@@ -33,6 +35,10 @@ export default class Song {
     return this.usedSampleNames;
   }
 
+  /**
+   * Returns true if all samples are loaded.
+   * @returns {boolean}
+   */
   public getIsLoaded(): boolean {
     for (let s = 0; s < this.timedSequences.length; s++) {
       for (let e = 0; e < this.timedSequences[s].sequence.events.length; e++) {

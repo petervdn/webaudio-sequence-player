@@ -1,10 +1,6 @@
-import { ISampleEvent, ISequence } from './interface';
+import { ISampleEvent, ISequence, ICreateSampleEvents } from './interface';
 import { SequenceEventType } from './enum';
 import MusicTime from 'musictime';
-
-export interface ICreateSampleEvents {
-  [time: string]: any[]; // '0.0.0': [sampleIds.DRUMS_A_SNARE, 1, sampleIds.DRUMS_A_KICK, 1, sampleIds.DRUMS_A1_HIHAT, 1],
-}
 
 export function createSampleSequence(id: string, events: ICreateSampleEvents): ISequence {
   const sequence: ISequence = {
@@ -24,7 +20,8 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
-        time: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+        relativeStart: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+        absoluteStart: null, // will be set once the sequence is added to a song (only then do we know the actual start time)
         type: SequenceEventType.SAMPLE,
         sample: null,
       };
