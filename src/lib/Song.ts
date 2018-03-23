@@ -4,8 +4,8 @@ import { SequenceEventType } from './enum';
 import { ISample } from 'sample-manager';
 
 export default class Song {
-  private timedSequences: ITimedSequence[] = [];
-  private usedSampleNames: string[] = [];
+  public timedSequences: ITimedSequence[] = [];
+  public usedSampleNames: string[] = [];
 
   constructor() {}
 

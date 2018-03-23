@@ -5,6 +5,7 @@ import Interval from './Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
+import { IScheduleTiming } from './interface';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
@@ -12,9 +13,8 @@ export default class SequencePlayer extends EventDispatcher {
   private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
   private playStartTime: number;
+  private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
   private scheduleInterval: Interval;
-  private scheduleIntervalTime = 1;
-  private lookAheadTime = 1.5;
   private bpm: number;
   private song: Song;
   private playMode: PlayMode;
@@ -25,9 +25,14 @@ export default class SequencePlayer extends EventDispatcher {
     this.context = context;
     this.sampleManager = sampleManager || new SampleManager(this.context);
 
-    this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleIntervalTime);
+    // create interval to start when scheduling
+    this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleTime.interval);
   }
 
+  /**
+   * Sets the state and dispatches an event.
+   * @param {SequencePlayerState} state
+   */
   private setState(state: SequencePlayerState): void {
     if (state !== this.state) {
       this.state = state;
@@ -35,6 +40,13 @@ export default class SequencePlayer extends EventDispatcher {
     }
   }
 
+  /**
+   * Loads all samples in a song
+   * @param {Song} song
+   * @param {string} extension
+   * @param {() => void} onProgress
+   * @returns {Promise<void>}
+   */
   public loadSong(song: Song, extension: string, onProgress?: () => void): Promise<void> {
     return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), extension, onProgress);
   }
@@ -77,8 +89,15 @@ export default class SequencePlayer extends EventDispatcher {
     this.scheduleAtTime(this.getSongPlayTime());
   };
 
+  /**
+   * Schedules all events from time to time+lookahead
+   * @param {number} playTime
+   */
   private scheduleAtTime(playTime: number): void {
-    const events = getSequenceEvents(playTime, playTime + this.lookAheadTime, this.song);
+    const endTime = playTime + this.scheduleTime.lookAhead;
+    const events = getSequenceEvents(playTime, endTime, this.song, this.bpm);
+
+    console.log(playTime, endTime, events);
   }
 
   public stop(): void {
@@ -110,6 +129,10 @@ export default class SequencePlayer extends EventDispatcher {
     return this.context.currentTime - this.playStartTime;
   }
 
+  /**
+   * Returns the current state
+   * @returns {SequencePlayerState}
+   */
   public getState(): SequencePlayerState {
     return this.state;
   }

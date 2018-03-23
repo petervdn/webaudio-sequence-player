@@ -1,10 +1,6 @@
-import { ISampleEvent, ISequence } from './interface';
+import { ISampleEvent, ISequence, ICreateSampleEvents } from './interface';
 import { SequenceEventType } from './enum';
 import MusicTime from 'musictime';
-
-export interface ICreateSampleEvents {
-  [time: string]: any[]; // '0.0.0': [sampleIds.DRUMS_A_SNARE, 1, sampleIds.DRUMS_A_KICK, 1, sampleIds.DRUMS_A1_HIHAT, 1],
-}
 
 export function createSampleSequence(id: string, events: ICreateSampleEvents): ISequence {
   const sequence: ISequence = {
