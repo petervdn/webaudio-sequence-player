@@ -25,7 +25,7 @@ player.addEventListener('state-change', (event:SequencePlayerEvent) => {
 
 const data = {
   '0.0.0': ['kick', 1, 'clap', 1],
-  '2.0.0': ['kick', 1, 'clap', 1],
+  '2.0.0': ['skick', 1, 'clap', 1],
 };
 
 

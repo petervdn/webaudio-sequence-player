@@ -56,10 +56,16 @@ export default class SequencePlayer extends EventDispatcher {
 
     this.setState(SequencePlayerState.LOADING);
 
-    return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), onProgress).then(() => {
-      setSamplesOnSampleEvents(song, this.sampleManager);
-      this.setState(SequencePlayerState.IDLE);
-    });
+    return this.sampleManager
+      .loadSamplesByName(song.getUsedSampleNames(), onProgress)
+      .then(() => {
+        setSamplesOnSampleEvents(song, this.sampleManager);
+        this.setState(SequencePlayerState.IDLE);
+      })
+      .catch(e => {
+        this.setState(SequencePlayerState.IDLE);
+        return Promise.reject(e);
+      });
   }
 
   /**
@@ -69,6 +75,7 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {PlayMode} playMode
    */
   public play(song: Song, bpm: number, playMode: PlayMode): void {
+    // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
       return;
@@ -85,34 +92,29 @@ export default class SequencePlayer extends EventDispatcher {
       loadPromise = this.loadSong(song);
     }
 
-    loadPromise
-      .then(() => {
-        this.setState(SequencePlayerState.PLAYING);
+    loadPromise.then(() => {
+      this.setState(SequencePlayerState.PLAYING);
 
-        // store start time, so we know where we are in the song
-        this.playStartTime = this.context.currentTime;
+      // store start time, so we know where we are in the song
+      this.playStartTime = this.context.currentTime;
 
-        switch (this.playMode) {
-          case PlayMode.ONCE: {
-            break;
-          }
-          case PlayMode.LIVE: {
-            // do one schedule call for time=0
-            this.scheduleAtTime(0);
-
-            // and more on interval
-            this.scheduleInterval.start();
-            break;
-          }
-          default: {
-            throw new Error(`Unknown playmode ${this.playMode}`);
-          }
+      switch (this.playMode) {
+        case PlayMode.ONCE: {
+          break;
         }
-      })
-      .catch(e => {
-        // todo
-        console.error(e);
-      });
+        case PlayMode.LIVE: {
+          // do one schedule call for time=0
+          this.scheduleAtTime(0);
+
+          // and more on interval
+          this.scheduleInterval.start();
+          break;
+        }
+        default: {
+          throw new Error(`Unknown playmode ${this.playMode}`);
+        }
+      }
+    });
   }
 
   onScheduleInterval = () => {
