@@ -3,10 +3,13 @@ import Song from './Song';
 import { PlayMode } from './enum';
 import Interval from './Interval';
 import SampleManager from 'sample-manager';
+import EventDispatcher from 'seng-event';
+import AbstractEvent from 'seng-event/lib/AbstractEvent';
 
-export default class SequencePlayer {
+export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
 
+  private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
   private playStartTime: number;
   private scheduleInterval: Interval;
@@ -14,14 +17,22 @@ export default class SequencePlayer {
   private lookAheadTime = 1.5;
   private bpm: number;
   private song: Song;
-  private isPlaying = false;
   private playMode: PlayMode;
 
   constructor(context: AudioContext, sampleManager?: SampleManager) {
+    super();
+
     this.context = context;
     this.sampleManager = sampleManager || new SampleManager(this.context);
 
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleIntervalTime);
+  }
+
+  private setState(state: SequencePlayerState): void {
+    if (state !== this.state) {
+      this.state = state;
+      this.dispatchEvent(new SequencePlayerEvent('state-change', this.state));
+    }
   }
 
   public loadSong(song: Song, extension: string, onProgress?: () => void): Promise<void> {
@@ -29,13 +40,13 @@ export default class SequencePlayer {
   }
 
   public play(song: Song, bpm: number, playMode: PlayMode): void {
-    if (this.isPlaying) {
-      console.error('Already playing');
+    if (this.state !== SequencePlayerState.IDLE) {
+      console.error('Can only play when idle');
       return;
     }
 
+    this.setState(SequencePlayerState.PLAYING);
     console.log(song.getIsLoaded());
-    this.isPlaying = true;
 
     this.song = song;
     this.bpm = bpm;
@@ -57,8 +68,7 @@ export default class SequencePlayer {
         break;
       }
       default: {
-        console.error('Unknown playmode', this.playMode);
-        this.isPlaying = false;
+        throw new Error(`Unknown playmode ${this.playMode}`);
       }
     }
   }
@@ -72,10 +82,11 @@ export default class SequencePlayer {
   }
 
   public stop(): void {
-    if (!this.isPlaying) {
+    if (this.state !== SequencePlayerState.PLAYING) {
+      console.error('Can only stop when playing');
       return;
     }
-    this.isPlaying = false;
+    this.setState(SequencePlayerState.IDLE);
 
     switch (this.playMode) {
       case PlayMode.ONCE: {
@@ -86,7 +97,7 @@ export default class SequencePlayer {
         break;
       }
       default: {
-        console.error('Unknown playmode', this.playMode);
+        throw new Error(`Unknown playmode ${this.playMode}`);
       }
     }
   }
@@ -95,7 +106,50 @@ export default class SequencePlayer {
    * Returns the time in seconds that the song is playing.
    * @returns {number}
    */
-  private getSongPlayTime(): number {
+  public getSongPlayTime(): number {
     return this.context.currentTime - this.playStartTime;
   }
+
+  public getState(): SequencePlayerState {
+    return this.state;
+  }
+
+  public dispose() {
+    super.dispose();
+  }
+}
+//
+// export class SequencePlayerEvent extends AbstractEvent {
+//   public static STATE_CHANGE:string = EVENT_TYPE_PLACEHOLDER;
+// }
+
+export class SequencePlayerEvent extends AbstractEvent {
+  public data: any;
+
+  constructor(
+    type: string,
+    data?: any,
+    bubbles: boolean = false,
+    cancelable: boolean = false,
+    setTimeStamp: boolean = false,
+  ) {
+    super(type, bubbles, cancelable, setTimeStamp);
+    this.data = data;
+  }
+
+  public clone(): SequencePlayerEvent {
+    return new SequencePlayerEvent(
+      this.type,
+      this.data,
+      this.bubbles,
+      this.cancelable,
+      this.timeStamp !== 0,
+    );
+  }
+}
+
+export enum SequencePlayerState {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  PLAYING = 'playing',
 }

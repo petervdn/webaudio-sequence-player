@@ -1,9 +1,14 @@
 import Song from '../../src/lib/Song';
 import { createSampleSequence } from '../../src/lib/sequenceUtils';
-import SequencePlayer from '../../src/lib/SequencePlayer';
+import SequencePlayer, { SequencePlayerEvent } from '../../src/lib/SequencePlayer';
 import {PlayMode} from "../../src/lib/enum";
 import MusicTime from "musictime";
 import SampleManager from "sample-manager";
+
+
+const showPlayerState = state => {
+  (<HTMLElement>document.querySelector('#state')).innerText = state;
+};
 
 const context = new AudioContext();
 const manager = new SampleManager(context, 'samples/');
@@ -12,6 +17,12 @@ manager.addSamplesFromNames(['kick', 'clap']);
 const player = new SequencePlayer(context);
 player.sampleManager.basePath = 'samples/';
 player.sampleManager.addSamplesFromNames(['kick', 'clap']);
+
+showPlayerState(player.getState());
+
+player.addEventListener('state-change', (event:SequencePlayerEvent) => {
+  showPlayerState(event.data);
+});
 
 const data = {
   '0.0.0': ['kick', 1, 'clap', 1],
@@ -27,8 +38,8 @@ console.log(song);
 
 document.querySelector('#start').addEventListener('click', () => {
   player.loadSong(song, 'wav').then(() => {
-    // player.play(song, 120, PlayMode.LIVE);
-    console.log('done');
+    player.play(song, 120, PlayMode.LIVE);
+    // console.log('done');
   });
 });
 

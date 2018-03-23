@@ -33,6 +33,10 @@ export default class Song {
     return this.usedSampleNames;
   }
 
+  /**
+   * Returns true if all samples are loaded.
+   * @returns {boolean}
+   */
   public getIsLoaded(): boolean {
     for (let s = 0; s < this.timedSequences.length; s++) {
       for (let e = 0; e < this.timedSequences[s].sequence.events.length; e++) {
