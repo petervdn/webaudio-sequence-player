@@ -1,8 +1,13 @@
 export default class Interval {
   private intervalId: number;
   private isRunning = false;
+  private callback: () => void;
+  private interval: number;
 
-  constructor(private callback: () => void, private interval: number) {}
+  constructor(callback: () => void, interval: number) {
+    this.callback = callback;
+    this.interval = interval;
+  }
 
   public start(): void {
     if (this.isRunning) {
@@ -16,5 +21,9 @@ export default class Interval {
   public stop(): void {
     this.isRunning = false;
     clearInterval(this.intervalId);
+  }
+
+  public dispose() {
+    this.stop();
   }
 }

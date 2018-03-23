@@ -48,41 +48,64 @@ export default class SequencePlayer extends EventDispatcher {
    * @returns {Promise<void>}
    */
   public loadSong(song: Song, onProgress?: () => void): Promise<void> {
-    return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), onProgress);
+    if (this.state !== SequencePlayerState.IDLE) {
+      console.error('Can only load when idle');
+      return;
+    }
+
+    this.setState(SequencePlayerState.LOADING);
+
+    return this.sampleManager.loadSamplesByName(song.getUsedSampleNames(), onProgress).then(() => {
+      this.setState(SequencePlayerState.IDLE);
+    });
   }
 
+  /**
+   * Play a song at the given bpm.
+   * @param {Song} song
+   * @param {number} bpm
+   * @param {PlayMode} playMode
+   */
   public play(song: Song, bpm: number, playMode: PlayMode): void {
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
       return;
     }
 
-    this.setState(SequencePlayerState.PLAYING);
-    console.log(song.getIsLoaded());
-
     this.song = song;
     this.bpm = bpm;
     this.playMode = playMode;
 
-    // store starttime, so we know where we are in the song
-    this.playStartTime = this.context.currentTime;
-
-    switch (this.playMode) {
-      case PlayMode.ONCE: {
-        break;
-      }
-      case PlayMode.LIVE: {
-        // do one schedule call for time=0
-        this.scheduleAtTime(0);
-
-        // and more on interval
-        this.scheduleInterval.start();
-        break;
-      }
-      default: {
-        throw new Error(`Unknown playmode ${this.playMode}`);
-      }
+    let loadPromise: Promise<void>;
+    if (song.getIsLoaded()) {
+      loadPromise = Promise.resolve();
+    } else {
+      loadPromise = this.loadSong(song);
     }
+
+    loadPromise.then(() => {
+      this.setState(SequencePlayerState.PLAYING);
+
+      // store start time, so we know where we are in the song
+      this.playStartTime = this.context.currentTime;
+
+      switch (this.playMode) {
+        case PlayMode.ONCE: {
+          break;
+        }
+        case PlayMode.LIVE: {
+          // do one schedule call for time=0
+          this.scheduleAtTime(0);
+
+          // and more on interval
+          this.scheduleInterval.start();
+          break;
+        }
+        default: {
+          throw new Error(`Unknown playmode ${this.playMode}`);
+        }
+      }
+    });
   }
 
   onScheduleInterval = () => {
