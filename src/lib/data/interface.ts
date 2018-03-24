@@ -23,6 +23,11 @@ export interface ITimedSequence {
 export interface ISequenceEvent {
   type: SequenceEventType;
   relativeStart: MusicTime;
+  lastScheduledData: ILastScheduledData;
+}
+
+export interface ILastScheduledData {
+  [key: string]: number; // todo make more specific once we know better what is in here?
 }
 
 export interface ISampleEvent extends ISequenceEvent {

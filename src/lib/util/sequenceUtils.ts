@@ -1,7 +1,13 @@
-import { ISampleEvent, ISequence, ICreateSampleEvents } from '../data/interface';
+import { ISampleEvent, ISequence, ICreateSampleEvents, ISequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
 import MusicTime from 'musictime';
 
+/**
+ * Creates a sequence with samplesEvents.
+ * @param {string} id
+ * @param {ICreateSampleEvents} events
+ * @returns {ISequence}
+ */
 export function createSampleSequence(id: string, events: ICreateSampleEvents): ISequence {
   const sequence: ISequence = {
     id,
@@ -9,8 +15,8 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
     events: [],
   };
 
-  Object.keys(events).forEach(key => {
-    const dataList: any[] = events[key];
+  Object.keys(events).forEach(musicTimeString => {
+    const dataList: any[] = events[musicTimeString];
 
     // todo check datalist is correct length (even)
     for (let i = 0; i < dataList.length; i += 2) {
@@ -20,9 +26,8 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
-        relativeStart: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
-        type: SequenceEventType.SAMPLE,
         sample: null,
+        ...createBaseSequenceEvent(SequenceEventType.SAMPLE, musicTimeString),
       };
 
       sequence.events.push(sampleEvent);
@@ -30,6 +35,20 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
   });
 
   return sequence;
+}
+
+/**
+ * Creates an ISequenceEvent object with properties that all extended types share.
+ * @param {SequenceEventType} type
+ * @param {string} musicTimeString
+ * @returns {ISequenceEvent}
+ */
+function createBaseSequenceEvent(type: SequenceEventType, musicTimeString: string): ISequenceEvent {
+  return {
+    type,
+    relativeStart: MusicTime.fromString(musicTimeString), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+    lastScheduledData: {},
+  };
 }
 
 export function logSequence(sequence: ISequence): void {

@@ -55,6 +55,7 @@ document.querySelector('#start').addEventListener('click', () => {
 
 document.querySelector('#stop').addEventListener('click', () => {
   player.stop();
+  console.log(MusicTime.TO_TIME_CACHE);
 });
 /*
 import { loadAudioBuffer, loadSamples, createSamples, createSample } from 'webaudio-sample-loader';

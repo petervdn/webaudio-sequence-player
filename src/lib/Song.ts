@@ -5,6 +5,7 @@ import { SequenceEventType } from './data/enum';
 export default class Song {
   public timedSequences: ITimedSequence[] = [];
   public bpm: number;
+  public loopPoints: any[] = [];
 
   private usedSampleNames: string[] = [];
 
