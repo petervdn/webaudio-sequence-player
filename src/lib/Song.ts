@@ -46,6 +46,7 @@ export default class Song {
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
+    // todo we can loop through all sequences here (instead of all timed sequences)
     for (let s = 0; s < this.timedSequences.length; s++) {
       for (let e = 0; e < this.timedSequences[s].sequence.events.length; e++) {
         const sequenceEvent: ISequenceEvent = this.timedSequences[s].sequence.events[e];

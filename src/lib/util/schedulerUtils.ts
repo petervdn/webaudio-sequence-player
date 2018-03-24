@@ -1,5 +1,5 @@
 import Song from '../Song';
-import { ISequence, ISequenceEvent, ITimedSequence } from '../data/interface';
+import { ISequenceEvent, ITimedSequence } from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
@@ -84,6 +84,15 @@ function markEventAsScheduled(
   }
 
   // todo else
+}
+
+export function clearAllLastScheduleData(song: Song): void {
+  // todo loop through seqs instead of timedSeqs
+  for (let s = 0; s < song.timedSequences.length; s++) {
+    for (let e = 0; e < song.timedSequences[s].sequence.events.length; e++) {
+      song.timedSequences[s].sequence.events[e].lastScheduledData = {};
+    }
+  }
 }
 
 export interface IScheduleEventData {

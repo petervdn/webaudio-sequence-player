@@ -11,8 +11,7 @@ const showPlayerState = state => {
 const context = new AudioContext();
 
 const player = new SequencePlayer(context, 'samples/', 'wav');
-console.log(player);
-player.sampleManager.addSamplesFromNames(['kick', 'clap']);
+player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth']);
 
 showPlayerState(player.getState());
 
@@ -29,17 +28,25 @@ const data = {
   // '2.1.0': ['kick', 1, 'clap', 1],
   // '2.2.0': ['kick', 1, 'clap', 1],
   // '2.3.0': ['kick', 1, 'clap', 1],
-  '0.0.0': ['kick', 1],
-  '0.1.0': ['kick', 1],
+  '0.0.0': ['kick', 1, 'synth', 1],
+  '0.1.0': ['kick', 1, 'clap', 1],
   '0.2.0': ['kick', 1],
-  '0.3.0': ['kick', 1],
+  '0.3.0': ['kick', 1, 'clap', 1],
   '1.0.0': ['kick', 1],
-  '1.1.0': ['kick', 1],
+  '1.1.0': ['kick', 1, 'clap', 1],
   '1.2.0': ['kick', 1],
-  '1.3.0': ['kick', 1],
+  '1.3.0': ['kick', 1, 'clap', 1],
+  '2.0.0': ['kick', 1],
+  '2.1.0': ['clap', 1],
+  '2.2.0': [],
+  '2.3.0': ['clap', 1],
+  '3.0.0': ['kick', 1],
+  '3.1.0': ['clap', 1],
+  '3.2.0': [],
+  '3.3.0': ['clap', 1],
 };
 
-const song = new Song(120);
+const song = new Song(128);
 const seq = createSampleSequence('seq1', data);
 song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 song.addSequenceAtTime(seq, new MusicTime(4, 0, 0));

@@ -52,16 +52,24 @@ function createBaseSequenceEvent(type: SequenceEventType, musicTimeString: strin
 }
 
 export function logSequence(sequence: ISequence): void {
+  let previousTimeData: string;
   sequence.events.forEach(event => {
     const timeData = event.relativeStart.toString();
+
+    if (timeData !== previousTimeData) {
+      console.log(timeData);
+    }
+
     switch (event.type) {
       case SequenceEventType.SAMPLE: {
-        console.log(`${timeData}\t${event.type}\t${(<ISampleEvent>event).sampleName}`);
+        console.log(`\t\t${(<ISampleEvent>event).sampleName}`);
         break;
       }
       default: {
         console.warn(`Unknown SequenceEventType ${event.type}`, event);
       }
     }
+
+    previousTimeData = timeData;
   });
 }

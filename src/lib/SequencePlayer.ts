@@ -1,4 +1,8 @@
-import { getEventScheduleList, IScheduleEventData } from './util/schedulerUtils';
+import {
+  clearAllLastScheduleData,
+  getEventScheduleList,
+  IScheduleEventData,
+} from './util/schedulerUtils';
 import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
@@ -128,6 +132,8 @@ export default class SequencePlayer extends EventDispatcher {
       return;
     }
     this.scheduleInterval.stop();
+    this.samplePlayer.stopAll();
+    clearAllLastScheduleData(this.song);
     this.setState(SequencePlayerState.IDLE);
   }
 
