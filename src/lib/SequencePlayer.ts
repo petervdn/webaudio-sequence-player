@@ -1,11 +1,10 @@
 import { getEventScheduleList, IScheduleEventData } from './util/schedulerUtils';
 import Song from './Song';
-import { PlayMode } from './data/enum';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
-import { ISampleEvent, IScheduleTiming } from './data/interface';
+import { IScheduleTiming } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
 
@@ -19,7 +18,6 @@ export default class SequencePlayer extends EventDispatcher {
   private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
   private scheduleInterval: Interval;
   private song: Song;
-  private playMode: PlayMode;
 
   constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
     super();
@@ -76,7 +74,7 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} bpm
    * @param {PlayMode} playMode
    */
-  public play(song: Song, playMode: PlayMode): void {
+  public play(song: Song): void {
     // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
@@ -84,7 +82,6 @@ export default class SequencePlayer extends EventDispatcher {
     }
 
     this.song = song;
-    this.playMode = playMode;
 
     let loadPromise: Promise<void>;
     if (song.getIsLoaded()) {
@@ -95,26 +92,14 @@ export default class SequencePlayer extends EventDispatcher {
 
     loadPromise.then(() => {
       this.setState(SequencePlayerState.PLAYING);
-
       // store start time, so we know where we are in the song
       this.playStartTime = this.context.currentTime;
 
-      switch (this.playMode) {
-        case PlayMode.ONCE: {
-          break;
-        }
-        case PlayMode.LIVE: {
-          // do one schedule call for time=0
-          this.scheduleAtTime(0);
+      // do one schedule call for time=0
+      this.scheduleAtTime(0);
 
-          // and more on interval
-          this.scheduleInterval.start();
-          break;
-        }
-        default: {
-          throw new Error(`Unknown playmode ${this.playMode}`);
-        }
-      }
+      // and more on interval
+      this.scheduleInterval.start();
     });
   }
 
@@ -127,11 +112,12 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} playTime
    */
   private scheduleAtTime(playTime: number): void {
+    // get all events in the timewindow
     const endTime = playTime + this.scheduleTime.lookAhead;
     const items: IScheduleEventData[] = getEventScheduleList(playTime, endTime, this.song);
 
-    console.log('from', playTime, 'to', endTime);
     items.forEach(item => {
+      //
       this.samplePlayer.playSample(item, this.playStartTime);
     });
   }
@@ -141,20 +127,8 @@ export default class SequencePlayer extends EventDispatcher {
       console.error('Can only stop when playing');
       return;
     }
+    this.scheduleInterval.stop();
     this.setState(SequencePlayerState.IDLE);
-
-    switch (this.playMode) {
-      case PlayMode.ONCE: {
-        break;
-      }
-      case PlayMode.LIVE: {
-        this.scheduleInterval.stop();
-        break;
-      }
-      default: {
-        throw new Error(`Unknown playmode ${this.playMode}`);
-      }
-    }
   }
 
   /**
