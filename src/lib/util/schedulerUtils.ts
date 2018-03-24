@@ -9,17 +9,12 @@ import { ISequenceEvent } from '../data/interface';
  * @param {number} bpm
  * @returns {ISequenceEvent[]}
  */
-export function getSequenceEvents(
-  fromTime: number,
-  toTime: number,
-  song: Song,
-  bpm: number,
-): ISequenceEvent[] {
+export function getSequenceEvents(fromTime: number, toTime: number, song: Song): ISequenceEvent[] {
   const results: ISequenceEvent[] = [];
   for (let ts = 0; ts < song.timedSequences.length; ts++) {
     for (let e = 0; e < song.timedSequences[ts].sequence.events.length; e++) {
       const event: ISequenceEvent = song.timedSequences[ts].sequence.events[e];
-      const eventTime = event.absoluteStart.toTime(bpm);
+      const eventTime = event.absoluteStart.toTime(song.bpm);
       if (eventTime >= fromTime && eventTime < toTime) {
         results.push(event);
       }

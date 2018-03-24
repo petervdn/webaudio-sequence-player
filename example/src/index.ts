@@ -25,11 +25,11 @@ player.addEventListener('state-change', (event:SequencePlayerEvent) => {
 
 const data = {
   '0.0.0': ['kick', 1, 'clap', 1],
-  '2.0.0': ['skick', 1, 'clap', 1],
+  '2.0.0': ['kick', 1, 'clap', 1],
 };
 
 
-const song = new Song();
+const song = new Song(120);
 song.addSequenceAtTime(createSampleSequence('id', data), new MusicTime(0, 0, 0));
 song.addSequenceAtTime(createSampleSequence('id', data), new MusicTime(4, 0, 0));
 console.log(song);
@@ -40,7 +40,7 @@ document.querySelector('#start').addEventListener('click', () => {
   //
   //   console.log('done');
   // });
-  player.play(song, 120, PlayMode.LIVE);
+  player.play(song, PlayMode.LIVE);
 });
 
 document.querySelector('#stop').addEventListener('click', () => {

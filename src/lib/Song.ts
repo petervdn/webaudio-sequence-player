@@ -5,8 +5,11 @@ import { SequenceEventType } from './data/enum';
 export default class Song {
   public timedSequences: ITimedSequence[] = [];
   public usedSampleNames: string[] = [];
+  public bpm: number;
 
-  constructor() {}
+  constructor(bpm: number) {
+    this.bpm = bpm;
+  }
 
   public addSequenceAtTime(sequence: ISequence, time: MusicTime): void {
     // add sequence with time, and give an id to the combination

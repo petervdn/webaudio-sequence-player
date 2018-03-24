@@ -16,7 +16,6 @@ export default class SequencePlayer extends EventDispatcher {
   private playStartTime: number;
   private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
   private scheduleInterval: Interval;
-  private bpm: number;
   private song: Song;
   private playMode: PlayMode;
 
@@ -50,8 +49,7 @@ export default class SequencePlayer extends EventDispatcher {
    */
   public loadSong(song: Song, onProgress?: () => void): Promise<void> {
     if (this.state !== SequencePlayerState.IDLE) {
-      console.error('Can only load when idle');
-      return;
+      return Promise.reject('Can only load when idle');
     }
 
     this.setState(SequencePlayerState.LOADING);
@@ -74,7 +72,7 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} bpm
    * @param {PlayMode} playMode
    */
-  public play(song: Song, bpm: number, playMode: PlayMode): void {
+  public play(song: Song, playMode: PlayMode): void {
     // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
@@ -82,7 +80,6 @@ export default class SequencePlayer extends EventDispatcher {
     }
 
     this.song = song;
-    this.bpm = bpm;
     this.playMode = playMode;
 
     let loadPromise: Promise<void>;
@@ -127,11 +124,11 @@ export default class SequencePlayer extends EventDispatcher {
    */
   private scheduleAtTime(playTime: number): void {
     const endTime = playTime + this.scheduleTime.lookAhead;
-    const events = getSequenceEvents(playTime, endTime, this.song, this.bpm);
+    const events = getSequenceEvents(playTime, endTime, this.song);
 
     console.log('from', playTime, 'to', endTime);
     if (events.length) {
-      events.forEach(event => console.log(event.absoluteStart.toTime(this.bpm), event));
+      events.forEach(event => console.log(event.absoluteStart.toTime(this.song.bpm), event));
     }
   }
 
