@@ -11,6 +11,7 @@ export function playBuffer(
     // time is already in the past
     return null;
   }
+  console.log('play sample', time);
   const gainNode = context.createGain();
   const bufferSourceNode = context.createBufferSource();
 
@@ -20,7 +21,7 @@ export function playBuffer(
   bufferSourceNode.connect(gainNode);
   gainNode.connect(destination);
 
-  bufferSourceNode.start(time, from, duration);
+  bufferSourceNode.start(time, from, duration === -1 ? void 0 : duration);
 
   return {
     bufferSourceNode,

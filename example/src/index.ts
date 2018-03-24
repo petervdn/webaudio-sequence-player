@@ -4,6 +4,7 @@ import SequencePlayer, { SequencePlayerEvent } from '../../src/lib/SequencePlaye
 import {PlayMode} from "../../src/lib/data/enum";
 import MusicTime from "musictime";
 import SampleManager from "sample-manager";
+import {logSong} from "../../src/lib/util/songUtils";
 
 
 const showPlayerState = state => {
@@ -24,15 +25,30 @@ player.addEventListener('state-change', (event:SequencePlayerEvent) => {
 });
 
 const data = {
-  '0.0.0': ['kick', 1, 'clap', 1],
-  '2.0.0': ['kick', 1, 'clap', 1],
+  // '0.0.0': ['kick', 1, 'clap', 1],
+  // '0.1.0': ['kick', 1, 'clap', 1],
+  // '0.2.0': ['kick', 1, 'clap', 1],
+  // '0.3.0': ['kick', 1, 'clap', 1],
+  // '2.0.0': ['kick', 1, 'clap', 1],
+  // '2.1.0': ['kick', 1, 'clap', 1],
+  // '2.2.0': ['kick', 1, 'clap', 1],
+  // '2.3.0': ['kick', 1, 'clap', 1],
+  '0.0.0': ['kick', 1],
+  '0.1.0': ['kick', 1],
+  '0.2.0': ['kick', 1],
+  '0.3.0': ['kick', 1],
+  '2.0.0': ['kick', 1],
+  '2.1.0': ['kick', 1],
+  '2.2.0': ['kick', 1],
+  '2.3.0': ['kick', 1],
 };
 
 
 const song = new Song(120);
-song.addSequenceAtTime(createSampleSequence('id', data), new MusicTime(0, 0, 0));
-song.addSequenceAtTime(createSampleSequence('id', data), new MusicTime(4, 0, 0));
-console.log(song);
+const seq = createSampleSequence('seq1', data);
+song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
+song.addSequenceAtTime(seq, new MusicTime(4, 0, 0));
+logSong(song);
 
 
 document.querySelector('#start').addEventListener('click', () => {

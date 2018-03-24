@@ -1,15 +1,17 @@
-import { getSequenceEvents } from './util/schedulerUtils';
+import { getEventScheduleList, IScheduleEventData } from './util/schedulerUtils';
 import Song from './Song';
 import { PlayMode } from './data/enum';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
-import { IScheduleTiming } from './data/interface';
+import { ISampleEvent, IScheduleTiming } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
+import SamplePlayer from './SamplePlayer';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
+  public samplePlayer: SamplePlayer;
 
   private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
@@ -23,7 +25,9 @@ export default class SequencePlayer extends EventDispatcher {
     super();
 
     this.context = context;
+    // todo allow external sample manager?
     this.sampleManager = new SampleManager(this.context, samplesBasePath, samplesExtension);
+    this.samplePlayer = new SamplePlayer(this.context, this.context.destination);
 
     // create interval to start when scheduling
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleTime.interval);
@@ -124,12 +128,12 @@ export default class SequencePlayer extends EventDispatcher {
    */
   private scheduleAtTime(playTime: number): void {
     const endTime = playTime + this.scheduleTime.lookAhead;
-    const events = getSequenceEvents(playTime, endTime, this.song);
+    const items: IScheduleEventData[] = getEventScheduleList(playTime, endTime, this.song);
 
     console.log('from', playTime, 'to', endTime);
-    if (events.length) {
-      events.forEach(event => console.log(event.absoluteStart.toTime(this.song.bpm), event));
-    }
+    items.forEach(item => {
+      this.samplePlayer.playSample(item, this.playStartTime);
+    });
   }
 
   public stop(): void {

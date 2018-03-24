@@ -23,7 +23,6 @@ export interface ITimedSequence {
 export interface ISequenceEvent {
   type: SequenceEventType;
   relativeStart: MusicTime;
-  absoluteStart: MusicTime;
 }
 
 export interface ISampleEvent extends ISequenceEvent {

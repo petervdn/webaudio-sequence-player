@@ -4,13 +4,19 @@ import { SequenceEventType } from './data/enum';
 
 export default class Song {
   public timedSequences: ITimedSequence[] = [];
-  public usedSampleNames: string[] = [];
   public bpm: number;
+
+  private usedSampleNames: string[] = [];
 
   constructor(bpm: number) {
     this.bpm = bpm;
   }
 
+  /**
+   * Adds a sequence to the song
+   * @param {ISequence} sequence
+   * @param {MusicTime} time
+   */
   public addSequenceAtTime(sequence: ISequence, time: MusicTime): void {
     // add sequence with time, and give an id to the combination
     this.timedSequences.push({
@@ -27,19 +33,15 @@ export default class Song {
       ) {
         this.usedSampleNames.push((<ISampleEvent>event).sampleName);
       }
-
-      // and set the correct absolute time
-      event.absoluteStart = time.add(event.relativeStart);
     });
   }
 
   public getUsedSampleNames(): string[] {
-    // todo getter?
     return this.usedSampleNames;
   }
 
   /**
-   * Returns true if all samples are loaded.
+   * Returns true if all ISampleEvents have a reference to a sample, and those samples are loaded.
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
@@ -47,8 +49,9 @@ export default class Song {
       for (let e = 0; e < this.timedSequences[s].sequence.events.length; e++) {
         const sequenceEvent: ISequenceEvent = this.timedSequences[s].sequence.events[e];
         if (
-          sequenceEvent.type === SequenceEventType.SAMPLE &&
-          !(<ISampleEvent>sequenceEvent).sample
+          (sequenceEvent.type === SequenceEventType.SAMPLE &&
+            !(<ISampleEvent>sequenceEvent).sample) ||
+          !(<ISampleEvent>sequenceEvent).sample.audioBuffer
         ) {
           return false;
         }

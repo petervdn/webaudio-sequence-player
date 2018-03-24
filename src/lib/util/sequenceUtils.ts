@@ -21,7 +21,6 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
         sampleName,
         volume,
         relativeStart: MusicTime.fromString(key), // even if time is the same for this key, create new instances (so we can later on change them if needed)
-        absoluteStart: null, // will be set once the sequence is added to a song (only then do we know the actual start time)
         type: SequenceEventType.SAMPLE,
         sample: null,
       };
@@ -31,4 +30,19 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
   });
 
   return sequence;
+}
+
+export function logSequence(sequence: ISequence): void {
+  sequence.events.forEach(event => {
+    const timeData = event.relativeStart.toString();
+    switch (event.type) {
+      case SequenceEventType.SAMPLE: {
+        console.log(`${timeData}\t${event.type}\t${(<ISampleEvent>event).sampleName}`);
+        break;
+      }
+      default: {
+        console.warn(`Unknown SequenceEventType ${event.type}`, event);
+      }
+    }
+  });
 }
