@@ -17,10 +17,22 @@ export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManage
     }
   }
 }
-export function logSong(song: Song): void {
-  console.log(song);
-  song.timedSequences.forEach(timedSequence => {
-    console.log(`--- ${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()}) ---`);
-    logSequence(timedSequence.sequence);
-  });
-}
+// export function logSong(song: Song): void {
+//   console.log(song);
+//   song.timedSequences.forEach(timedSequence => {
+//     console.log(`--- ${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()}) ---`);
+//     logSequence(timedSequence.sequence);
+//   });
+// }
+
+/**
+ * Calculates the duration of the song
+ * @param {Song} song
+ * @returns {number}
+ */
+// export function getSongDuration(song: Song): number {
+//   let latestTime = 0;
+//   song.timedSequences.forEach(timedSequence => {
+//     const sequenceStartTime = timedSequence.absoluteStart.toTime(song.bpm);
+//   })
+// }

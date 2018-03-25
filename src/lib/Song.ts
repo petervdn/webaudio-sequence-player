@@ -3,14 +3,17 @@ import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 
 export default class Song {
+  // todo make more stuff private?
   public timedSequences: ITimedSequence[] = [];
   public bpm: number;
   public loopPoints: any[] = [];
   public sequences: ISequence[] = []; // unique sequences
 
-  private usedSampleNames: string[] = [];
+  private usedSampleNames: string[] = []; // used by the player to decide what to load
+  private duration = -1;
 
   constructor(bpm: number) {
+    // todo force bpm within a range
     this.bpm = bpm;
   }
 
@@ -25,7 +28,7 @@ export default class Song {
       existingSequence => existingSequence.id === sequence.id,
     );
     if (seqWithSameId && seqWithSameId !== sequence) {
-      throw new Error(`There is already a sequence with id ${sequence.id}`);
+      throw new Error(`There is already a different sequence with id ${sequence.id}`);
     }
 
     // add unique sequences to the list
@@ -76,4 +79,6 @@ export default class Song {
 
     return true;
   }
+
+  public updateSongDuration(): void {}
 }

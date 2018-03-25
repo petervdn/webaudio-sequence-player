@@ -2,7 +2,7 @@ import Song from '../../src/lib/Song';
 import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
 import SequencePlayer, { SequencePlayerEvent } from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
-import { logSong } from '../../src/lib/util/songUtils';
+
 
 const showPlayerState = state => {
   (<HTMLElement>document.querySelector('#state')).innerText = state;
@@ -50,7 +50,7 @@ const song = new Song(128);
 const seq = createSampleSequence('seq1', data);
 song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 song.addSequenceAtTime(seq, new MusicTime(4, 0, 0));
-logSong(song);
+
 console.log(seq);
 document.querySelector('#start').addEventListener('click', () => {
   // player.loadSong(song).then(() => {
