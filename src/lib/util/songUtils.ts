@@ -2,7 +2,6 @@ import Song from '../Song';
 import { ISampleEvent, ISequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
 import SampleManager from 'sample-manager/lib/SampleManager';
-import { logSequence } from './sequenceUtils';
 
 export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManager): void {
   for (let s = 0; s < song.sequences.length; s++) {
