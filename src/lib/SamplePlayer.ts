@@ -1,6 +1,5 @@
-import { IScheduleEventData } from './util/schedulerUtils';
 import { IPlayBufferResult, playBuffer } from './util/webAudioUtils';
-import { ISampleEvent } from './data/interface';
+import { ISampleEvent, IScheduleEventData } from './data/interface';
 
 export default class SamplePlayer {
   private context: AudioContext;

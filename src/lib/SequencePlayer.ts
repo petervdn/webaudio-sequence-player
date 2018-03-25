@@ -1,14 +1,10 @@
-import {
-  clearAllLastScheduleData,
-  getEventScheduleList,
-  IScheduleEventData,
-} from './util/schedulerUtils';
+import { clearAllLastScheduleData, getEventScheduleList } from './util/schedulerUtils';
 import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import AbstractEvent from 'seng-event/lib/AbstractEvent';
-import { IScheduleTiming } from './data/interface';
+import { IScheduleEventData, IScheduleTiming } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
 

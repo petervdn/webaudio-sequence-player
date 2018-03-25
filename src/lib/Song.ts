@@ -6,6 +6,7 @@ export default class Song {
   public timedSequences: ITimedSequence[] = [];
   public bpm: number;
   public loopPoints: any[] = [];
+  public sequences: ISequence[] = []; // unique sequences
 
   private usedSampleNames: string[] = [];
 
@@ -19,6 +20,19 @@ export default class Song {
    * @param {MusicTime} time
    */
   public addSequenceAtTime(sequence: ISequence, time: MusicTime): void {
+    // check if there is another sequence with the same id (same id is allowed, but only when it's the same instance)
+    const seqWithSameId = this.sequences.find(
+      existingSequence => existingSequence.id === sequence.id,
+    );
+    if (seqWithSameId && seqWithSameId !== sequence) {
+      throw new Error(`There is already a sequence with id ${sequence.id}`);
+    }
+
+    // add unique sequences to the list
+    if (!seqWithSameId) {
+      this.sequences.push(sequence);
+    }
+
     // add sequence with time, and give an id to the combination
     this.timedSequences.push({
       sequence,
@@ -46,10 +60,10 @@ export default class Song {
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
-    // todo we can loop through all sequences here (instead of all timed sequences)
-    for (let s = 0; s < this.timedSequences.length; s++) {
-      for (let e = 0; e < this.timedSequences[s].sequence.events.length; e++) {
-        const sequenceEvent: ISequenceEvent = this.timedSequences[s].sequence.events[e];
+    for (let s = 0; s < this.sequences.length; s++) {
+      const sequence = this.sequences[s];
+      for (let e = 0; e < sequence.events.length; e++) {
+        const sequenceEvent: ISequenceEvent = sequence.events[e];
         if (
           (sequenceEvent.type === SequenceEventType.SAMPLE &&
             !(<ISampleEvent>sequenceEvent).sample) ||

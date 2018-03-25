@@ -5,9 +5,9 @@ import SampleManager from 'sample-manager/lib/SampleManager';
 import { logSequence } from './sequenceUtils';
 
 export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManager): void {
-  for (let ts = 0; ts < song.timedSequences.length; ts++) {
-    for (let e = 0; e < song.timedSequences[ts].sequence.events.length; e++) {
-      const event: ISequenceEvent = song.timedSequences[ts].sequence.events[e];
+  for (let s = 0; s < song.sequences.length; s++) {
+    for (let e = 0; e < song.sequences[s].events.length; e++) {
+      const event: ISequenceEvent = song.sequences[s].events[e];
 
       if (event.type === SequenceEventType.SAMPLE) {
         (<ISampleEvent>event).sample = sampleManager.getSampleByName(

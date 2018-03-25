@@ -39,3 +39,8 @@ export interface ISampleEvent extends ISequenceEvent {
 export interface ICreateSampleEvents {
   [time: string]: any[]; // '0.0.0': [sampleIds.DRUMS_A_SNARE, 1, sampleIds.DRUMS_A_KICK, 1, sampleIds.DRUMS_A1_HIHAT, 1],
 }
+
+export interface IScheduleEventData {
+  event: ISequenceEvent;
+  absoluteSeconds: number;
+}

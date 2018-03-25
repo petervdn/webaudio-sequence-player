@@ -1,12 +1,11 @@
 import Song from '../Song';
-import { ISequenceEvent, ITimedSequence } from '../data/interface';
+import { IScheduleEventData, ISequenceEvent, ITimedSequence } from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
  * @param {number} fromTime
  * @param {number} toTime
  * @param {Song} song
- * @param {number} bpm
  * @returns {ISequenceEvent[]}
  */
 export function getEventScheduleList(
@@ -21,12 +20,12 @@ export function getEventScheduleList(
     const sequenceStart: number = timedSequence.absoluteStart.toTime(song.bpm);
 
     // loop through events for sequence
-    eventsLoop: for (let e = 0; e < timedSequence.sequence.events.length; e++) {
+    for (let e = 0; e < timedSequence.sequence.events.length; e++) {
       const event: ISequenceEvent = timedSequence.sequence.events[e];
 
       // skip if event was already scheduled in a previous call
       if (eventHasBeenScheduled(song, event, timedSequence)) {
-        continue eventsLoop;
+        continue;
       }
 
       // calculate the absolute time for the event
@@ -87,15 +86,9 @@ function markEventAsScheduled(
 }
 
 export function clearAllLastScheduleData(song: Song): void {
-  // todo loop through seqs instead of timedSeqs
-  for (let s = 0; s < song.timedSequences.length; s++) {
-    for (let e = 0; e < song.timedSequences[s].sequence.events.length; e++) {
-      song.timedSequences[s].sequence.events[e].lastScheduledData = {};
+  for (let s = 0; s < song.sequences.length; s++) {
+    for (let e = 0; e < song.sequences[s].events.length; e++) {
+      song.sequences[s].events[e].lastScheduledData = {};
     }
   }
-}
-
-export interface IScheduleEventData {
-  event: ISequenceEvent;
-  absoluteSeconds: number;
 }
