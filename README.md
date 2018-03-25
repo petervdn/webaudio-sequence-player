@@ -6,3 +6,6 @@ some use cases:
 - generate a song based on variables
 - drum/sample sequencer
 - adaptive game-music that can seamlessly transition based on gameplay 
+
+
+This project is far from finished at the moment, feel free to help out!
