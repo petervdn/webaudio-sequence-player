@@ -111,7 +111,7 @@ export default class SequencePlayer extends EventDispatcher {
    * Schedules all events from time to time+lookahead
    * @param {number} playTime
    */
-  private scheduleAtTime(playTime: number): void {
+  public scheduleAtTime(playTime: number): void {
     // get all events in the timewindow
     const endTime = playTime + this.scheduleTime.lookAhead;
     const items: IScheduleEventData[] = getEventScheduleList(playTime, endTime, this.song);

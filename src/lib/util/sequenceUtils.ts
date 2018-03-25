@@ -18,16 +18,18 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
   Object.keys(events).forEach(musicTimeString => {
     const dataList: any[] = events[musicTimeString];
 
-    // todo check datalist is correct length (even)
     for (let i = 0; i < dataList.length; i += 2) {
-      const sampleName = dataList[i]; // todo check type and correct values of these two
+      const sampleName = dataList[i]; // todo check and test type and correct values of these two
       const volume = dataList[i + 1];
 
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
         sample: null,
-        ...createBaseSequenceEvent(SequenceEventType.SAMPLE, musicTimeString),
+        ...createBaseSequenceEventFromTimeString(
+          SequenceEventType.SAMPLE,
+          MusicTime.fromString(musicTimeString),
+        ),
       };
 
       sequence.events.push(sampleEvent);
@@ -43,33 +45,13 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
  * @param {string} musicTimeString
  * @returns {ISequenceEvent}
  */
-function createBaseSequenceEvent(type: SequenceEventType, musicTimeString: string): ISequenceEvent {
+function createBaseSequenceEventFromTimeString(
+  type: SequenceEventType,
+  musicTime: MusicTime,
+): ISequenceEvent {
   return {
     type,
-    relativeStart: MusicTime.fromString(musicTimeString), // even if time is the same for this key, create new instances (so we can later on change them if needed)
+    relativeStart: musicTime,
     lastScheduledData: {},
   };
-}
-
-export function logSequence(sequence: ISequence): void {
-  let previousTimeData: string;
-  sequence.events.forEach(event => {
-    const timeData = event.relativeStart.toString();
-
-    if (timeData !== previousTimeData) {
-      console.log(timeData);
-    }
-
-    switch (event.type) {
-      case SequenceEventType.SAMPLE: {
-        console.log(`\t\t${(<ISampleEvent>event).sampleName}`);
-        break;
-      }
-      default: {
-        console.warn(`Unknown SequenceEventType ${event.type}`, event);
-      }
-    }
-
-    previousTimeData = timeData;
-  });
 }

@@ -51,7 +51,7 @@ const seq = createSampleSequence('seq1', data);
 song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 song.addSequenceAtTime(seq, new MusicTime(4, 0, 0));
 logSong(song);
-
+console.log(seq);
 document.querySelector('#start').addEventListener('click', () => {
   // player.loadSong(song).then(() => {
   //
