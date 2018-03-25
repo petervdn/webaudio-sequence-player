@@ -10,15 +10,17 @@ describe('sequenceUtils', () => {
     };
 
     const seq = createSampleSequence('seq1', data);
-    const start0 = seq.events[0].relativeStart;
-    const start1 = seq.events[1].relativeStart;
-    const start2 = seq.events[2].relativeStart;
+
+    // store music times and remove from object (so we can do a deep equal)
+    const startTimes = seq.events.map(e => e.relativeStart);
     seq.events.forEach(event => {
       delete event.relativeStart;
     });
-    expect(start0.toString()).to.equal('0.0.0');
-    expect(start1.toString()).to.equal('0.0.0');
-    expect(start2.toString()).to.equal('0.1.0');
+    expect(startTimes.map(time => time.toString())).to.deep.equal(
+      ['0.0.0', '0.0.0', '0.1.0'],
+    );
+
+    // compare renaining object
     expect(seq).to.deep.equal({
       id: 'seq1',
       target: null,
