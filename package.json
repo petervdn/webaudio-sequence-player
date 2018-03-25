@@ -1,7 +1,7 @@
 {
-  "name": "seng-boilerplate",
+  "name": "webaudio-sequence-player",
   "version": "1.3.0",
-  "description": "Boilerplate and example project for all Seng projects",
+  "description": "Interactive sequencer, plays realtime controllable songs",
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
