@@ -151,6 +151,7 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   public dispose() {
+    // todo
     super.dispose();
   }
 }
