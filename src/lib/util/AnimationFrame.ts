@@ -18,9 +18,8 @@ export default class AnimationFrame {
   }
 
   update = () => {
-    this.callback();
-
     if (!this.stopped) {
+      this.callback();
       requestAnimationFrame(this.update);
     }
   };
