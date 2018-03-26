@@ -16,6 +16,7 @@ export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManage
     }
   }
 }
+
 // export function logSong(song: Song): void {
 //   console.log(song);
 //   song.timedSequences.forEach(timedSequence => {

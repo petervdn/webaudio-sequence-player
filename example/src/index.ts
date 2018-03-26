@@ -1,7 +1,8 @@
 import Song from '../../src/lib/Song';
 import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
-import SequencePlayer, { SequencePlayerEvent } from '../../src/lib/SequencePlayer';
+import SequencePlayer from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
+import { SequencePlayerEvent } from '../../src/lib/data/event';
 
 
 const showPlayerState = state => {
@@ -9,7 +10,6 @@ const showPlayerState = state => {
 };
 
 const context = new AudioContext();
-
 const player = new SequencePlayer(context, 'samples/', 'wav');
 player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth']);
 
@@ -20,14 +20,6 @@ player.addEventListener('state-change', (event: SequencePlayerEvent) => {
 });
 
 const data = {
-  // '0.0.0': ['kick', 1, 'clap', 1],
-  // '0.1.0': ['kick', 1, 'clap', 1],
-  // '0.2.0': ['kick', 1, 'clap', 1],
-  // '0.3.0': ['kick', 1, 'clap', 1],
-  // '2.0.0': ['kick', 1, 'clap', 1],
-  // '2.1.0': ['kick', 1, 'clap', 1],
-  // '2.2.0': ['kick', 1, 'clap', 1],
-  // '2.3.0': ['kick', 1, 'clap', 1],
   '0.0.0': ['kick', 1, 'synth', 1],
   '0.1.0': ['kick', 1, 'clap', 1],
   '0.2.0': ['kick', 1],
@@ -64,19 +56,3 @@ document.querySelector('#stop').addEventListener('click', () => {
   player.stop();
   console.log(MusicTime.TO_TIME_CACHE);
 });
-/*
-import { loadAudioBuffer, loadSamples, createSamples, createSample } from 'webaudio-sample-loader';
-import { ISequence } from "../../src/lib/sequence";
-
-const context = new AudioContext();
-const samples = createSamples(['kick', 'clap', 'orbit']);
-
-samples[1].path = 'other-path/';
-samples[2].extension = 'mp3';
-
-loadSamples(context, samples, 'wav', 'samples/', (value) => {
-  console.log('progress', value);
-}).then(result => {
-  console.log(result);
-});
-*/

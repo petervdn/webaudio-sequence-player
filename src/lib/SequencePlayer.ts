@@ -3,10 +3,11 @@ import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
-import AbstractEvent from 'seng-event/lib/AbstractEvent';
 import { IScheduleEventData, IScheduleTiming } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
+import { SequencePlayerState } from './data/enum';
+import { SequencePlayerEvent } from './data/event';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
@@ -157,34 +158,3 @@ export default class SequencePlayer extends EventDispatcher {
 // export class SequencePlayerEvent extends AbstractEvent {
 //   public static STATE_CHANGE:string = EVENT_TYPE_PLACEHOLDER;
 // }
-
-export class SequencePlayerEvent extends AbstractEvent {
-  public data: any;
-
-  constructor(
-    type: string,
-    data?: any,
-    bubbles: boolean = false,
-    cancelable: boolean = false,
-    setTimeStamp: boolean = false,
-  ) {
-    super(type, bubbles, cancelable, setTimeStamp);
-    this.data = data;
-  }
-
-  public clone(): SequencePlayerEvent {
-    return new SequencePlayerEvent(
-      this.type,
-      this.data,
-      this.bubbles,
-      this.cancelable,
-      this.timeStamp !== 0,
-    );
-  }
-}
-
-export enum SequencePlayerState {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  PLAYING = 'playing',
-}

@@ -1,4 +1,10 @@
 export enum SequenceEventType {
-  SAMPLE = 'play-sample',
+  SAMPLE = 'sample',
   NOTE = 'note',
+}
+
+export enum SequencePlayerState {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  PLAYING = 'playing',
 }

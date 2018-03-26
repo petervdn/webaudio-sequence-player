@@ -20,7 +20,13 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
 
     for (let i = 0; i < dataList.length; i += 2) {
       const sampleName = dataList[i]; // todo check and test type and correct values of these two
-      const volume = dataList[i + 1];
+      const volume = dataList[i + 1] || 1;
+
+      // volume may be left out, but can only happen when assigning one sample: {'0.0.0': ['sample1']}
+      if (volume !== void 0 && typeof volume !== 'number') {
+        // volume is set, but is not a number. catches this case: '0.0.0': ['sample1', 'sample2']
+        throw new TypeError(`Expecting a volume value but found a ${typeof volume}`);
+      }
 
       const sampleEvent: ISampleEvent = {
         sampleName,
