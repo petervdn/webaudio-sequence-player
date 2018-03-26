@@ -41,4 +41,16 @@ describe('Song', () => {
     song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
     expect(song.timedSequences.length).to.equal(2);
   });
+  it('should collect uniquely used samples', () => {
+    const song = new Song(120);
+    const seq1 = createSampleSequence('seq', {
+      '0.0.0': ['kick', 1, 'snare', 1],
+      '1.0.0': ['kick', 1, 'clap', 1]
+    });
+
+    song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
+    song.addSequenceAtTime(seq1, new MusicTime(1,0,0));
+    expect(song.getUsedSampleNames()).to.deep.equal(['kick', 'snare', 'clap']);
+  });
+
 });

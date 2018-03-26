@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { createSampleSequence } from '../src/lib/util/sequenceUtils';
 import {SequenceEventType} from "../src/lib/data/enum";
+import { ISampleEvent } from 'src/lib/data/interface';
 
 describe('sequenceUtils', () => {
   it('should create a sampleSequence', () => {
@@ -48,5 +49,18 @@ describe('sequenceUtils', () => {
         },
       ],
     });
+  });
+
+  it('should default volume to 1 (when defining one sample for a time)', () => {
+    const data = { '0.0.0': ['kick'] };
+    const seq = createSampleSequence('seq1', data);
+    expect((<ISampleEvent>seq.events[0]).volume).to.equal(1);
+  });
+
+  it('should throw an error when ignoring volume wigth multiple samples', () => {
+    const data = { '0.0.0': ['kick', 'snare'] };
+    expect(() => {
+      createSampleSequence('seq1', data);
+    }).to.throw('Expecting a volume value but found a string');
   });
 });
