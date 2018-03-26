@@ -1,4 +1,4 @@
-import { clearAllLastScheduleData, getEventScheduleList } from './util/schedulerUtils';
+import { clearAllLastScheduleData, getEventScheduleList } from './util/scheduleUtils';
 import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
@@ -104,7 +104,7 @@ export default class SequencePlayer extends EventDispatcher {
     });
   }
 
-  onScheduleInterval = () => {
+  private onScheduleInterval = () => {
     this.scheduleAtTime(this.getSongPlayTime());
   };
 
