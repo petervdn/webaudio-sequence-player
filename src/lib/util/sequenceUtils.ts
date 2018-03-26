@@ -15,6 +15,12 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
     events: [],
   };
 
+  const timeKeys = Object.keys(events);
+
+  if (timeKeys.length === 0) {
+    throw new Error("Can't create a sequence without events");
+  }
+
   Object.keys(events).forEach(musicTimeString => {
     const dataList: any[] = events[musicTimeString];
 
@@ -60,4 +66,18 @@ function createBaseSequenceEventFromTimeString(
     relativeStart: musicTime,
     lastScheduledData: {},
   };
+}
+
+export function getLatestEventInSequence(sequence: ISequence): ISequenceEvent {
+  let latestTime = 0;
+  let latestEvent: ISequenceEvent;
+  sequence.events.forEach(event => {
+    const eventStart = event.relativeStart.toSixteenths();
+    if (eventStart > latestTime) {
+      latestEvent = event;
+      latestTime = eventStart;
+    }
+  });
+
+  return latestEvent;
 }
