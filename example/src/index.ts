@@ -3,10 +3,14 @@ import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
 import SequencePlayer from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
+import { SequencePlayerState } from '../../src/lib/data/enum';
+import AnimationFrame from '../../src/lib/util/AnimationFrame';
 
+const stateElement = (<HTMLElement>document.querySelector('#state'));
+const timeElement = (<HTMLElement>document.querySelector('#time'));
 
 const showPlayerState = state => {
-  (<HTMLElement>document.querySelector('#state')).innerText = state;
+  stateElement.innerText = state;
 };
 
 const context = new AudioContext();
@@ -18,6 +22,13 @@ showPlayerState(player.getState());
 player.addEventListener('state-change', (event: SequencePlayerEvent) => {
   showPlayerState(event.data);
 });
+
+
+const animationFrame = new AnimationFrame(() => {
+  const musicTime = player.timeData.playMusicTime;
+  timeElement.innerText = `${musicTime.bars}.${musicTime.beats}.${musicTime.sixteenths}`;
+});
+animationFrame.start();
 
 const data = {
   '0.0.0': ['kick', 1, 'synth', 1],

@@ -3,21 +3,26 @@ import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
-import { IScheduleEventData, IScheduleTiming } from './data/interface';
+import { IScheduleEventData, IScheduleTiming, ISequencePlayerTimeData } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
 import { SequencePlayerState } from './data/enum';
 import { SequencePlayerEvent } from './data/event';
+import AnimationFrame from './util/AnimationFrame';
+import { initTimeData } from './util/sequencePlayerUtils';
+import MusicTime from 'musictime';
 
 export default class SequencePlayer extends EventDispatcher {
   public sampleManager: SampleManager;
   public samplePlayer: SamplePlayer;
+  public timeData: ISequencePlayerTimeData = initTimeData();
 
   private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
   private playStartTime: number;
   private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
   private scheduleInterval: Interval;
+  private timeDataUpdater: AnimationFrame;
   private song: Song;
 
   constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
@@ -30,6 +35,7 @@ export default class SequencePlayer extends EventDispatcher {
 
     // create interval to start when scheduling
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleTime.interval);
+    this.timeDataUpdater = new AnimationFrame(this.onTimeDataUpdate);
   }
 
   /**
@@ -72,10 +78,9 @@ export default class SequencePlayer extends EventDispatcher {
   /**
    * Play a song at the given bpm.
    * @param {Song} song
-   * @param {number} bpm
-   * @param {PlayMode} playMode
+   * @param {boolean} updateTimeData
    */
-  public play(song: Song): void {
+  public play(song: Song, updateTimeData = true): void {
     // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
@@ -96,6 +101,11 @@ export default class SequencePlayer extends EventDispatcher {
       // store start time, so we know where we are in the song
       this.playStartTime = this.context.currentTime;
 
+      // start timedata updater
+      if (updateTimeData) {
+        this.timeDataUpdater.start();
+      }
+
       // do one schedule call for time=0
       this.scheduleAtTime(0);
 
@@ -106,6 +116,14 @@ export default class SequencePlayer extends EventDispatcher {
 
   private onScheduleInterval = () => {
     this.scheduleAtTime(this.getSongPlayTime());
+  };
+
+  private onTimeDataUpdate = () => {
+    const songPlayTime = this.getSongPlayTime();
+    this.timeData = {
+      playTime: songPlayTime,
+      playMusicTime: MusicTime.fromTime(songPlayTime, this.song.bpm),
+    };
   };
 
   /**
@@ -130,6 +148,8 @@ export default class SequencePlayer extends EventDispatcher {
     }
     this.scheduleInterval.stop();
     this.samplePlayer.stopAll();
+    this.timeDataUpdater.stop();
+    this.timeData = initTimeData();
     clearAllLastScheduleData(this.song);
     this.setState(SequencePlayerState.IDLE);
   }

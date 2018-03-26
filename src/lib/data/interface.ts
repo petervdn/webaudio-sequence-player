@@ -7,6 +7,11 @@ export interface IScheduleTiming {
   lookAhead: number;
 }
 
+export interface ISequencePlayerTimeData {
+  playTime: number;
+  playMusicTime: MusicTime;
+}
+
 export interface ISequence {
   id: string;
   events: ISequenceEvent[];

@@ -57,7 +57,7 @@ describe('sequenceUtils', () => {
     expect((<ISampleEvent>seq.events[0]).volume).to.equal(1);
   });
 
-  it('should throw an error when ignoring volume wigth multiple samples', () => {
+  it('should throw an error when ignoring volume with multiple samples', () => {
     const data = { '0.0.0': ['kick', 'snare'] };
     expect(() => {
       createSampleSequence('seq1', data);
