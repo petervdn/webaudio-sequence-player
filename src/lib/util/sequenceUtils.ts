@@ -42,7 +42,7 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
 /**
  * Creates an ISequenceEvent object with properties that all extended types share.
  * @param {SequenceEventType} type
- * @param {string} musicTimeString
+ * @param {MusicTime} musicTime
  * @returns {ISequenceEvent}
  */
 function createBaseSequenceEventFromTimeString(
