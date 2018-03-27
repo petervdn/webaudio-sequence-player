@@ -1,7 +1,8 @@
 import Song from '../Song';
 import { ISampleEvent, ISequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
-import SampleManager from 'sample-manager/lib/SampleManager';
+import SampleManager from 'sample-manager';
+import MusicTime from 'musictime';
 
 export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManager): void {
   for (let s = 0; s < song.sequences.length; s++) {
@@ -15,6 +16,24 @@ export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManage
       }
     }
   }
+}
+
+// todo pass a reference time (so we dont have to check everything again)
+// todo this whole thing can probably be optimized a lot
+export function getSongEndTime(song: Song): MusicTime {
+  let latestTime = new MusicTime(0, 0, 0);
+  song.timedSequences.forEach(ts => {
+    ts.sequence.events.forEach(e => {
+      // todo this should also take in consideration the length of the sample (or whatever other event types there will be)
+      const eventTime = ts.absoluteStart.add(e.relativeStart);
+      if (eventTime.toSixteenths() > latestTime.toSixteenths()) {
+        latestTime = eventTime;
+      }
+    });
+  });
+
+  // ceil to next bar
+  return new MusicTime(latestTime.bars + 1, 0, 0);
 }
 
 // export function logSong(song: Song): void {

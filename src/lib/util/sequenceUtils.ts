@@ -48,7 +48,14 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
     }
   });
 
+  orderEventsInSequence(sequence);
   return sequence;
+}
+
+function orderEventsInSequence(sequence: ISequence): void {
+  sequence.events.sort((a, b) => {
+    return a.relativeStart.toSixteenths() - b.relativeStart.toSixteenths();
+  });
 }
 
 /**

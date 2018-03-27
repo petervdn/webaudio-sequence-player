@@ -7,6 +7,7 @@ import {
 } from './data/interface';
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
+import { getSongEndTime } from './util/songUtils';
 
 export default class Song {
   // todo make more stuff private?
@@ -17,6 +18,7 @@ export default class Song {
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
   private sections: ISection[] = [];
+  private songEndTime: MusicTime = new MusicTime(0, 0, 0);
 
   constructor(bpm: number) {
     // todo force bpm within a range
@@ -58,6 +60,8 @@ export default class Song {
         this.usedSampleNames.push((<ISampleEvent>event).sampleName);
       }
     });
+
+    this.songEndTime = getSongEndTime(this);
   }
 
   public addSection(start: MusicTime, end: MusicTime): void {
@@ -73,6 +77,10 @@ export default class Song {
 
   public getUsedSampleNames(): string[] {
     return this.usedSampleNames;
+  }
+
+  public getSongEndTime(): MusicTime {
+    return this.songEndTime;
   }
 
   /**

@@ -39,11 +39,12 @@ export function createSequenceElement(
       y: (index % eventVerticalSpread) * eventHeight,
     };
     const size = {
-      width: eventWidth,
-      height: eventHeight,
+      width: eventWidth - 1,
+      height: eventHeight - 1,
     };
 
-    const eventEl = createRectElement(pos, size, 'rgba(255,255,255,0.5)');
+    const eventEl = createRectElement(pos, size, 'rgba(255,255,255,1)');
+    eventEl.innerText = (<ISampleEvent>event).sampleName[0];
     eventEl.title = (<ISampleEvent>event).sampleName;
     eventWrap.appendChild(eventEl);
   });
@@ -143,4 +144,18 @@ export function drawTimeline(
 
 export function musicTimeToPixels(musicTime: MusicTime, bpm, pixelsPerSecond): number {
   return musicTime.toTime(bpm) * pixelsPerSecond;
+}
+
+export function createVerticalLine(height: number, pos: IPoint, color: string): HTMLElement {
+  const div = document.createElement('div');
+
+  div.style.width = `${1}px`;
+  div.style.height = `${height}px`;
+  div.style.left = `${pos.x}px`;
+  div.style.top = `${pos.y}px`;
+  div.style.position = 'absolute';
+  div.style.zIndex = '999';
+  div.style.backgroundColor = color;
+
+  return div;
 }
