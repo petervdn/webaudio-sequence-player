@@ -6,14 +6,17 @@ import AnimationFrame from './util/AnimationFrame';
 import SequencePlayer from './SequencePlayer';
 
 export default class Visualizer {
+  private pixelsPerSecond = 30;
+  private sequenceHeight = 50;
+  private colors = ['#b3d9ff', '#66b3ff'];
+  private seqsOffset: IPoint = { x: 50, y: 50 };
+  private seqIdHeight = 15;
+  private seqSpacing: IPoint = { x: 2, y: 2 };
+
   private context: CanvasRenderingContext2D;
   private player: SequencePlayer;
   private size: ISize;
   private song: Song;
-  private pixelPerSixteenth = 5;
-  private sequenceHeight = 50;
-  private colors = ['#b3d9ff', '#66b3ff'];
-  private seqsOffset: IPoint = { x: 50, y: 50 };
   private render: AnimationFrame = new AnimationFrame(this.draw.bind(this));
 
   constructor(canvas: HTMLCanvasElement, player: SequencePlayer) {
@@ -36,16 +39,20 @@ export default class Visualizer {
 
     this.drawSequences();
     this.drawPlayhead();
-    this.drawSeqIds();
   }
 
   private drawPlayhead(): void {
-    const time = this.player.timeData.playMusicTime;
-    const x = this.seqsOffset.x + time.toSixteenths() * this.pixelPerSixteenth;
+    const x = this.seqsOffset.x + this.player.timeData.playTime * this.pixelsPerSecond;
+
     this.context.beginPath();
     this.context.moveTo(x, this.seqsOffset.y);
-    this.context.lineTo(x, this.seqsOffset.y + this.song.sequences.length * this.sequenceHeight);
-    this.context.strokeStyle = 'rgba(255,255,255,0.5';
+    this.context.lineTo(
+      x,
+      this.seqsOffset.y +
+        this.song.sequences.length * (this.sequenceHeight + this.seqSpacing.y) -
+        this.seqSpacing.y,
+    );
+    this.context.strokeStyle = 'rgba(255,0,0,1)';
     this.context.stroke();
     this.context.closePath();
   }
@@ -54,42 +61,30 @@ export default class Visualizer {
     this.song.timedSequences.forEach(timedSequence => {
       const sequenceIndex = this.song.sequences.indexOf(timedSequence.sequence);
 
-      // fill seq rect
+      // seq
       const x = this.seqsOffset.x + this.musicTimeToPixels(timedSequence.absoluteStart);
-      const y = this.seqsOffset.y + sequenceIndex * this.sequenceHeight;
-      const width = this.getSequenceWidth(timedSequence.sequence);
+      const y = this.seqsOffset.y + sequenceIndex * (this.sequenceHeight + this.seqSpacing.y);
+      const width = this.getSequenceWidth(timedSequence.sequence) - this.seqSpacing.x;
       const height = this.sequenceHeight;
 
+      // fill seq rect
       this.context.fillStyle = this.colors[sequenceIndex % 2];
       this.context.fillRect(x, y, width, height);
 
-      // vertical line to the left
-      this.context.lineWidth = 2;
-      this.context.beginPath();
-      this.context.moveTo(x, y);
-      this.context.lineTo(x, y + height);
-      this.context.strokeStyle = 'black';
-      this.context.stroke();
-      this.context.closePath();
-    });
-  }
+      // seq id bg
+      this.context.fillStyle = 'black';
+      this.context.fillRect(x, y, width, this.seqIdHeight);
 
-  private drawSeqIds(): void {
-    this.song.sequences.forEach((seq, index) => {
-      // id
-      this.context.font = '16px monospace';
-      this.context.textAlign = 'right';
+      // seq id
+      this.context.font = '10px monospace';
       this.context.fillStyle = 'white';
-      this.context.fillText(
-        seq.id,
-        this.seqsOffset.x - 10,
-        this.seqsOffset.y + index * this.sequenceHeight + 20,
-      );
+      this.context.fillText(timedSequence.sequence.id, x + 4, y + 11);
     });
   }
 
   private musicTimeToPixels(musicTime: MusicTime): number {
-    return musicTime.toSixteenths() * this.pixelPerSixteenth;
+    // return musicTime.toSixteenths() * this.pixelPerSixteenth;
+    return musicTime.toTime(this.song.bpm) * this.pixelsPerSecond;
   }
 
   private getSequenceWidth(sequence: ISequence): number {
