@@ -115,6 +115,10 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   private onScheduleInterval = () => {
+    // todo for now this is ok, but with loops songs can not have an and-time
+    if (this.getSongPlayTime() > this.song.getSongEndTime().toTime(this.song.bpm)) {
+      this.stop();
+    }
     this.scheduleAtTime(this.getSongPlayTime());
   };
 
