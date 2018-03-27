@@ -3,9 +3,10 @@ import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
 import SequencePlayer from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
-import { SequencePlayerState } from '../../src/lib/data/enum';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import Visualizer from "../../src/lib/Visualizer";
+import Editor from '../../src/lib/Editor';
+
+
 
 const stateElement = (<HTMLElement>document.querySelector('#state'));
 const timeElement = (<HTMLElement>document.querySelector('#time'));
@@ -97,5 +98,6 @@ document.querySelector('#stop').addEventListener('click', () => {
   console.log(MusicTime.TO_TIME_CACHE);
 });
 
-const vis = new Visualizer(document.querySelector('#canvas'), player);
-vis.setSong(song);
+const editor = new Editor(document.querySelector('#editor'), player);
+editor.setSong(song);
+
