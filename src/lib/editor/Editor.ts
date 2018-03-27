@@ -7,6 +7,7 @@ import {
   drawTimeline,
   createTimelineCanvas,
   createSection,
+  musicTimeToPixels,
 } from '../util/editorUtils';
 import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
@@ -14,10 +15,12 @@ import { SequencePlayerState } from '../data/enum';
 import SequencePlayer from '../SequencePlayer';
 
 export default class Editor {
-  private pixelsPerSecond = 30;
+  private pixelsPerSecond = 50;
+  private defaultEventDuration = MusicTime.fromString('0.0.1');
   private sequenceHeight = 50;
   private colors = ['#b3d9ff', '#66b3ff'];
   private seqsOffset: IPoint = { x: 30, y: 70 };
+  private seqLabelheight = 15;
   private seqSpacing: IPoint = { x: 2, y: 2 };
   private timelineHeight = 30;
   private timelineSpacing = 20;
@@ -89,6 +92,10 @@ export default class Editor {
           height,
         },
         this.colors[sequenceIndex % 2],
+        this.seqLabelheight,
+        this.pixelsPerSecond,
+        this.song.bpm,
+        this.musicTimeToPixels(this.defaultEventDuration),
       );
 
       this.element.appendChild(el);
@@ -147,7 +154,7 @@ export default class Editor {
   }
 
   private musicTimeToPixels(musicTime: MusicTime): number {
-    return musicTime.toTime(this.song.bpm) * this.pixelsPerSecond;
+    return musicTimeToPixels(musicTime, this.song.bpm, this.pixelsPerSecond);
   }
 }
 

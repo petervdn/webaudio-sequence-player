@@ -1,4 +1,4 @@
-import { ISequence, ISection } from '../../../src/lib/data/interface';
+import { ISequence, ISection, ISampleEvent } from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
 import { IPoint, ISize } from '../../../src/lib/editor/Editor';
 
@@ -7,17 +7,46 @@ export function createSequenceElement(
   position: IPoint,
   size: ISize,
   color: string,
+  labelHeight: number,
+  pixelsPerSecond: number,
+  bpm: number,
+  eventWidth: number,
+  eventVerticalSpread = 3,
 ): HTMLElement {
   const wrapper = createRectElement(position, size, color);
 
   const label = document.createElement('p');
   label.innerText = sequence.id;
   label.style.margin = '0px';
-  label.style.padding = '2px';
+  label.style.padding = '1px 4px';
+  label.style.height = `${labelHeight}px`;
   label.style.backgroundColor = 'rgba(0,0,0,0.4)';
   label.style.color = 'white';
+  label.style.boxSizing = 'border-box';
   label.style.fontSize = '11px';
   wrapper.appendChild(label);
+
+  const eventWrapHeight = size.height - labelHeight;
+  const eventWrap = document.createElement('div');
+  eventWrap.style.height = `${eventWrapHeight}px`;
+  eventWrap.style.position = 'relative';
+  wrapper.appendChild(eventWrap);
+
+  const eventHeight = eventWrapHeight / eventVerticalSpread;
+  sequence.events.forEach((event, index) => {
+    const pos = {
+      x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
+      y: (index % eventVerticalSpread) * eventHeight,
+    };
+    const size = {
+      width: eventWidth,
+      height: eventHeight,
+    };
+
+    const eventEl = createRectElement(pos, size, 'rgba(255,255,255,0.5)');
+    eventEl.title = (<ISampleEvent>event).sampleName;
+    eventWrap.appendChild(eventEl);
+  });
 
   return wrapper;
 }
@@ -110,4 +139,8 @@ export function drawTimeline(
     xPosition += beatWidth;
     index += 1;
   }
+}
+
+export function musicTimeToPixels(musicTime: MusicTime, bpm, pixelsPerSecond): number {
+  return musicTime.toTime(bpm) * pixelsPerSecond;
 }
