@@ -4,8 +4,7 @@ import SequencePlayer from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import Editor from '../../src/lib/Editor';
-
+import Editor from '../../src/lib/editor/Editor';
 
 
 const stateElement = (<HTMLElement>document.querySelector('#state'));

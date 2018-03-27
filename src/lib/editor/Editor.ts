@@ -1,12 +1,12 @@
-import Song from './Song';
-import { getLatestEventInSequence } from './util/sequenceUtils';
-import { ISequence } from './data/interface';
+import Song from '../Song';
+import { getLatestEventInSequence } from '../util/sequenceUtils';
+import { ISequence } from '../data/interface';
 import MusicTime from 'musictime';
-import { createSequenceElement } from './util/editorUtils';
-import { SequencePlayerEvent } from './data/event';
-import AnimationFrame from './util/AnimationFrame';
-import { SequencePlayerState } from './data/enum';
-import SequencePlayer from './SequencePlayer';
+import { createSequenceElement, drawTimeline, createTimelineCanvas } from '../util/editorUtils';
+import { SequencePlayerEvent } from '../data/event';
+import AnimationFrame from '../util/AnimationFrame';
+import { SequencePlayerState } from '../data/enum';
+import SequencePlayer from '../SequencePlayer';
 
 export default class Editor {
   private pixelsPerSecond = 30;
@@ -15,8 +15,10 @@ export default class Editor {
   private seqsOffset: IPoint = { x: 50, y: 50 };
   private seqIdHeight = 15;
   private seqSpacing: IPoint = { x: 2, y: 2 };
+  private timelineHeight = 30;
 
   private element: HTMLElement;
+  private timeLineContext: CanvasRenderingContext2D;
   private song: Song;
   private size: ISize;
   private player: SequencePlayer;
@@ -50,6 +52,12 @@ export default class Editor {
       width: parseInt(element.style.width, 10),
       height: parseInt(element.style.height, 10),
     };
+
+    this.timeLineContext = createTimelineCanvas(
+      element,
+      this.timelineHeight,
+      this.seqsOffset.y - this.timelineHeight,
+    );
   }
 
   private onUpdate(): void {
@@ -60,6 +68,7 @@ export default class Editor {
     this.song = song;
     this.drawSong();
     this.setPlayheadHeight();
+    drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song.bpm);
   }
 
   private drawSong(): void {
@@ -127,12 +136,12 @@ export default class Editor {
   }
 }
 
-interface ISize {
+export interface ISize {
   width: number;
   height: number;
 }
 
-interface IPoint {
+export interface IPoint {
   x: number;
   y: number;
 }
