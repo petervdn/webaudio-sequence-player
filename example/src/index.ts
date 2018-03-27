@@ -6,9 +6,8 @@ import { SequencePlayerEvent } from '../../src/lib/data/event';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
 import Editor from '../../src/lib/editor/Editor';
 
-
-const stateElement = (<HTMLElement>document.querySelector('#state'));
-const timeElement = (<HTMLElement>document.querySelector('#time'));
+const stateElement = <HTMLElement>document.querySelector('#state');
+const timeElement = <HTMLElement>document.querySelector('#time');
 
 const showPlayerState = state => {
   stateElement.innerText = state;
@@ -23,7 +22,6 @@ showPlayerState(player.getState());
 player.addEventListener('state-change', (event: SequencePlayerEvent) => {
   showPlayerState(event.data);
 });
-
 
 const animationFrame = new AnimationFrame(() => {
   const musicTime = player.timeData.playMusicTime;
@@ -53,14 +51,14 @@ const data2 = {
   '0.2.2': ['snare'],
   '1.3.0': ['snare'],
   '2.2.2': ['snare'],
-  '3.0.0': ['snare', 1/8],
-  '3.0.2': ['snare', 2/8],
-  '3.1.0': ['snare', 3/8],
-  '3.1.2': ['snare', 4/8],
-  '3.2.0': ['snare', 5/8],
-  '3.2.2': ['snare', 6/8],
-  '3.3.0': ['snare', 7/8],
-  '3.3.2': ['snare', 8/8],
+  '3.0.0': ['snare', 1 / 8],
+  '3.0.2': ['snare', 2 / 8],
+  '3.1.0': ['snare', 3 / 8],
+  '3.1.2': ['snare', 4 / 8],
+  '3.2.0': ['snare', 5 / 8],
+  '3.2.2': ['snare', 6 / 8],
+  '3.3.0': ['snare', 7 / 8],
+  '3.3.2': ['snare', 8 / 8],
 };
 
 const data3 = {
@@ -98,5 +96,5 @@ document.querySelector('#stop').addEventListener('click', () => {
 });
 
 const editor = new Editor(document.querySelector('#editor'), player);
+song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
 editor.setSong(song);
-

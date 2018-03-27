@@ -1,22 +1,14 @@
-import { ISequence } from '../../../src/lib/data/interface';
-import { IPoint } from '../../lib/editor/Editor';
-import MusicTime from 'musictime/lib/MusicTime';
+import { ISequence, ISection } from '../../../src/lib/data/interface';
+import MusicTime from 'musictime';
+import { IPoint, ISize } from '../../../src/lib/editor/Editor';
 
 export function createSequenceElement(
   sequence: ISequence,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  position: IPoint,
+  size: ISize,
   color: string,
 ): HTMLElement {
-  const wrapper = document.createElement('div');
-  wrapper.style.width = `${width}px`;
-  wrapper.style.height = `${height}px`;
-  wrapper.style.left = `${x}px`;
-  wrapper.style.top = `${y}px`;
-  wrapper.style.position = `absolute`;
-  wrapper.style.backgroundColor = color;
+  const wrapper = createRectElement(position, size, color);
 
   const label = document.createElement('p');
   label.innerText = sequence.id;
@@ -28,6 +20,33 @@ export function createSequenceElement(
   wrapper.appendChild(label);
 
   return wrapper;
+}
+
+export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
+  const wrapper = createRectElement(position, size, '#00cc00');
+
+  // const label = document.createElement('p');
+  // label.innerText = 'section';
+  // label.style.margin = '0px';
+  // label.style.padding = '2px';
+  // label.style.backgroundColor = 'rgba(0,0,0,0.4)';
+  // label.style.color = 'white';
+  // label.style.fontSize = '11px';
+  // wrapper.appendChild(label);
+
+  return wrapper;
+}
+
+export function createRectElement(position: IPoint, size: ISize, color: string): HTMLElement {
+  const el = document.createElement('div');
+  el.style.width = `${size.width}px`;
+  el.style.height = `${size.height}px`;
+  el.style.left = `${position.x}px`;
+  el.style.top = `${position.y}px`;
+  el.style.position = `absolute`;
+  el.style.backgroundColor = color;
+
+  return el;
 }
 
 export function createTimelineCanvas(

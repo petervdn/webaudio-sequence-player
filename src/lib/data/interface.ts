@@ -49,3 +49,8 @@ export interface IScheduleEventData {
   event: ISequenceEvent;
   absoluteSeconds: number;
 }
+
+export interface ISection {
+  start: MusicTime;
+  end: MusicTime;
+}

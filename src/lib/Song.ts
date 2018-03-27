@@ -1,4 +1,10 @@
-import { ISampleEvent, ISequence, ISequenceEvent, ITimedSequence } from './data/interface';
+import {
+  ISampleEvent,
+  ISequence,
+  ISequenceEvent,
+  ITimedSequence,
+  ISection,
+} from './data/interface';
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 
@@ -10,7 +16,7 @@ export default class Song {
   public sequences: ISequence[] = []; // unique sequences
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
-  private duration = -1;
+  private sections: ISection[] = [];
 
   constructor(bpm: number) {
     // todo force bpm within a range
@@ -52,6 +58,17 @@ export default class Song {
         this.usedSampleNames.push((<ISampleEvent>event).sampleName);
       }
     });
+  }
+
+  public addSection(start: MusicTime, end: MusicTime): void {
+    this.sections.push({
+      start,
+      end,
+    });
+  }
+
+  public getSections(): ISection[] {
+    return this.sections;
   }
 
   public getUsedSampleNames(): string[] {

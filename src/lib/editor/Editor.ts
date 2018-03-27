@@ -2,7 +2,12 @@ import Song from '../Song';
 import { getLatestEventInSequence } from '../util/sequenceUtils';
 import { ISequence } from '../data/interface';
 import MusicTime from 'musictime';
-import { createSequenceElement, drawTimeline, createTimelineCanvas } from '../util/editorUtils';
+import {
+  createSequenceElement,
+  drawTimeline,
+  createTimelineCanvas,
+  createSection,
+} from '../util/editorUtils';
 import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
 import { SequencePlayerState } from '../data/enum';
@@ -12,15 +17,14 @@ export default class Editor {
   private pixelsPerSecond = 30;
   private sequenceHeight = 50;
   private colors = ['#b3d9ff', '#66b3ff'];
-  private seqsOffset: IPoint = { x: 50, y: 50 };
-  private seqIdHeight = 15;
+  private seqsOffset: IPoint = { x: 30, y: 70 };
   private seqSpacing: IPoint = { x: 2, y: 2 };
   private timelineHeight = 30;
+  private timelineSpacing = 20;
 
   private element: HTMLElement;
   private timeLineContext: CanvasRenderingContext2D;
   private song: Song;
-  private size: ISize;
   private player: SequencePlayer;
   private playHead: HTMLElement;
   private updateFrame: AnimationFrame = new AnimationFrame(this.onUpdate.bind(this));
@@ -48,15 +52,10 @@ export default class Editor {
 
     this.playHead = this.createPlayhead();
 
-    this.size = {
-      width: parseInt(element.style.width, 10),
-      height: parseInt(element.style.height, 10),
-    };
-
     this.timeLineContext = createTimelineCanvas(
       element,
       this.timelineHeight,
-      this.seqsOffset.y - this.timelineHeight,
+      this.seqsOffset.y - this.timelineHeight - this.timelineSpacing,
     );
   }
 
@@ -72,6 +71,7 @@ export default class Editor {
   }
 
   private drawSong(): void {
+    // draw sequences
     this.song.timedSequences.forEach(timedSequence => {
       const sequenceIndex = this.song.sequences.indexOf(timedSequence.sequence);
 
@@ -83,14 +83,30 @@ export default class Editor {
 
       const el = createSequenceElement(
         timedSequence.sequence,
-        x,
-        y,
-        width,
-        height,
+        { x, y },
+        {
+          width,
+          height,
+        },
         this.colors[sequenceIndex % 2],
       );
 
       this.element.appendChild(el);
+    });
+
+    // draw sections
+    const sections = this.song.getSections();
+    sections.forEach(section => {
+      this.element.appendChild(
+        createSection(
+          section,
+          {
+            x: this.seqsOffset.x + this.musicTimeToPixels(section.start),
+            y: this.seqsOffset.y - 20,
+          },
+          { width: this.musicTimeToPixels(section.end.subtract(section.start)), height: 10 },
+        ),
+      );
     });
   }
 
@@ -131,7 +147,6 @@ export default class Editor {
   }
 
   private musicTimeToPixels(musicTime: MusicTime): number {
-    // return musicTime.toSixteenths() * this.pixelPerSixteenth;
     return musicTime.toTime(this.song.bpm) * this.pixelsPerSecond;
   }
 }
