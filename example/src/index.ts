@@ -96,9 +96,9 @@ document.querySelector('#stop').addEventListener('click', () => {
 });
 
 const editor = new Editor(document.querySelector('#editor'), player);
-song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-//song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-song.addSection(MusicTime.fromString('3.0.0'), MusicTime.fromString('5.0.0'));
+// song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
+// song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
+// song.addSection(MusicTime.fromString('3.0.0'), MusicTime.fromString('5.0.0'));
 // song.addSection(MusicTime.fromString('9.0.0'), MusicTime.fromString('11.0.0'));
 // song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('2.0.0'));
 // song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('5.0.0'));

@@ -13,6 +13,27 @@ export function getEventScheduleList(
   toTime: number,
   song: Song,
 ): IScheduleEventData[] {
+  if (song.getSections().length === 0) {
+    return getEventScheduleListForNonSectionSong(fromTime, toTime, song);
+  }
+
+  return getEventScheduleListFoSectionSong(fromTime, toTime, song);
+}
+
+function getEventScheduleListFoSectionSong(
+  fromTime: number,
+  toTime: number,
+  song: Song,
+): IScheduleEventData[] {
+  const results: IScheduleEventData[] = [];
+  return results;
+}
+
+function getEventScheduleListForNonSectionSong(
+  fromTime: number,
+  toTime: number,
+  song: Song,
+): IScheduleEventData[] {
   const results: IScheduleEventData[] = [];
   for (let ts = 0; ts < song.timedSequences.length; ts++) {
     // start time for this sequence
@@ -59,7 +80,7 @@ function eventHasBeenScheduled(
   event: ISequenceEvent,
   timedSequence: ITimedSequence,
 ): boolean {
-  if (song.loopPoints.length === 0) {
+  if (song.getSections().length === 0) {
     // when there are no loop-points, a scheduled event has a value 1 for the id of the timedSequence it is in
     return event.lastScheduledData[timedSequence.id] === 1;
   }
@@ -78,7 +99,7 @@ function markEventAsScheduled(
   event: ISequenceEvent,
   timedSequence: ITimedSequence,
 ): void {
-  if (song.loopPoints.length === 0) {
+  if (song.getSections().length === 0) {
     event.lastScheduledData[timedSequence.id] = 1;
   }
 

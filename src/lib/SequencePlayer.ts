@@ -3,7 +3,12 @@ import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
-import { IScheduleEventData, IScheduleTiming, ISequencePlayerTimeData } from './data/interface';
+import {
+  IScheduleEventData,
+  IScheduleTiming,
+  ISection,
+  ISequencePlayerTimeData,
+} from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
 import { SequencePlayerState } from './data/enum';
@@ -107,6 +112,8 @@ export default class SequencePlayer extends EventDispatcher {
       }
 
       // do one schedule call for time=0
+      // todo this can give an error, when the moment comes the sampleplayer needs to play
+      // that time is already 0.000001 s in the past.
       this.scheduleAtTime(0);
 
       // and more on interval
@@ -183,3 +190,8 @@ export default class SequencePlayer extends EventDispatcher {
 // export class SequencePlayerEvent extends AbstractEvent {
 //   public static STATE_CHANGE:string = EVENT_TYPE_PLACEHOLDER;
 // }
+
+interface ISectionPlayData {
+  section: ISection;
+  start: MusicTime;
+}

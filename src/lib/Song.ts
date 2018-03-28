@@ -14,7 +14,6 @@ export default class Song {
   // todo make more stuff private?
   public timedSequences: ITimedSequence[] = [];
   public bpm: number;
-  public loopPoints: any[] = [];
   public sequences: ISequence[] = []; // unique sequences
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
