@@ -1,0 +1,908 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>webaudio-sequence-player</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">webaudio-sequence-player</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> webaudio-sequence-player</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Enumerations</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-enum"><a href="enums/sequenceeventtype.html" class="tsd-kind-icon">Sequence<wbr>Event<wbr>Type</a></li>
+								<li class="tsd-kind-enum"><a href="enums/sequenceplayerstate.html" class="tsd-kind-icon">Sequence<wbr>Player<wbr>State</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/animationframe.html" class="tsd-kind-icon">Animation<wbr>Frame</a></li>
+								<li class="tsd-kind-class"><a href="classes/editor.html" class="tsd-kind-icon">Editor</a></li>
+								<li class="tsd-kind-class"><a href="classes/interval.html" class="tsd-kind-icon">Interval</a></li>
+								<li class="tsd-kind-class"><a href="classes/sampleplayer.html" class="tsd-kind-icon">Sample<wbr>Player</a></li>
+								<li class="tsd-kind-class"><a href="classes/sequenceplayer.html" class="tsd-kind-icon">Sequence<wbr>Player</a></li>
+								<li class="tsd-kind-class"><a href="classes/sequenceplayerevent.html" class="tsd-kind-icon">Sequence<wbr>Player<wbr>Event</a></li>
+								<li class="tsd-kind-class"><a href="classes/song.html" class="tsd-kind-icon">Song</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/icreatesampleevents.html" class="tsd-kind-icon">ICreate<wbr>Sample<wbr>Events</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ilastscheduleddata.html" class="tsd-kind-icon">ILast<wbr>Scheduled<wbr>Data</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iplaybufferresult.html" class="tsd-kind-icon">IPlay<wbr>Buffer<wbr>Result</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ipoint.html" class="tsd-kind-icon">IPoint</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isampleevent.html" class="tsd-kind-icon">ISample<wbr>Event</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ischeduleeventdata.html" class="tsd-kind-icon">ISchedule<wbr>Event<wbr>Data</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ischeduletiming.html" class="tsd-kind-icon">ISchedule<wbr>Timing</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isection.html" class="tsd-kind-icon">ISection</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isequence.html" class="tsd-kind-icon">ISequence</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isequenceevent.html" class="tsd-kind-icon">ISequence<wbr>Event</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isequenceplayertimedata.html" class="tsd-kind-icon">ISequence<wbr>Player<wbr>Time<wbr>Data</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/isize.html" class="tsd-kind-icon">ISize</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/itimedsequence.html" class="tsd-kind-icon">ITimed<wbr>Sequence</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="globals.html#clearalllastscheduledata" class="tsd-kind-icon">clear<wbr>All<wbr>Last<wbr>Schedule<wbr>Data</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#createbasesequenceeventfromtimestring" class="tsd-kind-icon">create<wbr>Base<wbr>Sequence<wbr>Event<wbr>From<wbr>Time<wbr>String</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createrectelement" class="tsd-kind-icon">create<wbr>Rect<wbr>Element</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createsamplesequence" class="tsd-kind-icon">create<wbr>Sample<wbr>Sequence</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createsection" class="tsd-kind-icon">create<wbr>Section</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createsequenceelement" class="tsd-kind-icon">create<wbr>Sequence<wbr>Element</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createtimelinecanvas" class="tsd-kind-icon">create<wbr>Timeline<wbr>Canvas</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#createverticalline" class="tsd-kind-icon">create<wbr>Vertical<wbr>Line</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#drawtimeline" class="tsd-kind-icon">draw<wbr>Timeline</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#eventhasbeenscheduled" class="tsd-kind-icon">event<wbr>Has<wbr>Been<wbr>Scheduled</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#geteventschedulelist" class="tsd-kind-icon">get<wbr>Event<wbr>Schedule<wbr>List</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#getlatesteventinsequence" class="tsd-kind-icon">get<wbr>Latest<wbr>Event<wbr>InSequence</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#getsongendtime" class="tsd-kind-icon">get<wbr>Song<wbr>End<wbr>Time</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#inittimedata" class="tsd-kind-icon">init<wbr>Time<wbr>Data</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#markeventasscheduled" class="tsd-kind-icon">mark<wbr>Event<wbr>AsScheduled</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#musictimetopixels" class="tsd-kind-icon">music<wbr>Time<wbr>ToPixels</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#ordereventsinsequence" class="tsd-kind-icon">order<wbr>Events<wbr>InSequence</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#playbuffer" class="tsd-kind-icon">play<wbr>Buffer</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#setsamplesonsampleevents" class="tsd-kind-icon">set<wbr>Samples<wbr>OnSample<wbr>Events</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="clearalllastscheduledata" class="tsd-anchor"></a>
+					<h3>clear<wbr>All<wbr>Last<wbr>Schedule<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>All<wbr>Last<wbr>Schedule<wbr>Data<span class="tsd-signature-symbol">(</span>song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/scheduleUtils.ts#L88">lib/util/scheduleUtils.ts:88</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="createbasesequenceeventfromtimestring" class="tsd-anchor"></a>
+					<h3>create<wbr>Base<wbr>Sequence<wbr>Event<wbr>From<wbr>Time<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Base<wbr>Sequence<wbr>Event<wbr>From<wbr>Time<wbr>String<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="enums/sequenceeventtype.html" class="tsd-signature-type">SequenceEventType</a>, musicTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MusicTime</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/sequenceUtils.ts#L67">lib/util/sequenceUtils.ts:67</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an ISequenceEvent object with properties that all extended types share.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <a href="enums/sequenceeventtype.html" class="tsd-signature-type">SequenceEventType</a></h5>
+								</li>
+								<li>
+									<h5>musicTime: <span class="tsd-signature-type">MusicTime</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createrectelement" class="tsd-anchor"></a>
+					<h3>create<wbr>Rect<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Rect<wbr>Element<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a>, size<span class="tsd-signature-symbol">: </span><a href="interfaces/isize.html" class="tsd-signature-type">ISize</a>, color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L70">lib/util/editorUtils.ts:70</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>position: <a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+								</li>
+								<li>
+									<h5>size: <a href="interfaces/isize.html" class="tsd-signature-type">ISize</a></h5>
+								</li>
+								<li>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createsamplesequence" class="tsd-anchor"></a>
+					<h3>create<wbr>Sample<wbr>Sequence</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Sample<wbr>Sequence<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, events<span class="tsd-signature-symbol">: </span><a href="interfaces/icreatesampleevents.html" class="tsd-signature-type">ICreateSampleEvents</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/sequenceUtils.ts#L11">lib/util/sequenceUtils.ts:11</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a sequence with samplesEvents.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>events: <a href="interfaces/icreatesampleevents.html" class="tsd-signature-type">ICreateSampleEvents</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createsection" class="tsd-anchor"></a>
+					<h3>create<wbr>Section</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Section<span class="tsd-signature-symbol">(</span>section<span class="tsd-signature-symbol">: </span><a href="interfaces/isection.html" class="tsd-signature-type">ISection</a>, position<span class="tsd-signature-symbol">: </span><a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a>, size<span class="tsd-signature-symbol">: </span><a href="interfaces/isize.html" class="tsd-signature-type">ISize</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L55">lib/util/editorUtils.ts:55</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>section: <a href="interfaces/isection.html" class="tsd-signature-type">ISection</a></h5>
+								</li>
+								<li>
+									<h5>position: <a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+								</li>
+								<li>
+									<h5>size: <a href="interfaces/isize.html" class="tsd-signature-type">ISize</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createsequenceelement" class="tsd-anchor"></a>
+					<h3>create<wbr>Sequence<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Sequence<wbr>Element<span class="tsd-signature-symbol">(</span>sequence<span class="tsd-signature-symbol">: </span><a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a>, position<span class="tsd-signature-symbol">: </span><a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a>, size<span class="tsd-signature-symbol">: </span><a href="interfaces/isize.html" class="tsd-signature-type">ISize</a>, color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, labelHeight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, pixelsPerSecond<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bpm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, eventWidth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, eventVerticalSpread<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L5">lib/util/editorUtils.ts:5</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sequence: <a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a></h5>
+								</li>
+								<li>
+									<h5>position: <a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+								</li>
+								<li>
+									<h5>size: <a href="interfaces/isize.html" class="tsd-signature-type">ISize</a></h5>
+								</li>
+								<li>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>labelHeight: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>pixelsPerSecond: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>bpm: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>eventWidth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> eventVerticalSpread: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;3</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createtimelinecanvas" class="tsd-anchor"></a>
+					<h3>create<wbr>Timeline<wbr>Canvas</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Timeline<wbr>Canvas<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, yOffset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L82">lib/util/editorUtils.ts:82</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parent: <span class="tsd-signature-type">HTMLElement</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>yOffset: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">CanvasRenderingContext2D</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="createverticalline" class="tsd-anchor"></a>
+					<h3>create<wbr>Vertical<wbr>Line</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Vertical<wbr>Line<span class="tsd-signature-symbol">(</span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, pos<span class="tsd-signature-symbol">: </span><a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a>, color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L149">lib/util/editorUtils.ts:149</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>pos: <a href="interfaces/ipoint.html" class="tsd-signature-type">IPoint</a></h5>
+								</li>
+								<li>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="drawtimeline" class="tsd-anchor"></a>
+					<h3>draw<wbr>Timeline</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">draw<wbr>Timeline<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span>, xDrawOffset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, pixelsPerSecond<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bpm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L98">lib/util/editorUtils.ts:98</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+								</li>
+								<li>
+									<h5>xDrawOffset: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>pixelsPerSecond: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>bpm: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="eventhasbeenscheduled" class="tsd-anchor"></a>
+					<h3>event<wbr>Has<wbr>Been<wbr>Scheduled</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">event<wbr>Has<wbr>Been<wbr>Scheduled<span class="tsd-signature-symbol">(</span>song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a>, event<span class="tsd-signature-symbol">: </span><a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a>, timedSequence<span class="tsd-signature-symbol">: </span><a href="interfaces/itimedsequence.html" class="tsd-signature-type">ITimedSequence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/scheduleUtils.ts#L57">lib/util/scheduleUtils.ts:57</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if the event was already scheduled in a previous schedule-call</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+								<li>
+									<h5>event: <a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></h5>
+								</li>
+								<li>
+									<h5>timedSequence: <a href="interfaces/itimedsequence.html" class="tsd-signature-type">ITimedSequence</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="geteventschedulelist" class="tsd-anchor"></a>
+					<h3>get<wbr>Event<wbr>Schedule<wbr>List</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Event<wbr>Schedule<wbr>List<span class="tsd-signature-symbol">(</span>fromTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, toTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/ischeduleeventdata.html" class="tsd-signature-type">IScheduleEventData</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/scheduleUtils.ts#L11">lib/util/scheduleUtils.ts:11</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns all ISequenceEvents whose time is in a given time window</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fromTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>toTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/ischeduleeventdata.html" class="tsd-signature-type">IScheduleEventData</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getlatesteventinsequence" class="tsd-anchor"></a>
+					<h3>get<wbr>Latest<wbr>Event<wbr>InSequence</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Latest<wbr>Event<wbr>InSequence<span class="tsd-signature-symbol">(</span>sequence<span class="tsd-signature-symbol">: </span><a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/sequenceUtils.ts#L78">lib/util/sequenceUtils.ts:78</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sequence: <a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getsongendtime" class="tsd-anchor"></a>
+					<h3>get<wbr>Song<wbr>End<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Song<wbr>End<wbr>Time<span class="tsd-signature-symbol">(</span>song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MusicTime</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/songUtils.ts#L23">lib/util/songUtils.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MusicTime</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="inittimedata" class="tsd-anchor"></a>
+					<h3>init<wbr>Time<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">init<wbr>Time<wbr>Data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/isequenceplayertimedata.html" class="tsd-signature-type">ISequencePlayerTimeData</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/sequencePlayerUtils.ts#L4">lib/util/sequencePlayerUtils.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/isequenceplayertimedata.html" class="tsd-signature-type">ISequencePlayerTimeData</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="markeventasscheduled" class="tsd-anchor"></a>
+					<h3>mark<wbr>Event<wbr>AsScheduled</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">mark<wbr>Event<wbr>AsScheduled<span class="tsd-signature-symbol">(</span>song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a>, event<span class="tsd-signature-symbol">: </span><a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a>, timedSequence<span class="tsd-signature-symbol">: </span><a href="interfaces/itimedsequence.html" class="tsd-signature-type">ITimedSequence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/scheduleUtils.ts#L76">lib/util/scheduleUtils.ts:76</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Marks the event as scheduled.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+								<li>
+									<h5>event: <a href="interfaces/isequenceevent.html" class="tsd-signature-type">ISequenceEvent</a></h5>
+								</li>
+								<li>
+									<h5>timedSequence: <a href="interfaces/itimedsequence.html" class="tsd-signature-type">ITimedSequence</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="musictimetopixels" class="tsd-anchor"></a>
+					<h3>music<wbr>Time<wbr>ToPixels</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">music<wbr>Time<wbr>ToPixels<span class="tsd-signature-symbol">(</span>musicTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MusicTime</span>, bpm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, pixelsPerSecond<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/editorUtils.ts#L145">lib/util/editorUtils.ts:145</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>musicTime: <span class="tsd-signature-type">MusicTime</span></h5>
+								</li>
+								<li>
+									<h5>bpm: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>pixelsPerSecond: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="ordereventsinsequence" class="tsd-anchor"></a>
+					<h3>order<wbr>Events<wbr>InSequence</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">order<wbr>Events<wbr>InSequence<span class="tsd-signature-symbol">(</span>sequence<span class="tsd-signature-symbol">: </span><a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/sequenceUtils.ts#L55">lib/util/sequenceUtils.ts:55</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sequence: <a href="interfaces/isequence.html" class="tsd-signature-type">ISequence</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="playbuffer" class="tsd-anchor"></a>
+					<h3>play<wbr>Buffer</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">play<wbr>Buffer<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AudioContext</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AudioNode</span>, buffer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AudioBuffer</span>, time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, from<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, duration<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, volume<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iplaybufferresult.html" class="tsd-signature-type">IPlayBufferResult</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/webAudioUtils.ts#L1">lib/util/webAudioUtils.ts:1</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">AudioContext</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">AudioNode</span></h5>
+								</li>
+								<li>
+									<h5>buffer: <span class="tsd-signature-type">AudioBuffer</span></h5>
+								</li>
+								<li>
+									<h5>time: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>from: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> duration: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;-1</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> volume: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/iplaybufferresult.html" class="tsd-signature-type">IPlayBufferResult</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="setsamplesonsampleevents" class="tsd-anchor"></a>
+					<h3>set<wbr>Samples<wbr>OnSample<wbr>Events</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Samples<wbr>OnSample<wbr>Events<span class="tsd-signature-symbol">(</span>song<span class="tsd-signature-symbol">: </span><a href="classes/song.html" class="tsd-signature-type">Song</a>, sampleManager<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SampleManager</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/petervdn/webaudio-sequence-player/blob/a755725/src/lib/util/songUtils.ts#L7">lib/util/songUtils.ts:7</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>song: <a href="classes/song.html" class="tsd-signature-type">Song</a></h5>
+								</li>
+								<li>
+									<h5>sampleManager: <span class="tsd-signature-type">SampleManager</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals current ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/sequenceeventtype.html" class="tsd-kind-icon">Sequence<wbr>Event<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/sequenceplayerstate.html" class="tsd-kind-icon">Sequence<wbr>Player<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/animationframe.html" class="tsd-kind-icon">Animation<wbr>Frame</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/editor.html" class="tsd-kind-icon">Editor</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/interval.html" class="tsd-kind-icon">Interval</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sampleplayer.html" class="tsd-kind-icon">Sample<wbr>Player</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sequenceplayer.html" class="tsd-kind-icon">Sequence<wbr>Player</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sequenceplayerevent.html" class="tsd-kind-icon">Sequence<wbr>Player<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/song.html" class="tsd-kind-icon">Song</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icreatesampleevents.html" class="tsd-kind-icon">ICreate<wbr>Sample<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ilastscheduleddata.html" class="tsd-kind-icon">ILast<wbr>Scheduled<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iplaybufferresult.html" class="tsd-kind-icon">IPlay<wbr>Buffer<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ipoint.html" class="tsd-kind-icon">IPoint</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isampleevent.html" class="tsd-kind-icon">ISample<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ischeduleeventdata.html" class="tsd-kind-icon">ISchedule<wbr>Event<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ischeduletiming.html" class="tsd-kind-icon">ISchedule<wbr>Timing</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isection.html" class="tsd-kind-icon">ISection</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isequence.html" class="tsd-kind-icon">ISequence</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isequenceevent.html" class="tsd-kind-icon">ISequence<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isequenceplayertimedata.html" class="tsd-kind-icon">ISequence<wbr>Player<wbr>Time<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/isize.html" class="tsd-kind-icon">ISize</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/itimedsequence.html" class="tsd-kind-icon">ITimed<wbr>Sequence</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#clearalllastscheduledata" class="tsd-kind-icon">clear<wbr>All<wbr>Last<wbr>Schedule<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#createbasesequenceeventfromtimestring" class="tsd-kind-icon">create<wbr>Base<wbr>Sequence<wbr>Event<wbr>From<wbr>Time<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createrectelement" class="tsd-kind-icon">create<wbr>Rect<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createsamplesequence" class="tsd-kind-icon">create<wbr>Sample<wbr>Sequence</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createsection" class="tsd-kind-icon">create<wbr>Section</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createsequenceelement" class="tsd-kind-icon">create<wbr>Sequence<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createtimelinecanvas" class="tsd-kind-icon">create<wbr>Timeline<wbr>Canvas</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createverticalline" class="tsd-kind-icon">create<wbr>Vertical<wbr>Line</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#drawtimeline" class="tsd-kind-icon">draw<wbr>Timeline</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#eventhasbeenscheduled" class="tsd-kind-icon">event<wbr>Has<wbr>Been<wbr>Scheduled</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#geteventschedulelist" class="tsd-kind-icon">get<wbr>Event<wbr>Schedule<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getlatesteventinsequence" class="tsd-kind-icon">get<wbr>Latest<wbr>Event<wbr>InSequence</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getsongendtime" class="tsd-kind-icon">get<wbr>Song<wbr>End<wbr>Time</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#inittimedata" class="tsd-kind-icon">init<wbr>Time<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#markeventasscheduled" class="tsd-kind-icon">mark<wbr>Event<wbr>AsScheduled</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#musictimetopixels" class="tsd-kind-icon">music<wbr>Time<wbr>ToPixels</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#ordereventsinsequence" class="tsd-kind-icon">order<wbr>Events<wbr>InSequence</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#playbuffer" class="tsd-kind-icon">play<wbr>Buffer</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#setsamplesonsampleevents" class="tsd-kind-icon">set<wbr>Samples<wbr>OnSample<wbr>Events</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
