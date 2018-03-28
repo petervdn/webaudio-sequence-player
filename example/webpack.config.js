@@ -1,9 +1,7 @@
-const path = require('path');
 
-console.log('path', path.join(__dirname, 'src'));
 module.exports = {
   devServer: {
-    contentBase: './'
+    contentBase: './',
   },
   resolve: {
     extensions: ['.js', '.ts'],
@@ -13,7 +11,10 @@ module.exports = {
       {
         test: /.ts$/,
         loader: 'ts-loader',
-      }
-    ]
-  }
+      },
+    ],
+  },
+  output: {
+    path: __dirname,
+  },
 };
