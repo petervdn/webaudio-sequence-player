@@ -1,6 +1,7 @@
 import { ISequence, ISection, ISampleEvent } from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
 import { IPoint, ISize } from '../../../src/lib/editor/Editor';
+import Song from '../Song';
 
 export function createSequenceElement(
   sequence: ISequence,
@@ -104,13 +105,13 @@ export function drawTimeline(
   context: CanvasRenderingContext2D,
   xDrawOffset: number,
   pixelsPerSecond: number,
-  bpm: number,
+  song: Song,
 ): void {
   context.fillStyle = 'black';
   context.strokeStyle = 'white';
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
-  const beatWidth = new MusicTime(0, 1, 0).toTime(bpm) * pixelsPerSecond;
+  const beatWidth = new MusicTime(0, 1, 0).toTime(song.bpm) * pixelsPerSecond;
   let xPosition = xDrawOffset;
   let index = 0;
 

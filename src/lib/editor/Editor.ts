@@ -16,6 +16,7 @@ import { SequencePlayerState } from '../data/enum';
 import SequencePlayer from '../SequencePlayer';
 
 export default class Editor {
+  private minMaxPixelsPerSecond = [10, 100];
   private pixelsPerSecond = 40;
   private defaultEventDuration = MusicTime.fromString('0.0.1');
   private sequenceHeight = 70;
@@ -72,6 +73,14 @@ export default class Editor {
     );
   }
 
+  public setPixelsPerSecondFactor(value: number): void {
+    this.pixelsPerSecond =
+      this.minMaxPixelsPerSecond[0] +
+      value * (this.minMaxPixelsPerSecond[1] - this.minMaxPixelsPerSecond[0]);
+
+    drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song);
+  }
+
   private onUpdate(): void {
     this.updatePlayheadPosition();
   }
@@ -80,7 +89,7 @@ export default class Editor {
     this.song = song;
     this.drawSong();
     this.setLineHeights();
-    drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song.bpm);
+    drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song);
 
     // set song end
     this.songEnd.style.left = `${this.seqsOffset.x +
