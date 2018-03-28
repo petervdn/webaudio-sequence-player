@@ -53,7 +53,12 @@ export function createSequenceElement(
 }
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
-  const wrapper = createRectElement(position, size, '#00cc00');
+  const color = section.isGap ? 'rgba(0,0, 200,0.3' : 'rgba(0,200,0,0.3';
+  const pos = position;
+  if (section.isGap) {
+    pos.y -= 10;
+  }
+  const wrapper = createRectElement(position, size, color);
 
   // const label = document.createElement('p');
   // label.innerText = 'section';

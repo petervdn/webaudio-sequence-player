@@ -53,4 +53,5 @@ export interface IScheduleEventData {
 export interface ISection {
   start: MusicTime;
   end: MusicTime;
+  isGap?: boolean;
 }

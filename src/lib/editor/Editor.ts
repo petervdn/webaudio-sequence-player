@@ -24,7 +24,7 @@ export default class Editor {
   private seqLabelheight = 15;
   private seqSpacing: IPoint = { x: 1, y: 1 };
   private timelineHeight = 30;
-  private timelineSpacing = 20;
+  private timelineSpacing = 40;
 
   private element: HTMLElement;
   private timeLineContext: CanvasRenderingContext2D;

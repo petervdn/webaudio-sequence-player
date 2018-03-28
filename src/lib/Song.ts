@@ -8,6 +8,7 @@ import {
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 import { getSongEndTime } from './util/songUtils';
+import { createSectionsForGaps } from './util/sectionUtils';
 
 export default class Song {
   // todo make more stuff private?
@@ -69,6 +70,15 @@ export default class Song {
       start,
       end,
     });
+
+    // remove all gap-sections and re-add all gaps
+    this.sections = this.sections.filter(section => !section.isGap);
+    // this.sections.push(...createSectionsForGaps(this.sections, this.songEndTime));
+    const gaps = createSectionsForGaps(this.sections, this.songEndTime);
+    this.sections.push(...gaps);
+    console.log(gaps.map(s => `${s.start.toString()}-${s.end.toString()}`));
+
+    // console.log(createSectionsForGaps(this.sections, this.songEndTime).map(s => `${s.start.toString()}-${s.end.toString()}`));
   }
 
   public getSections(): ISection[] {
