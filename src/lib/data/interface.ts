@@ -55,3 +55,8 @@ export interface ISection {
   end: MusicTime;
   isGap?: boolean;
 }
+
+export interface ISectionPlayData {
+  section: ISection;
+  iteration: number;
+}

@@ -7,6 +7,7 @@ import {
   IScheduleEventData,
   IScheduleTiming,
   ISection,
+  ISectionPlayData,
   ISequencePlayerTimeData,
 } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
@@ -29,6 +30,7 @@ export default class SequencePlayer extends EventDispatcher {
   private scheduleInterval: Interval;
   private timeDataUpdater: AnimationFrame;
   private song: Song;
+  private currentSection: ISectionPlayData;
 
   constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
     super();
@@ -81,6 +83,22 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
+   * Sets a song and does some necessary initializations
+   * @param {Song} song
+   */
+  public initFirstSection(song: Song): void {
+    if (song.getSections().length) {
+      this.currentSection = {
+        iteration: 0,
+        section: song.getSections().find(section => section.start.equals(new MusicTime(0, 0, 0))),
+      };
+      console.log(this.currentSection);
+    } else {
+      this.currentSection = null;
+    }
+  }
+
+  /**
    * Play a song at the given bpm.
    * @param {Song} song
    * @param {boolean} updateTimeData
@@ -92,13 +110,18 @@ export default class SequencePlayer extends EventDispatcher {
       return;
     }
 
+    if (!song) {
+      throw new Error('No song given');
+    }
+
     this.song = song;
 
     let loadPromise: Promise<void>;
-    if (song.getIsLoaded()) {
+    if (this.song.getIsLoaded()) {
       loadPromise = Promise.resolve();
     } else {
-      loadPromise = this.loadSong(song);
+      // todo after loading, state quickly jumps to idle (and then to playing)
+      loadPromise = this.loadSong(this.song);
     }
 
     loadPromise.then(() => {
@@ -114,7 +137,7 @@ export default class SequencePlayer extends EventDispatcher {
       // do one schedule call for time=0
       // todo this can give an error, when the moment comes the sampleplayer needs to play
       // that time is already 0.000001 s in the past.
-      this.scheduleAtTime(0);
+      this.scheduleAtTime(this.song, 0);
 
       // and more on interval
       this.scheduleInterval.start();
@@ -126,7 +149,7 @@ export default class SequencePlayer extends EventDispatcher {
     if (this.getSongPlayTime() > this.song.getSongEndTime().toTime(this.song.bpm)) {
       this.stop();
     }
-    this.scheduleAtTime(this.getSongPlayTime());
+    this.scheduleAtTime(this.song, this.getSongPlayTime());
   };
 
   private onTimeDataUpdate = () => {
@@ -138,18 +161,30 @@ export default class SequencePlayer extends EventDispatcher {
   };
 
   /**
-   * Schedules all events from time to time+lookahead
-   * @param {number} playTime
+   * Retrieves and schedules all events from time to time+lookahead
+   * @param {Song} song
+   * @param {number} time
+   * @param {number} lookAheadTime
    */
-  public scheduleAtTime(playTime: number): void {
+  public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): IScheduleEventData[] {
+    if (time === 0 && song.getSections().length) {
+      this.initFirstSection(song);
+    }
+
     // get all events in the timewindow
-    const endTime = playTime + this.scheduleTime.lookAhead;
-    const items: IScheduleEventData[] = getEventScheduleList(playTime, endTime, this.song);
+    const endTime = time + (lookAheadTime || this.scheduleTime.lookAhead);
+    const items: IScheduleEventData[] = getEventScheduleList(
+      time,
+      endTime,
+      song,
+      this.currentSection,
+    );
 
     items.forEach(item => {
-      //
       this.samplePlayer.playSample(item, this.playStartTime);
     });
+
+    return items;
   }
 
   public stop(): void {
@@ -185,13 +220,4 @@ export default class SequencePlayer extends EventDispatcher {
     // todo
     super.dispose();
   }
-}
-//
-// export class SequencePlayerEvent extends AbstractEvent {
-//   public static STATE_CHANGE:string = EVENT_TYPE_PLACEHOLDER;
-// }
-
-interface ISectionPlayData {
-  section: ISection;
-  start: MusicTime;
 }

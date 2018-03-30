@@ -1,5 +1,10 @@
 import Song from '../Song';
-import { IScheduleEventData, ISequenceEvent, ITimedSequence } from '../data/interface';
+import {
+  IScheduleEventData,
+  ISectionPlayData,
+  ISequenceEvent,
+  ITimedSequence,
+} from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
@@ -12,20 +17,34 @@ export function getEventScheduleList(
   fromTime: number,
   toTime: number,
   song: Song,
+  currentSection: ISectionPlayData,
 ): IScheduleEventData[] {
-  if (song.getSections().length === 0) {
+  if (!currentSection) {
     return getEventScheduleListForNonSectionSong(fromTime, toTime, song);
   }
 
-  return getEventScheduleListFoSectionSong(fromTime, toTime, song);
+  // if currentSection is given, then the song has sections
+  return getEventScheduleListFoSectionSong(fromTime, toTime, song, currentSection);
 }
 
 function getEventScheduleListFoSectionSong(
   fromTime: number,
   toTime: number,
   song: Song,
+  startSection: ISectionPlayData,
 ): IScheduleEventData[] {
   const results: IScheduleEventData[] = [];
+
+  // let currentSection = startSection;
+  // let counter = 0;
+  // while (counter < 100) {
+  //   song.timedSequences.forEach(timedSequence => {
+  //     if (timedSequence.absoluteStart.toTime(song.bpm) > )
+  //   });
+  //
+  //   counter++;
+  // }
+
   return results;
 }
 

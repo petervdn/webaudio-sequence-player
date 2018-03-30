@@ -64,6 +64,11 @@ export default class Song {
     this.songEndTime = getSongEndTime(this);
   }
 
+  /**
+   * Add a section, and fill every remaining gap up with an isGap section (so every timewindow is covered)
+   * @param {MusicTime} start
+   * @param {MusicTime} end
+   */
   public addSection(start: MusicTime, end: MusicTime): void {
     this.sections.push({
       start,
@@ -72,12 +77,8 @@ export default class Song {
 
     // remove all gap-sections and re-add all gaps
     this.sections = this.sections.filter(section => !section.isGap);
-    // this.sections.push(...createSectionsForGaps(this.sections, this.songEndTime));
     const gaps = createSectionsForGaps(this.sections, this.songEndTime);
     this.sections.push(...gaps);
-    console.log(gaps.map(s => `${s.start.toString()}-${s.end.toString()}`));
-
-    // console.log(createSectionsForGaps(this.sections, this.songEndTime).map(s => `${s.start.toString()}-${s.end.toString()}`));
   }
 
   public getSections(): ISection[] {
@@ -93,7 +94,7 @@ export default class Song {
   }
 
   /**
-   * Returns true if all ISampleEvents have a reference to a sample, and those samples are loaded.
+   * Checks if all ISampleEvents have a reference to a sample, and all those samples are loaded.
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
@@ -113,6 +114,4 @@ export default class Song {
 
     return true;
   }
-
-  public updateSongDuration(): void {}
 }

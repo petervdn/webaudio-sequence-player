@@ -5,8 +5,6 @@
   ],
   "defaultSeverity": "error",
   "rules": {
-    "xno-debugger": 2,
-    "xno-console": 1,
     "prefer-array-literal": [true, { "allow-type-parameters": true }],
     "variable-name": [
       true,

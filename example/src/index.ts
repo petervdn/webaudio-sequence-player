@@ -5,6 +5,7 @@ import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
 import Editor from '../../src/lib/editor/Editor';
+import { getEventScheduleList } from '../../src/lib/util/scheduleUtils';
 
 const stateElement = <HTMLElement>document.querySelector('#state');
 const timeElement = <HTMLElement>document.querySelector('#time');
@@ -96,10 +97,9 @@ document.querySelector('#stop').addEventListener('click', () => {
 });
 
 const editor = new Editor(document.querySelector('#editor'), player);
-// song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-// song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
-// song.addSection(MusicTime.fromString('3.0.0'), MusicTime.fromString('5.0.0'));
-// song.addSection(MusicTime.fromString('9.0.0'), MusicTime.fromString('11.0.0'));
+song.addSection(MusicTime.fromString('8.0.0'), MusicTime.fromString('9.0.0'));
+song.addSection(MusicTime.fromString('3.0.0'), MusicTime.fromString('5.0.0'));
+song.addSection(MusicTime.fromString('9.0.0'), MusicTime.fromString('11.0.0'));
 // song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('2.0.0'));
 // song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('5.0.0'));
 // song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('8.0.0'));
@@ -108,5 +108,7 @@ editor.setSong(song);
 
 const slider = <HTMLInputElement>document.querySelector('#scale');
 slider.addEventListener('input', () => {
-  editor.setPixelsPerSecondFactor(parseInt(slider.value,10) / 100);
+  editor.setPixelsPerSecondFactor(parseInt(slider.value, 10) / 100);
 });
+const items = player.scheduleAtTime(song, 0, 1);
+console.log(items);
