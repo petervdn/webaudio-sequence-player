@@ -83,16 +83,19 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
-   * Sets a song and does some necessary initializations
+   * Finds and sets the section at 0.0.0
    * @param {Song} song
    */
   public initFirstSection(song: Song): void {
     if (song.getSections().length) {
       this.currentSection = {
         iteration: 0,
-        section: song.getSections().find(section => section.start.equals(new MusicTime(0, 0, 0))),
+        section: song.getSections().find(section => section.start.equals(new MusicTime())),
       };
-      console.log(this.currentSection);
+
+      if (!this.currentSection) {
+        throw new Error('No section found at 0.0.0');
+      }
     } else {
       this.currentSection = null;
     }
