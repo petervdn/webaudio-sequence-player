@@ -70,6 +70,9 @@ export default class Song {
    * @param {MusicTime} end
    */
   public addSection(start: MusicTime, end: MusicTime): void {
+    if (end <= start) {
+      throw new Error('The end of a section should be later than its start');
+    }
     this.sections.push({
       start,
       end,

@@ -7,7 +7,6 @@ import {
   IScheduleEventData,
   IScheduleTiming,
   ISection,
-  ISectionPlayData,
   ISequencePlayerTimeData,
 } from './data/interface';
 import { setSamplesOnSampleEvents } from './util/songUtils';
@@ -30,7 +29,7 @@ export default class SequencePlayer extends EventDispatcher {
   private scheduleInterval: Interval;
   private timeDataUpdater: AnimationFrame;
   private song: Song;
-  private currentSection: ISectionPlayData;
+  private currentSection: ISection;
 
   constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
     super();
@@ -83,18 +82,21 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
-   * Finds and sets the section at 0.0.0
+   * Finds and sets the section for the given time. This way we can start a song from
+   * any point on the timeline: the section for that moment will be set as first section.
    * @param {Song} song
    */
-  public initFirstSection(song: Song): void {
+  public initFirstSection(song: Song, time: number): void {
     if (song.getSections().length) {
-      this.currentSection = {
-        iteration: 0,
-        section: song.getSections().find(section => section.start.equals(new MusicTime())),
-      };
+      this.currentSection = song
+        .getSections()
+        .find(
+          section => time >= section.start.toTime(song.bpm) && time < section.end.toTime(song.bpm),
+        );
 
+      this.currentSection.startedAt = new MusicTime();
       if (!this.currentSection) {
-        throw new Error('No section found at 0.0.0');
+        throw new Error(`No section found for time ${time}`);
       }
     } else {
       this.currentSection = null;
@@ -168,10 +170,16 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {Song} song
    * @param {number} time
    * @param {number} lookAheadTime
+   * @param {boolean} silent
    */
-  public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): IScheduleEventData[] {
-    if (time === 0 && song.getSections().length) {
-      this.initFirstSection(song);
+  public scheduleAtTime(
+    song: Song,
+    time: number,
+    lookAheadTime?: number,
+    silent = false,
+  ): IScheduleEventData[] {
+    if (song.getSections().length) {
+      this.initFirstSection(song, time);
     }
 
     // get all events in the timewindow
@@ -183,9 +191,11 @@ export default class SequencePlayer extends EventDispatcher {
       this.currentSection,
     );
 
-    items.forEach(item => {
-      this.samplePlayer.playSample(item, this.playStartTime);
-    });
+    if (!silent) {
+      items.forEach(item => {
+        this.samplePlayer.playSample(item, this.playStartTime);
+      });
+    }
 
     return items;
   }

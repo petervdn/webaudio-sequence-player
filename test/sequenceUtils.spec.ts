@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { createSampleSequence } from '../src/lib/util/sequenceUtils';
 import {SequenceEventType} from "../src/lib/data/enum";
-import { ISampleEvent } from 'src/lib/data/interface';
-import Song from "../src/lib/Song";
-import MusicTime from "musictime/lib/MusicTime";
+import { ISampleEvent } from '../src/lib/data/interface';
+
 
 describe('sequenceUtils', () => {
   it('should create a sampleSequence', () => {
@@ -66,7 +65,7 @@ describe('sequenceUtils', () => {
     }).to.throw('Expecting a volume value but found a string');
   });
 
-  it('should throw an error when creating a sequency without events', () => {
+  it('should throw an error when creating a sequence without events', () => {
     expect(() => {
       const seq = createSampleSequence('seq1', {});
     }).to.throw("Can't create a sequence without events");

@@ -53,10 +53,11 @@ export interface IScheduleEventData {
 export interface ISection {
   start: MusicTime;
   end: MusicTime;
+  startedAt?: MusicTime;
   isGap?: boolean;
 }
 
-export interface ISectionPlayData {
-  section: ISection;
-  iteration: number;
-}
+// export interface ISectionPlayData {
+//   section: ISection;
+//   iteration: number;
+// }

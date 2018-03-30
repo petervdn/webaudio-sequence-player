@@ -3411,8 +3411,8 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
 musictime@^1.0.7:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/musictime/-/musictime-1.1.1.tgz#16c3a3eb1edf2596dc1c69d8f58f256df8dcf7a9"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/musictime/-/musictime-1.2.0.tgz#8fd7b8338ba8c977064dea56b428ddc7789ff745"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.35"
 

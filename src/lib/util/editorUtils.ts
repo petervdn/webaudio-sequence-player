@@ -123,10 +123,6 @@ export function drawTimeline(
     let lineWidth = 0.5;
     let lineLength = 0.25;
 
-    // if (index % 4 === 0) {
-    //   lineWidth = 2;
-    //
-    // }
     if (index % 4 === 0) {
       lineWidth = 2;
       lineLength = 0.4;
@@ -140,7 +136,9 @@ export function drawTimeline(
     if (lineWidth === 2) {
       context.fillStyle = 'white';
       context.textAlign = 'center';
-      context.fillText(new MusicTime(0, index, 0).toString(), x, lineEndY - 3);
+      const time = new MusicTime(0, index, 0);
+      const label = `${time.toString()} (${time.toTime(song.bpm).toFixed(1)}s)`;
+      context.fillText(label, x, lineEndY - 3);
     }
 
     xPosition += beatWidth;

@@ -1,10 +1,5 @@
 import Song from '../Song';
-import {
-  IScheduleEventData,
-  ISectionPlayData,
-  ISequenceEvent,
-  ITimedSequence,
-} from '../data/interface';
+import { IScheduleEventData, ISection, ISequenceEvent, ITimedSequence } from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
@@ -17,7 +12,7 @@ export function getEventScheduleList(
   fromTime: number,
   toTime: number,
   song: Song,
-  currentSection: ISectionPlayData,
+  currentSection: ISection,
 ): IScheduleEventData[] {
   if (!currentSection) {
     return getEventScheduleListForNonSectionSong(fromTime, toTime, song);
@@ -31,23 +26,55 @@ function getEventScheduleListFoSectionSong(
   fromTime: number,
   toTime: number,
   song: Song,
-  startSection: ISectionPlayData,
+  currentSection: ISection,
 ): IScheduleEventData[] {
   const results: IScheduleEventData[] = [];
 
-  // let currentSection = startSection;
-  // let counter = 0;
-  // while (counter < 100) {
-  //   song.timedSequences.forEach(timedSequence => {
-  //     if (timedSequence.absoluteStart.toTime(song.bpm) > )
-  //   });
-  //
-  //   counter++;
-  // }
+  const section = currentSection;
+  const sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
+  const fromTimeInSection = fromTime - section.startedAt.toTime(song.bpm);
+  console.log(`section "${section.start.toString()}"`, sectionIteration, fromTimeInSection);
+  let counter = 0;
+  while (counter < 100) {
+    song.timedSequences.forEach(timedSequence => {
+      if (timedSequence.absoluteStart.toTime(song.bpm) > toTime) {
+        console.log('skip');
+      }
+    });
+
+    counter++;
+  }
 
   return results;
 }
 
+/**
+ * Returns the iteration for a section (when looping).
+ * @param {ISection} section
+ * @param {number} time
+ * @param {number} bpm
+ * @returns {number}
+ */
+export function getSectionIterationAtTime(section: ISection, time: number, bpm: number): number {
+  if (!section.startedAt) {
+    throw new Error(
+      `Section (${section.start.toString()}-${section.end.toString()}) has no 'startedAt' value, cannot get iteration`,
+    );
+  }
+  const sectionStart = section.start.toTime(bpm);
+  const sectionStartedAt = section.startedAt.toTime(bpm);
+  const sectionEnd = section.end.toTime(bpm);
+  const sectionLength = sectionEnd - sectionStart;
+  return Math.floor((time - sectionStartedAt) / sectionLength);
+}
+
+/**
+ * Returns events in the given timewindow for a song without sections.
+ * @param {number} fromTime
+ * @param {number} toTime
+ * @param {Song} song
+ * @returns {IScheduleEventData[]}
+ */
 function getEventScheduleListForNonSectionSong(
   fromTime: number,
   toTime: number,
@@ -88,6 +115,12 @@ function getEventScheduleListForNonSectionSong(
 }
 
 /**
+ * So we can read and write the same value
+ * @type {number}
+ */
+const nonSectionSongMarkedValue = 1;
+
+/**
  * Checks if the event was already scheduled in a previous schedule-call
  * @param {Song} song
  * @param {ISequenceEvent} event
@@ -101,7 +134,7 @@ function eventHasBeenScheduled(
 ): boolean {
   if (song.getSections().length === 0) {
     // when there are no loop-points, a scheduled event has a value 1 for the id of the timedSequence it is in
-    return event.lastScheduledData[timedSequence.id] === 1;
+    return event.lastScheduledData[timedSequence.id] === nonSectionSongMarkedValue;
   }
   // todo
   return false;
@@ -119,7 +152,7 @@ function markEventAsScheduled(
   timedSequence: ITimedSequence,
 ): void {
   if (song.getSections().length === 0) {
-    event.lastScheduledData[timedSequence.id] = 1;
+    event.lastScheduledData[timedSequence.id] = nonSectionSongMarkedValue;
   }
 
   // todo else
