@@ -28,6 +28,10 @@ describe('scheduleUtils', () => {
   });
 
 
+  it('set correct initial section', () => {
+    // todo
+  });
+
   describe('scheduling a song without sections', () => {
     it('should collect scheduleList', () => {
       const song = new Song(60);

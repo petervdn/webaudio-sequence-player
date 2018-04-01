@@ -70,4 +70,9 @@ describe('sequenceUtils', () => {
       const seq = createSampleSequence('seq1', {});
     }).to.throw("Can't create a sequence without events");
   });
+
+  it('order events in time', () => {
+    // todo
+  });
+
 });
