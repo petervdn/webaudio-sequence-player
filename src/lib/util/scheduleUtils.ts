@@ -10,9 +10,9 @@ import { IScheduleEventData, ISection, ISequenceEvent, ITimedSequence } from '..
  * @returns {ISequenceEvent[]}
  */
 export function getEventScheduleList(
+  song: Song,
   fromTime: number,
   toTime: number,
-  song: Song,
   currentSection: ISection,
 ): IScheduleEventData[] {
   if (song.getSections().length === 0) {

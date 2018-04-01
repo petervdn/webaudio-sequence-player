@@ -42,7 +42,7 @@ describe('scheduleUtils', () => {
       song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
       song.addSequenceAtTime(seq, new MusicTime(1, 0, 0));
 
-      const scheduleList = getEventScheduleList(0, 10, song, null);
+      const scheduleList = getEventScheduleList(song, 0, 10, null);
       expect(scheduleList.length).to.equal(4);
       expect(scheduleList.map(item => item.absoluteSeconds)).to.deep.equal([0, 2, 4, 6]);
     });
@@ -56,7 +56,7 @@ describe('scheduleUtils', () => {
       song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
       song.addSequenceAtTime(seq, new MusicTime(1, 0, 0));
 
-      const scheduleList = getEventScheduleList(0, 5, song, null);
+      const scheduleList = getEventScheduleList(song, 0, 5, null);
       expect(scheduleList.length).to.equal(3);
       expect(scheduleList.map(item => item.absoluteSeconds)).to.deep.equal([0, 2, 4]);
     });
@@ -69,7 +69,7 @@ describe('scheduleUtils', () => {
       });
       song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 
-      const scheduleList = getEventScheduleList(0, 2, song, null);
+      const scheduleList = getEventScheduleList(song, 0, 2, null);
       expect(scheduleList.length).to.equal(1);
     });
 
@@ -78,8 +78,8 @@ describe('scheduleUtils', () => {
       const seq = createSampleSequence('id', { '0.0.0': ['kick'] });
       song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 
-      const firstScheduleList = getEventScheduleList(0, 5, song, null);
-      const secondScheduleList = getEventScheduleList(0, 5, song, null);
+      const firstScheduleList = getEventScheduleList(song, 0, 5, null);
+      const secondScheduleList = getEventScheduleList(song, 0, 5, null);
       expect(firstScheduleList.length).to.equal(1);
       expect(secondScheduleList.length).to.equal(0);
     });
@@ -89,7 +89,7 @@ describe('scheduleUtils', () => {
       const seq = createSampleSequence('id', { '0.0.0': ['kick'], '0.1.0': ['kick'] });
       song.addSequenceAtTime(seq, new MusicTime(0, 0, 0));
 
-      const scheduleList = getEventScheduleList(0.1, 2, song, null);
+      const scheduleList = getEventScheduleList(song, 0.1, 2, null);
       expect(scheduleList.length).to.equal(1);
     });
   });

@@ -9,7 +9,7 @@ describe('SequencePlayer', () => {
   const context = new AudioContext();
 
   beforeEach(() => {
-    player = new SequencePlayer(context);
+    player = new SequencePlayer(context, '', '');
   });
 
   it('should construct', () => {

@@ -110,9 +110,10 @@ song2.addSequenceAtTime(seq, new MusicTime(2,0,0));
 song2.addSequenceAtTime(seq, new MusicTime(3,0,0));
 
 const editor = new Editor(document.querySelector('#editor'), player);
- song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
+song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
+
 editor.setSong(song2);
 
-const items = player.scheduleAtTime(song, 7.5, 1, true);
+const items = getEventScheduleList(song, 1, 2, null);
 console.log(items);
 

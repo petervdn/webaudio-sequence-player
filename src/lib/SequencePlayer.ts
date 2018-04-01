@@ -179,28 +179,19 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} lookAheadTime
    * @param {boolean} silent
    */
-  public scheduleAtTime(
-    song: Song,
-    time: number,
-    lookAheadTime?: number,
-    silent = false,
-  ): IScheduleEventData[] {
+  public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): void {
     // get all events in the timewindow
     const endTime = time + (lookAheadTime || this.scheduleTime.lookAhead);
     const items: IScheduleEventData[] = getEventScheduleList(
+      song,
       time,
       endTime,
-      song,
       this.currentSection,
     );
 
-    if (!silent) {
-      items.forEach(item => {
-        this.samplePlayer.playSample(item, this.playStartTime);
-      });
-    }
-
-    return items;
+    items.forEach(item => {
+      this.samplePlayer.playSample(item, this.playStartTime);
+    });
   }
 
   public stop(): void {
