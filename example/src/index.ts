@@ -24,6 +24,19 @@ player.addEventListener('state-change', (event: SequencePlayerEvent) => {
   showPlayerState(event.data);
 });
 
+document.querySelector('#start').addEventListener('click', () => {
+  player.play(song2);
+});
+
+document.querySelector('#stop').addEventListener('click', () => {
+  player.stop();
+});
+
+const slider = <HTMLInputElement>document.querySelector('#scale');
+slider.addEventListener('input', () => {
+  editor.setPixelsPerSecondFactor(parseInt(slider.value, 10) / 100);
+});
+
 const animationFrame = new AnimationFrame(() => {
   const musicTime = player.timeData.playMusicTime;
   timeElement.innerText = `${musicTime.bars}.${musicTime.beats}.${musicTime.sixteenths}`;
@@ -73,41 +86,33 @@ const song = new Song(128);
 const seq1 = createSampleSequence('seq1', data1);
 const seq2 = createSampleSequence('snare', data2);
 const seq3 = createSampleSequence('hihat', data3);
-song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
-song.addSequenceAtTime(seq1, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq1, new MusicTime(8, 0, 0));
-song.addSequenceAtTime(seq2, new MusicTime(0, 0, 0));
-song.addSequenceAtTime(seq2, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(4, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(5, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(6, 0, 0));
-song.addSequenceAtTime(seq3, new MusicTime(7, 0, 0));
+// song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
+// song.addSequenceAtTime(seq1, new MusicTime(4, 0, 0));
+// song.addSequenceAtTime(seq1, new MusicTime(8, 0, 0));
+// song.addSequenceAtTime(seq2, new MusicTime(0, 0, 0));
+// song.addSequenceAtTime(seq2, new MusicTime(4, 0, 0));
+// song.addSequenceAtTime(seq3, new MusicTime(4, 0, 0));
+// song.addSequenceAtTime(seq3, new MusicTime(5, 0, 0));
+// song.addSequenceAtTime(seq3, new MusicTime(6, 0, 0));
+// song.addSequenceAtTime(seq3, new MusicTime(7, 0, 0));
 
-document.querySelector('#start').addEventListener('click', () => {
-  // player.loadSong(song).then(() => {
-  //
-  //   console.log('done');
-  // });
-  player.play(song);
-});
 
-document.querySelector('#stop').addEventListener('click', () => {
-  player.stop();
-  console.log(MusicTime.TO_TIME_CACHE);
-});
+const data4 = {
+  '0.0.0': ['kick'],
+  '0.1.0': ['hihat'],
+  '0.2.0': ['kick'],
+  '0.2.2': ['hihat'],
+};
+const song2 = new Song(120);
+const seq = createSampleSequence('seq1', data4);
+song2.addSequenceAtTime(seq, new MusicTime(0,0,0));
+song2.addSequenceAtTime(seq, new MusicTime(2,0,0));
+song2.addSequenceAtTime(seq, new MusicTime(3,0,0));
 
 const editor = new Editor(document.querySelector('#editor'), player);
-song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
-// song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('2.0.0'));
-// song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('5.0.0'));
-// song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('8.0.0'));
-// song.addSection(MusicTime.fromString('1.0.0'), MusicTime.fromString('12.0.0'));
-editor.setSong(song);
+ song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
+editor.setSong(song2);
 
-const slider = <HTMLInputElement>document.querySelector('#scale');
-slider.addEventListener('input', () => {
-  editor.setPixelsPerSecondFactor(parseInt(slider.value, 10) / 100);
-});
-const items = player.scheduleAtTime(song, 1, 2, true);
+const items = player.scheduleAtTime(song, 7.5, 1, true);
 console.log(items);
 

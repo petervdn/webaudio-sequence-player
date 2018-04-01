@@ -46,7 +46,7 @@ export function createSequenceElement(
 
     const eventEl = createRectElement(pos, size, 'rgba(255,255,255,1)');
     eventEl.innerText = (<ISampleEvent>event).sampleName[0];
-    eventEl.title = (<ISampleEvent>event).sampleName;
+    eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
     eventWrap.appendChild(eventEl);
   });
 

@@ -82,11 +82,12 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
-   * Finds and sets the section for the given time. This way we can start a song from
-   * any point on the timeline: the section for that moment will be set as first section.
+   * Finds and sets the section for the given time. This selection is based on where the section
+   * is on the timeline, and is always the first one (@0.0.0) unless playing is started from a certain time.
    * @param {Song} song
+   * @param {number} time
    */
-  public initFirstSection(song: Song, time: number): void {
+  private initFirstSection(song: Song, time: number): void {
     if (song.getSections().length) {
       this.currentSection = song
         .getSections()
@@ -94,7 +95,7 @@ export default class SequencePlayer extends EventDispatcher {
           section => time >= section.start.toTime(song.bpm) && time < section.end.toTime(song.bpm),
         );
 
-      this.currentSection.startedAt = new MusicTime();
+      this.currentSection.startedAt = this.currentSection.start.clone();
       if (!this.currentSection) {
         throw new Error(`No section found for time ${time}`);
       }
@@ -109,6 +110,7 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {boolean} updateTimeData
    */
   public play(song: Song, updateTimeData = true): void {
+    // todo add play with timeoffset (related to pause)
     // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
@@ -120,6 +122,10 @@ export default class SequencePlayer extends EventDispatcher {
     }
 
     this.song = song;
+
+    if (song.getSections().length) {
+      this.initFirstSection(song, 0);
+    }
 
     let loadPromise: Promise<void>;
     if (this.song.getIsLoaded()) {
@@ -150,7 +156,8 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   private onScheduleInterval = () => {
-    // todo for now this is ok, but with loops songs can not have an and-time
+    // todo for now this is ok, but with loops songs can not have an end-time
+    // todo also: this is not very precise
     if (this.getSongPlayTime() > this.song.getSongEndTime().toTime(this.song.bpm)) {
       this.stop();
     }
@@ -178,10 +185,6 @@ export default class SequencePlayer extends EventDispatcher {
     lookAheadTime?: number,
     silent = false,
   ): IScheduleEventData[] {
-    if (song.getSections().length) {
-      this.initFirstSection(song, time);
-    }
-
     // get all events in the timewindow
     const endTime = time + (lookAheadTime || this.scheduleTime.lookAhead);
     const items: IScheduleEventData[] = getEventScheduleList(

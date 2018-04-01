@@ -14,11 +14,18 @@ export function getEventScheduleList(
   song: Song,
   currentSection: ISection,
 ): IScheduleEventData[] {
-  if (!currentSection) {
+  if (song.getSections.length === 0) {
+    if (currentSection) {
+      throw new Error('Song has no sections but there is a current section set');
+    }
+
     return getEventScheduleListForNonSectionSong(fromTime, toTime, song);
   }
 
-  // if currentSection is given, then the song has sections
+  if (!currentSection) {
+    throw new Error('Song has sections but there is no current section');
+  }
+
   return getEventScheduleListFoSectionSong(fromTime, toTime, song, currentSection);
 }
 
@@ -28,23 +35,42 @@ function getEventScheduleListFoSectionSong(
   song: Song,
   currentSection: ISection,
 ): IScheduleEventData[] {
+  console.time('schedule');
   const results: IScheduleEventData[] = [];
 
-  const section = currentSection;
-  const sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
-  const fromTimeInSection = fromTime - section.startedAt.toTime(song.bpm);
+  /*tslint:disable*/
+  let section = currentSection;
+  let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
+  let fromTimeInSection = fromTime - section.startedAt.toTime(song.bpm);
+  /*tslint:enable*/
   console.log(`section "${section.start.toString()}"`, sectionIteration, fromTimeInSection);
+  console.log('from', fromTime, 'to', toTime);
   let counter = 0;
-  while (counter < 100) {
+  while (counter < 1) {
     song.timedSequences.forEach(timedSequence => {
-      if (timedSequence.absoluteStart.toTime(song.bpm) > toTime) {
-        console.log('skip');
-      }
+      timedSequence.sequence.events.forEach(event => {
+        const eventStart = event.relativeStart.add(timedSequence.absoluteStart).toTime(song.bpm);
+        if (eventStart < fromTime) {
+          // event is in the past todo half events still count here
+        } else if (eventStart >= fromTime && eventStart < toTime) {
+          // event start is in window
+          results.push({
+            event,
+            absoluteSeconds: eventStart,
+          });
+        } else {
+          console.log('skip');
+        }
+      });
+      // if (timedSequence.absoluteStart.toTime(song.bpm) > toTime) {
+      //   console.log('skip');
+      // }
     });
 
     counter++;
   }
 
+  console.timeEnd('schedule');
   return results;
 }
 
