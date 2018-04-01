@@ -6,6 +6,7 @@ import { IScheduleEventData, ISection, ISequenceEvent, ITimedSequence } from '..
  * @param {number} fromTime
  * @param {number} toTime
  * @param {Song} song
+ * @param {ISection} currentSection
  * @returns {ISequenceEvent[]}
  */
 export function getEventScheduleList(
@@ -14,7 +15,7 @@ export function getEventScheduleList(
   song: Song,
   currentSection: ISection,
 ): IScheduleEventData[] {
-  if (song.getSections.length === 0) {
+  if (song.getSections().length === 0) {
     if (currentSection) {
       throw new Error('Song has no sections but there is a current section set');
     }
