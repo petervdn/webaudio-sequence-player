@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "ts-loader": "^4.1.0",
-    "webaudio-sample-loader": "^1.0.2",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12",
     "webpack-dev-server": "^3.1.1"
