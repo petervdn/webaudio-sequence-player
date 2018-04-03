@@ -6,6 +6,8 @@ import { SequencePlayerEvent } from '../../src/lib/data/event';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
 import Editor from '../../src/lib/editor/Editor';
 import { getEventScheduleList } from '../../src/lib/util/scheduleUtils';
+import {getSectionOnTime} from "../../src/lib/util/songUtils";
+import {test} from "shelljs";
 
 const stateElement = <HTMLElement>document.querySelector('#state');
 const timeElement = <HTMLElement>document.querySelector('#time');
@@ -82,7 +84,7 @@ const data3 = {
   '0.0.3': ['hihat'],
 };
 
-const song = new Song(128);
+// const song = new Song(128);
 const seq1 = createSampleSequence('seq1', data1);
 const seq2 = createSampleSequence('snare', data2);
 const seq3 = createSampleSequence('hihat', data3);
@@ -103,6 +105,7 @@ const data4 = {
   '0.2.0': ['kick'],
   '0.2.2': ['hihat'],
 };
+
 const song2 = new Song(120);
 const seq = createSampleSequence('seq1', data4);
 song2.addSequenceAtTime(seq, new MusicTime(0,0,0));
@@ -110,10 +113,13 @@ song2.addSequenceAtTime(seq, new MusicTime(2,0,0));
 song2.addSequenceAtTime(seq, new MusicTime(3,0,0));
 
 const editor = new Editor(document.querySelector('#editor'), player);
-song.addSection(MusicTime.fromString('4.0.0'), MusicTime.fromString('8.0.0'));
+song2.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
 
+const testTime = 0;
 editor.setSong(song2);
+const startSection = getSectionOnTime(song2, testTime);
+startSection.startedAt = testTime;
 
-const items = getEventScheduleList(song, 1, 2, null);
+const items = getEventScheduleList(song2, testTime, 1.1, startSection);
 console.log(items);
 

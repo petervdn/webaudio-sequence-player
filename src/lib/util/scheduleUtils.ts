@@ -27,10 +27,10 @@ export function getEventScheduleList(
     throw new Error('Song has sections but there is no current section');
   }
 
-  return getEventScheduleListFoSectionSong(fromTime, toTime, song, currentSection);
+  return getEventScheduleListForSectionSong(fromTime, toTime, song, currentSection);
 }
 
-function getEventScheduleListFoSectionSong(
+function getEventScheduleListForSectionSong(
   fromTime: number,
   toTime: number,
   song: Song,
@@ -42,7 +42,7 @@ function getEventScheduleListFoSectionSong(
   /*tslint:disable*/
   let section = currentSection;
   let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
-  let fromTimeInSection = fromTime - section.startedAt.toTime(song.bpm);
+  let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
   console.log(`section "${section.start.toString()}"`, sectionIteration, fromTimeInSection);
   console.log('from', fromTime, 'to', toTime);
@@ -83,15 +83,13 @@ function getEventScheduleListFoSectionSong(
  * @returns {number}
  */
 export function getSectionIterationAtTime(section: ISection, time: number, bpm: number): number {
-  if (!section.startedAt) {
+  if (typeof section.startedAt === void 0) {
     throw new Error(
       `Section (${section.start.toString()}-${section.end.toString()}) has no 'startedAt' value, cannot get iteration`,
     );
   }
-  const sectionStart = section.start.toTime(bpm);
-  const sectionStartedAt = section.startedAt.toTime(bpm);
-  const sectionEnd = section.end.toTime(bpm);
-  const sectionLength = sectionEnd - sectionStart;
+  const sectionStartedAt = section.startedAt;
+  const sectionLength = section.end.toTime(bpm) - section.start.toTime(bpm);
   return Math.floor((time - sectionStartedAt) / sectionLength);
 }
 

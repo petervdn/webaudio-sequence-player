@@ -1,5 +1,5 @@
 import Song from '../Song';
-import { ISampleEvent, ISequenceEvent } from '../data/interface';
+import { ISampleEvent, ISection, ISequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
 import SampleManager from 'sample-manager';
 import MusicTime from 'musictime';
@@ -55,3 +55,9 @@ export function getSongEndTime(song: Song): MusicTime {
 //     const sequenceStartTime = timedSequence.absoluteStart.toTime(song.bpm);
 //   })
 // }
+
+export function getSectionOnTime(song: Song, time: number): ISection {
+  return song
+    .getSections()
+    .find(section => time >= section.start.toTime(song.bpm) && time < section.end.toTime(song.bpm));
+}

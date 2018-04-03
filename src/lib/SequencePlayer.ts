@@ -9,7 +9,7 @@ import {
   ISection,
   ISequencePlayerTimeData,
 } from './data/interface';
-import { setSamplesOnSampleEvents } from './util/songUtils';
+import { getSectionOnTime, setSamplesOnSampleEvents } from './util/songUtils';
 import SamplePlayer from './SamplePlayer';
 import { SequencePlayerState } from './data/enum';
 import { SequencePlayerEvent } from './data/event';
@@ -87,18 +87,15 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {Song} song
    * @param {number} time
    */
-  private initFirstSection(song: Song, time: number): void {
+  public initFirstSection(song: Song, time: number): void {
     if (song.getSections().length) {
-      this.currentSection = song
-        .getSections()
-        .find(
-          section => time >= section.start.toTime(song.bpm) && time < section.end.toTime(song.bpm),
-        );
+      this.currentSection = getSectionOnTime(song, time);
 
-      this.currentSection.startedAt = this.currentSection.start.clone();
       if (!this.currentSection) {
         throw new Error(`No section found for time ${time}`);
       }
+
+      this.currentSection.startedAt = 0;
     } else {
       this.currentSection = null;
     }

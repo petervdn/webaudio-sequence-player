@@ -109,6 +109,7 @@ export default class Editor {
 
       const el = createSequenceElement(
         timedSequence.sequence,
+        `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`,
         { x, y },
         {
           width,

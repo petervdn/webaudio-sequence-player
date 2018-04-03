@@ -8,13 +8,13 @@ import {getEventScheduleList, getSectionIterationAtTime} from '../src/lib/util/s
 describe('scheduleUtils', () => {
   it('should get correction section iteration', () => {
     const section = {
-      startedAt: new MusicTime(4),
-      start: new MusicTime(4),
-      end: new MusicTime(8),
+      startedAt: 8,
+      start: new MusicTime(4), // 8s
+      end: new MusicTime(8),   // 16s
     };
-    expect(getSectionIterationAtTime(section, 7, 128)).to.equal(-1);
-    expect(getSectionIterationAtTime(section, 7.5, 128)).to.equal(0);
-    expect(getSectionIterationAtTime(section, 16, 128)).to.equal(1);
+    expect(getSectionIterationAtTime(section, 7, 120)).to.equal(-1);
+    expect(getSectionIterationAtTime(section, 8, 120)).to.equal(0);
+    expect(getSectionIterationAtTime(section, 16, 120)).to.equal(1);
   });
 
   it('should throw an error when retrieving iteration without startedAt', () => {

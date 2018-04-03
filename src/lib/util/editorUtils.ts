@@ -5,6 +5,7 @@ import Song from '../Song';
 
 export function createSequenceElement(
   sequence: ISequence,
+  label: string,
   position: IPoint,
   size: ISize,
   color: string,
@@ -16,16 +17,16 @@ export function createSequenceElement(
 ): HTMLElement {
   const wrapper = createRectElement(position, size, color);
 
-  const label = document.createElement('p');
-  label.innerText = sequence.id;
-  label.style.margin = '0px';
-  label.style.padding = '1px 4px';
-  label.style.height = `${labelHeight}px`;
-  label.style.backgroundColor = 'rgba(0,0,0,0.4)';
-  label.style.color = 'white';
-  label.style.boxSizing = 'border-box';
-  label.style.fontSize = '11px';
-  wrapper.appendChild(label);
+  const labelEl = document.createElement('p');
+  labelEl.innerText = label;
+  labelEl.style.margin = '0px';
+  labelEl.style.padding = '1px 4px';
+  labelEl.style.height = `${labelHeight}px`;
+  labelEl.style.backgroundColor = 'rgba(0,0,0,0.4)';
+  labelEl.style.color = 'white';
+  labelEl.style.boxSizing = 'border-box';
+  labelEl.style.fontSize = '11px';
+  wrapper.appendChild(labelEl);
 
   const eventWrapHeight = size.height - labelHeight;
   const eventWrap = document.createElement('div');
