@@ -49,6 +49,7 @@ function getEventScheduleListForSectionSong(
   let counter = 0;
   while (counter < 1) {
     song.timedSequences.forEach(timedSequence => {
+      const sequenceStart = timedSequence.absoluteStart.toTime(song.bpm);
       timedSequence.sequence.events.forEach(event => {
         const eventStart = event.relativeStart.add(timedSequence.absoluteStart).toTime(song.bpm);
         if (eventStart < fromTime) {

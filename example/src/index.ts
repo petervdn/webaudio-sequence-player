@@ -1,118 +1,74 @@
+import Editor from '../../src/lib/editor/Editor';
+import SequencePlayer from '../../src/lib/SequencePlayer';
 import Song from '../../src/lib/Song';
 import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
-import SequencePlayer from '../../src/lib/SequencePlayer';
 import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
+import { SequencePlayerState } from '../../src/lib/data/enum';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import Editor from '../../src/lib/editor/Editor';
-import { getEventScheduleList } from '../../src/lib/util/scheduleUtils';
-import {getSectionOnTime} from "../../src/lib/util/songUtils";
-import {test} from "shelljs";
 
-const stateElement = <HTMLElement>document.querySelector('#state');
-const timeElement = <HTMLElement>document.querySelector('#time');
+declare const Vue;
+const notPlayingTime = '--.--.--';
 
-const showPlayerState = state => {
-  stateElement.innerText = state;
-};
+new Vue({
+  el: '#app',
+  mounted() {
+    this.frame = new AnimationFrame(this.onFrame);
+    this.context = new AudioContext();
+    this.player = new SequencePlayer(this.context, 'samples/', 'wav');
+    this.editor = new Editor(document.querySelector('#editor'), this.player);
+    this.player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
 
-const context = new AudioContext();
-const player = new SequencePlayer(context, 'samples/', 'wav');
-player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
+    this.player.addEventListener('state-change', this.onPlayerStateChange);
 
-showPlayerState(player.getState());
+    // create a song
+    this.song = new Song(120);
+    const seq = createSampleSequence('sequence', {
+      '0.0.0': ['kick'],
+      '0.1.0': ['hihat'],
+      '0.2.0': ['kick'],
+      '0.2.2': ['hihat'],
+    });
 
-player.addEventListener('state-change', (event: SequencePlayerEvent) => {
-  showPlayerState(event.data);
+    this.song.addSequenceAtTime(seq, new MusicTime(0,0,0));
+    this.song.addSequenceAtTime(seq, new MusicTime(2,0,0));
+    this.song.addSequenceAtTime(seq, new MusicTime(3,0,0));
+
+    this.editor.setSong(this.song);
+  },
+  data: {
+    musicTime: notPlayingTime,
+  },
+  methods: {
+    onPlayerStateChange(event: SequencePlayerEvent) {
+      switch(event.data) {
+        case SequencePlayerState.IDLE: {
+          this.musicTime = notPlayingTime;
+          this.frame.stop();
+          break;
+        }
+        case SequencePlayerState.PLAYING: {
+          this.frame.start();
+          break;
+        }
+      }
+    },
+    start() {
+      this.player.play(this.song);
+    },
+    stop() {
+      this.player.stop();
+    },
+    onScaleChange() {
+      this.editor.setPixelsPerSecondFactor(parseInt(this.$refs.scaleSlider.value, 10) / 100);
+    },
+    onFrame() {
+      this.musicTime = this.player.timeData.playMusicTime.toString();
+    }
+  },
 });
+/*
 
-document.querySelector('#start').addEventListener('click', () => {
-  player.play(song2);
-});
-
-document.querySelector('#stop').addEventListener('click', () => {
-  player.stop();
-});
-
-const slider = <HTMLInputElement>document.querySelector('#scale');
-slider.addEventListener('input', () => {
-  editor.setPixelsPerSecondFactor(parseInt(slider.value, 10) / 100);
-});
-
-const animationFrame = new AnimationFrame(() => {
-  const musicTime = player.timeData.playMusicTime;
-  timeElement.innerText = `${musicTime.bars}.${musicTime.beats}.${musicTime.sixteenths}`;
-});
-animationFrame.start();
-
-const data1 = {
-  '0.0.0': ['kick', 1, 'synth', 1],
-  '0.1.0': ['kick', 1, 'clap', 1],
-  '0.2.0': ['kick', 1],
-  '0.3.0': ['kick', 1, 'clap', 1],
-  '1.0.0': ['kick', 1],
-  '1.1.0': ['kick', 1, 'clap', 1],
-  '1.2.0': ['kick', 1],
-  '1.3.0': ['kick', 1, 'clap', 1],
-  '2.0.0': ['kick', 1],
-  '2.1.0': ['clap', 1],
-  '2.2.0': [],
-  '2.3.0': ['clap', 1],
-  '3.0.0': ['kick', 1],
-  '3.1.0': ['clap', 1],
-  '3.2.0': [],
-  '3.3.0': ['clap', 1],
-};
-const data2 = {
-  '0.2.2': ['snare'],
-  '1.3.0': ['snare'],
-  '2.2.2': ['snare'],
-  '3.0.0': ['snare', 1 / 8],
-  '3.0.2': ['snare', 2 / 8],
-  '3.1.0': ['snare', 3 / 8],
-  '3.1.2': ['snare', 4 / 8],
-  '3.2.0': ['snare', 5 / 8],
-  '3.2.2': ['snare', 6 / 8],
-  '3.3.0': ['snare', 7 / 8],
-  '3.3.2': ['snare', 8 / 8],
-};
-
-const data3 = {
-  '0.0.0': ['hihat'],
-  '0.0.1': ['hihat'],
-  '0.0.2': ['hihat'],
-  '0.0.3': ['hihat'],
-};
-
-// const song = new Song(128);
-const seq1 = createSampleSequence('seq1', data1);
-const seq2 = createSampleSequence('snare', data2);
-const seq3 = createSampleSequence('hihat', data3);
-// song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
-// song.addSequenceAtTime(seq1, new MusicTime(4, 0, 0));
-// song.addSequenceAtTime(seq1, new MusicTime(8, 0, 0));
-// song.addSequenceAtTime(seq2, new MusicTime(0, 0, 0));
-// song.addSequenceAtTime(seq2, new MusicTime(4, 0, 0));
-// song.addSequenceAtTime(seq3, new MusicTime(4, 0, 0));
-// song.addSequenceAtTime(seq3, new MusicTime(5, 0, 0));
-// song.addSequenceAtTime(seq3, new MusicTime(6, 0, 0));
-// song.addSequenceAtTime(seq3, new MusicTime(7, 0, 0));
-
-
-const data4 = {
-  '0.0.0': ['kick'],
-  '0.1.0': ['hihat'],
-  '0.2.0': ['kick'],
-  '0.2.2': ['hihat'],
-};
-
-const song2 = new Song(120);
-const seq = createSampleSequence('seq1', data4);
-song2.addSequenceAtTime(seq, new MusicTime(0,0,0));
-song2.addSequenceAtTime(seq, new MusicTime(2,0,0));
-song2.addSequenceAtTime(seq, new MusicTime(3,0,0));
-
-const editor = new Editor(document.querySelector('#editor'), player);
 song2.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
 
 const testTime = 0;
@@ -123,3 +79,4 @@ startSection.startedAt = testTime;
 const items = getEventScheduleList(song2, testTime, 1.1, startSection);
 console.log(items);
 
+*/

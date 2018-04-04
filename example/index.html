@@ -5,13 +5,20 @@
     <title>example</title>
   </head>
   <body style="padding: 20px">
+    <div id="app">
+      <button @click="start">start</button>
+      <button @click="stop">stop</button>
+      <p>{{musicTime}}</p>
+      <input type="range" ref="scaleSlider" @input="onScaleChange">
+      <div id="editor" style="width: 1200px; height: 800px"></div>
+    </div>
+
     <p id="state"></p>
     <p id="time" style="font-size: 16px; font-weight: bold;"></p>
-    <button id="start">start</button>
-    <button id="stop">stop</button>
-    <input id="scale" type="range">
-    <div id="editor" style="width: 1200px; height: 800px"></div>
+
+
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="./main.js"></script>
 </html>
 

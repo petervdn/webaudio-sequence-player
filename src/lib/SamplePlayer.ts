@@ -23,17 +23,19 @@ export default class SamplePlayer {
       event.volume,
     );
 
-    // add to list to keep track of playing samples
-    this.playingSamples.push(playResult);
+    if (playResult) {
+      // add to list to keep track of playing samples
+      this.playingSamples.push(playResult);
 
-    // when playing is done, remove from list
-    playResult.bufferSourceNode.onended = () => {
-      const index = this.playingSamples.indexOf(playResult);
+      // when playing is done, remove from list
+      playResult.bufferSourceNode.onended = () => {
+        const index = this.playingSamples.indexOf(playResult);
 
-      if (index > -1) {
-        this.playingSamples.splice(index, 1);
-      }
-    };
+        if (index > -1) {
+          this.playingSamples.splice(index, 1);
+        }
+      };
+    }
   }
 
   public stopAll(): void {

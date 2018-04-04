@@ -35,7 +35,7 @@ export default class Editor {
   private songEnd: HTMLElement;
   private updateFrame: AnimationFrame = new AnimationFrame(this.onUpdate.bind(this));
 
-  constructor(element: HTMLElement, player: any) {
+  constructor(element: HTMLElement, player: SequencePlayer) {
     this.element = element;
     element.style.position = 'relative';
     element.style.backgroundColor = '#444';
