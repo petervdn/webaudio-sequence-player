@@ -18,7 +18,7 @@ import { SequencePlayerState } from '../data/enum';
 import SequencePlayer from '../SequencePlayer';
 
 export default class Editor {
-  private minMaxPixelsPerSecond = [10, 200];
+  private minMaxPixelsPerSecond = [30, 500];
   private pixelsPerSecond = 40;
   private defaultEventDuration = MusicTime.fromString('0.0.1');
   private sequenceHeight = 70;
@@ -213,7 +213,7 @@ export default class Editor {
 
   private getSectionSize(section: ISection): ISize {
     return {
-      width: this.musicTimeToPixels(section.end.subtract(section.start)),
+      width: this.musicTimeToPixels(section.end.subtract(section.start)) - 2,
       height: 10,
     };
   }
@@ -247,9 +247,10 @@ export default class Editor {
   private getSequenceWidth(sequence: ISequence): number {
     const latestEvent = getLatestEventInSequence(sequence);
     // ceil to next bar
-    const seqEndTime = new MusicTime(latestEvent.relativeStart.bars + 1, 0, 0);
+    const seqEndTime = latestEvent.relativeStart.add(new MusicTime(0, 1, 0));
 
     return this.musicTimeToPixels(seqEndTime);
+    // return this.musicTimeToPixels(seqEndTime) + this.getEventSize().width + 1;
   }
 
   private musicTimeToPixels(musicTime: MusicTime): number {

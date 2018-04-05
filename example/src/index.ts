@@ -28,33 +28,31 @@ new Vue({
     const seq1 = createSampleSequence('seq1', {
       '0.0.0': ['kick'],
       '0.1.0': ['snare'],
-      '0.2.0': ['kick'],
-      '0.2.2': ['snare'],
     });
     const seq2 = createSampleSequence('seq2', {
       '0.0.0': ['hihat'],
       '0.1.0': ['hihat'],
       '0.2.0': ['hihat'],
-      '1.0.2': ['hihat'],
-      '1.3.1': ['hihat'],
-      '2.0.2': ['hihat'],
-      '2.3.2': ['hihat'],
+      '0.3.0': ['hihat'],
     });
 
     this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
-    this.song.addSequenceAtTime(seq1, new MusicTime(2,0,0));
-    this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
-    this.song.addSequenceAtTime(seq2, new MusicTime(1,0,0));
-    this.song.addSection(MusicTime.fromString('1.2.0'), MusicTime.fromString('2.2.0'));
+    this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
+    //  this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
+    this.song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
+    // this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
+    // this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
+    this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
 
     this.editor.setSong(this.song);
 
-    const testTime = 4;
-    const startSection = getSectionOnTime(this.song, testTime);
-    startSection.startedAt = testTime;
-    const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
+    // const testTime = 4;
+    // const startSection = getSectionOnTime(this.song, testTime);
+    // startSection.startedAt = testTime;
+    // const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
 
-    console.log(items);
+    // console.log(items);
+    this.editor.setPixelsPerSecondFactor(0.7);
   },
   data: {
     musicTime: notPlayingTime,

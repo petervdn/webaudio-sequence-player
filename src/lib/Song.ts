@@ -69,19 +69,22 @@ export default class Song {
    * @param {MusicTime} start
    * @param {MusicTime} end
    */
-  public addSection(start: MusicTime, end: MusicTime): void {
+  public addSection(start: MusicTime, end: MusicTime): ISection {
     if (end <= start) {
       throw new Error('The end of a section should be later than its start');
     }
-    this.sections.push({
+    const newSection = {
       start,
       end,
-    });
+    };
+    this.sections.push(newSection);
 
     // remove all gap-sections and re-add all gaps
     this.sections = this.sections.filter(section => !section.isGap);
     const gaps = createSectionsForGaps(this.sections, this.songEndTime);
     this.sections.push(...gaps);
+
+    return newSection;
   }
 
   public getSections(): ISection[] {

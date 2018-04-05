@@ -61,20 +61,8 @@ export function createEventElement(
 }
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
-  const color = section.isGap ? 'rgba(0,0, 200,0.3' : 'rgba(0,200,0,0.3';
-  if (section.isGap) {
-    position.y -= 10;
-  }
+  const color = section.isGap ? 'rgba(200,0, 0,0.8)' : 'rgba(0,200,0,0.8)';
   return createRectElement(position, size, color);
-
-  // const label = document.createElement('p');
-  // label.innerText = 'section';
-  // label.style.margin = '0px';
-  // label.style.padding = '2px';
-  // label.style.backgroundColor = 'rgba(0,0,0,0.4)';
-  // label.style.color = 'white';
-  // label.style.fontSize = '11px';
-  // wrapper.appendChild(label);
 }
 
 export function createRectElement(position: IPoint, size: ISize, color: string): HTMLElement {

@@ -3,7 +3,10 @@ import 'web-audio-test-api';
 import { createSampleSequence } from '../src/lib/util/sequenceUtils';
 import MusicTime from 'musictime';
 import Song from '../src/lib/Song';
-import {getEventScheduleList, getSectionIterationAtTime} from '../src/lib/util/scheduleUtils';
+import {
+  getEventScheduleList, getEventsInSection,
+  getSectionIterationAtTime
+} from '../src/lib/util/scheduleUtils';
 
 describe('scheduleUtils', () => {
   it('should get correction section iteration', () => {
@@ -33,8 +36,28 @@ describe('scheduleUtils', () => {
     // todo
   });
 
-  it('collect evens for section', () => {
-    // todo
+  it('collect events for section', () => {
+    // create a song
+    const song = new Song(120);
+    const seq1 = createSampleSequence('seq1', {
+      '0.0.0': ['kick'],
+      '0.1.0': ['snare'],
+    });
+    const seq2 = createSampleSequence('seq2', {
+      '0.0.0': ['hihat'],
+      '0.1.0': ['hihat'],
+      '0.2.0': ['hihat'],
+      '0.3.0': ['hihat'],
+    });
+
+    song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
+    song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
+    song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
+    const section1 = song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
+    const section2 = song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
+    const events1 = getEventsInSection(song, section1);
+    const events2 = getEventsInSection(song, section2);
+    console.log(events1.length, events2.length);
   });
 
 

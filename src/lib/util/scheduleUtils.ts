@@ -47,12 +47,12 @@ function getEventScheduleListForSectionSong(
   // let section
   // let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
-  console.log(`section "${section.start.toString()}"`, sectionIteration);
-  console.log('from', fromTime, 'to', toTime);
-  let counter = 0;
-  while (counter < 10) {
-    counter++;
-  }
+  // console.log(`section "${section.start.toString()}"`, sectionIteration);
+  // console.log('from', fromTime, 'to', toTime);
+  // let counter = 0;
+  // while (counter < 10) {
+  //   counter++;
+  // }
 
   console.log(getEventsInSection(song, currentSection));
 
