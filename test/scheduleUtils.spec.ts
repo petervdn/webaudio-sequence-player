@@ -15,6 +15,7 @@ describe('scheduleUtils', () => {
     expect(getSectionIterationAtTime(section, 7, 120)).to.equal(-1);
     expect(getSectionIterationAtTime(section, 8, 120)).to.equal(0);
     expect(getSectionIterationAtTime(section, 16, 120)).to.equal(1);
+    expect(getSectionIterationAtTime(section, 25, 120)).to.equal(2);
   });
 
   it('should throw an error when retrieving iteration without startedAt', () => {

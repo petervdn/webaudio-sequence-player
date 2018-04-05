@@ -40,10 +40,13 @@ export function createEventElement(
   event: ISequenceEvent,
   position: IPoint,
   size: ISize,
+  absoluteStart: number,
 ): HTMLElement {
   const eventEl = createRectElement(position, size, 'rgba(255,255,255,1)');
-  eventEl.innerText = (<ISampleEvent>event).sampleName;
-  eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
+  const sampleName = (<ISampleEvent>event).sampleName;
+  const title = `${sampleName} ${event.relativeStart.toString()} (${absoluteStart}s)`;
+  eventEl.innerText = sampleName;
+  eventEl.title = title;
   return eventEl;
 }
 

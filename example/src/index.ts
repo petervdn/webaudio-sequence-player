@@ -6,6 +6,8 @@ import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
 import { SequencePlayerState } from '../../src/lib/data/enum';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
+import { getEventScheduleList } from '../../src/lib/util/scheduleUtils';
+import { getSectionOnTime } from '../../src/lib/util/songUtils';
 
 declare const Vue;
 const notPlayingTime = '--.--.--';
@@ -46,6 +48,13 @@ new Vue({
     this.song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
 
     this.editor.setSong(this.song);
+
+    const testTime = 0;
+    const startSection = getSectionOnTime(this.song, testTime);
+    startSection.startedAt = testTime;
+    const items = getEventScheduleList(this.song, testTime, 1.1, startSection);
+
+    console.log(items);
   },
   data: {
     musicTime: notPlayingTime,

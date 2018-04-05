@@ -171,15 +171,17 @@ export default class Editor {
 
   private addEventsToSequence(sequenceElement: HTMLElement, timedSequence: ITimedSequence): void {
     const eventsContainer = sequenceElement.querySelector('.events');
-    // const timedSeqSize = this.getSizeForTimedSequence(timedSequence);
-    // const eventContainerHeight = timedSeqSize.height - this.seqLabelheight;
 
     const eventSize = this.getEventSize();
     timedSequence.sequence.events.forEach((event, index) => {
+      const absoluteStart =
+        timedSequence.absoluteStart.toTime(this.song.bpm) +
+        event.relativeStart.toTime(this.song.bpm);
       const eventEl = createEventElement(
         event,
         this.getPositionForEvent(event, index, eventSize.height),
         eventSize,
+        absoluteStart,
       );
       eventEl.style.overflow = 'hidden';
       eventEl.style.fontSize = '10px';
