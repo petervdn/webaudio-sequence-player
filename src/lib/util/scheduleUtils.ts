@@ -84,14 +84,13 @@ function getEventScheduleListForSectionSong(
  * @returns {number}
  */
 export function getSectionIterationAtTime(section: ISection, time: number, bpm: number): number {
-  if (typeof section.startedAt === void 0) {
+  if (section.startedAt === void 0) {
     throw new Error(
       `Section (${section.start.toString()}-${section.end.toString()}) has no 'startedAt' value, cannot get iteration`,
     );
   }
-  const sectionStartedAt = section.startedAt;
   const sectionLength = section.end.toTime(bpm) - section.start.toTime(bpm);
-  return Math.floor((time - sectionStartedAt) / sectionLength);
+  return Math.floor((time - section.startedAt) / sectionLength);
 }
 
 /**
