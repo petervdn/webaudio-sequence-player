@@ -42,6 +42,7 @@ export default class Editor {
     this.element = element;
     element.style.position = 'relative';
     element.style.backgroundColor = '#444';
+    element.style.overflow = 'hidden';
 
     this.player = player;
 

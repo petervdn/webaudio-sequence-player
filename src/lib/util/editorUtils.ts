@@ -22,6 +22,8 @@ export function createSequenceElement(
   labelEl.style.color = 'white';
   labelEl.style.boxSizing = 'border-box';
   labelEl.style.fontSize = '11px';
+  labelEl.style.whiteSpace = 'nowrap';
+  labelEl.style.overflow = 'hidden';
   wrapper.appendChild(labelEl);
 
   const eventWrapHeight = size.height - labelHeight;
@@ -31,23 +33,6 @@ export function createSequenceElement(
   eventWrap.style.position = 'relative';
   wrapper.appendChild(eventWrap);
 
-  // const eventHeight = eventWrapHeight / eventVerticalSpread;
-  // sequence.events.forEach((event, index) => {
-  //   const pos = {
-  //     x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
-  //     y: (index % eventVerticalSpread) * eventHeight,
-  //   };
-  //   const size = {
-  //     width: eventWidth - 1,
-  //     height: eventHeight - 1,
-  //   };
-  //
-  //   const eventEl = createRectElement(pos, size, 'rgba(255,255,255,1)');
-  //   eventEl.innerText = (<ISampleEvent>event).sampleName[0];
-  //   eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
-  //   eventWrap.appendChild(eventEl);
-  // });
-
   return wrapper;
 }
 
@@ -55,23 +40,7 @@ export function createEventElement(
   event: ISequenceEvent,
   position: IPoint,
   size: ISize,
-  // index:number,
-  // pixelsPerSecond: number,
-  // bpm: number,
-  // eventContainerHeight: number,
-  // eventWidth: number,
-  // eventVerticalSpread = 3,
 ): HTMLElement {
-  // const eventHeight = eventContainerHeight / eventVerticalSpread;
-  // const pos = {
-  //   x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
-  //   y: (index % eventVerticalSpread) * eventHeight,
-  // };
-  // const size = {
-  //   width: eventWidth - 1,
-  //   height: eventHeight - 1,
-  // };
-
   const eventEl = createRectElement(position, size, 'rgba(255,255,255,1)');
   eventEl.innerText = (<ISampleEvent>event).sampleName;
   eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;

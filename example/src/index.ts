@@ -23,16 +23,26 @@ new Vue({
 
     // create a song
     this.song = new Song(120);
-    const seq = createSampleSequence('sequence', {
+    const seq1 = createSampleSequence('seq1', {
       '0.0.0': ['kick'],
-      '0.1.0': ['hihat'],
+      '0.1.0': ['snare'],
       '0.2.0': ['kick'],
-      '0.2.2': ['hihat'],
+      '0.2.2': ['snare'],
+    });
+    const seq2 = createSampleSequence('seq2', {
+      '0.0.0': ['hihat'],
+      '0.1.0': ['hihat'],
+      '0.2.0': ['hihat'],
+      '1.0.2': ['hihat'],
+      '1.3.1': ['hihat'],
+      '2.0.2': ['hihat'],
+      '2.3.2': ['hihat'],
     });
 
-    this.song.addSequenceAtTime(seq, new MusicTime(0,0,0));
-    this.song.addSequenceAtTime(seq, new MusicTime(2,0,0));
-    this.song.addSequenceAtTime(seq, new MusicTime(3,0,0));
+    this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
+    this.song.addSequenceAtTime(seq1, new MusicTime(2,0,0));
+    this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
+    this.song.addSequenceAtTime(seq2, new MusicTime(1,0,0));
 
     this.editor.setSong(this.song);
   },
