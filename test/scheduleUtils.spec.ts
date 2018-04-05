@@ -33,6 +33,11 @@ describe('scheduleUtils', () => {
     // todo
   });
 
+  it('collect evens for section', () => {
+    // todo
+  });
+
+
   describe('scheduling a song without sections', () => {
     it('should collect scheduleList', () => {
       const song = new Song(60);
