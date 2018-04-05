@@ -174,14 +174,12 @@ export default class Editor {
 
     const eventSize = this.getEventSize();
     timedSequence.sequence.events.forEach((event, index) => {
-      const absoluteStart =
-        timedSequence.absoluteStart.toTime(this.song.bpm) +
-        event.relativeStart.toTime(this.song.bpm);
       const eventEl = createEventElement(
         event,
         this.getPositionForEvent(event, index, eventSize.height),
         eventSize,
-        absoluteStart,
+        timedSequence,
+        this.song.bpm,
       );
       eventEl.style.overflow = 'hidden';
       eventEl.style.fontSize = '10px';

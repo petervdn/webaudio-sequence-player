@@ -1,4 +1,9 @@
-import { ISection, ISampleEvent, ISequenceEvent } from '../../../src/lib/data/interface';
+import {
+  ISection,
+  ISampleEvent,
+  ISequenceEvent,
+  ITimedSequence,
+} from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
 import { IPoint, ISize } from '../../../src/lib/editor/Editor';
 import Song from '../Song';
@@ -40,11 +45,16 @@ export function createEventElement(
   event: ISequenceEvent,
   position: IPoint,
   size: ISize,
-  absoluteStart: number,
+  timedSequence: ITimedSequence,
+  bpm: number,
 ): HTMLElement {
   const eventEl = createRectElement(position, size, 'rgba(255,255,255,1)');
   const sampleName = (<ISampleEvent>event).sampleName;
-  const title = `${sampleName} ${event.relativeStart.toString()} (${absoluteStart}s)`;
+  const relativeStart = event.relativeStart.toString();
+  const abs = timedSequence.absoluteStart.add(event.relativeStart);
+  const absoluteStart = abs.toString();
+  const absoluteStartSecs = abs.toTime(bpm);
+  const title = `[${sampleName}] rel: ${relativeStart} abs: ${absoluteStart} (${absoluteStartSecs}s)`;
   eventEl.innerText = sampleName;
   eventEl.title = title;
   return eventEl;

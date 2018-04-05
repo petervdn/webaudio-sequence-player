@@ -42,37 +42,52 @@ function getEventScheduleListForSectionSong(
   /*tslint:disable*/
   let section = currentSection;
   let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
-  let fromTimeInSection = fromTime - section.startedAt;
+
+  // let sectionIterationStart = sectionIteration
+  // let section
+  // let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
-  console.log(`section "${section.start.toString()}"`, sectionIteration, fromTimeInSection);
+  console.log(`section "${section.start.toString()}"`, sectionIteration);
   console.log('from', fromTime, 'to', toTime);
   let counter = 0;
-  while (counter < 1) {
-    song.timedSequences.forEach(timedSequence => {
-      const sequenceStart = timedSequence.absoluteStart.toTime(song.bpm);
-      timedSequence.sequence.events.forEach(event => {
-        const eventStart = event.relativeStart.add(timedSequence.absoluteStart).toTime(song.bpm);
-        if (eventStart < fromTime) {
-          // event is in the past todo half events still count here
-        } else if (eventStart >= fromTime && eventStart < toTime) {
-          // event start is in window
-          results.push({
-            event,
-            absoluteSeconds: eventStart,
-          });
-        } else {
-          console.log('skip');
-        }
-      });
-      // if (timedSequence.absoluteStart.toTime(song.bpm) > toTime) {
-      //   console.log('skip');
-      // }
-    });
-
+  while (counter < 10) {
     counter++;
   }
 
+  console.log(getEventsInSection(song, currentSection));
+
   console.timeEnd('schedule');
+  return results;
+}
+
+export interface ITimedSequenceEvent {
+  timedSequence: ITimedSequence;
+  event: ISequenceEvent;
+}
+
+export function getEventsInSection(song: Song, section: ISection): ITimedSequenceEvent[] {
+  const sectionStart = section.start.toTime(song.bpm);
+  const sectionEnd = section.end.toTime(song.bpm);
+  const results: ITimedSequenceEvent[] = [];
+  song.timedSequences.forEach(timedSequence => {
+    const sequenceStart = timedSequence.absoluteStart.toTime(song.bpm);
+
+    // loop through all events in sequence
+    timedSequence.sequence.events.forEach(event => {
+      // get absolute start for event
+      const eventStart = event.relativeStart.toTime(song.bpm) + sequenceStart;
+
+      // check if it's in time window
+      if (eventStart >= sectionStart && eventStart < sectionEnd) {
+        // event start is in window
+        results.push({
+          event,
+          timedSequence,
+        });
+      }
+    });
+  });
+
   return results;
 }
 

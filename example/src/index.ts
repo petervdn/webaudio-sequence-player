@@ -45,14 +45,14 @@ new Vue({
     this.song.addSequenceAtTime(seq1, new MusicTime(2,0,0));
     this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
     this.song.addSequenceAtTime(seq2, new MusicTime(1,0,0));
-    this.song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
+    this.song.addSection(MusicTime.fromString('1.2.0'), MusicTime.fromString('2.2.0'));
 
     this.editor.setSong(this.song);
 
-    const testTime = 0;
+    const testTime = 4;
     const startSection = getSectionOnTime(this.song, testTime);
     startSection.startedAt = testTime;
-    const items = getEventScheduleList(this.song, testTime, 1.1, startSection);
+    const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
 
     console.log(items);
   },
