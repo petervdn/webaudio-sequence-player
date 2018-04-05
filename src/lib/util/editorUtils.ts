@@ -1,4 +1,4 @@
-import { ISequence, ISection, ISampleEvent, ISequenceEvent } from '../../../src/lib/data/interface';
+import { ISection, ISampleEvent, ISequenceEvent } from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
 import { IPoint, ISize } from '../../../src/lib/editor/Editor';
 import Song from '../Song';
@@ -49,11 +49,10 @@ export function createEventElement(
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
   const color = section.isGap ? 'rgba(0,0, 200,0.3' : 'rgba(0,200,0,0.3';
-  const pos = position;
   if (section.isGap) {
-    pos.y -= 10;
+    position.y -= 10;
   }
-  const wrapper = createRectElement(position, size, color);
+  return createRectElement(position, size, color);
 
   // const label = document.createElement('p');
   // label.innerText = 'section';
@@ -63,16 +62,11 @@ export function createSection(section: ISection, position: IPoint, size: ISize):
   // label.style.color = 'white';
   // label.style.fontSize = '11px';
   // wrapper.appendChild(label);
-
-  return wrapper;
 }
 
 export function createRectElement(position: IPoint, size: ISize, color: string): HTMLElement {
   const el = document.createElement('div');
-  el.style.width = `${size.width}px`;
-  el.style.height = `${size.height}px`;
-  el.style.left = `${position.x}px`;
-  el.style.top = `${position.y}px`;
+  applyPosAndSize(el, position, size);
   el.style.position = `absolute`;
   el.style.backgroundColor = color;
 
@@ -138,6 +132,13 @@ export function drawTimeline(
     xPosition += beatWidth;
     index += 1;
   }
+}
+
+export function applyPosAndSize(element: HTMLElement, pos: IPoint, size: ISize): void {
+  element.style.left = `${pos.x}px`;
+  element.style.top = `${pos.y}px`;
+  element.style.width = `${size.width}px`;
+  element.style.height = `${size.height}px`;
 }
 
 export function musicTimeToPixels(musicTime: MusicTime, bpm, pixelsPerSecond): number {

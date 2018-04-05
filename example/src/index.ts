@@ -43,6 +43,7 @@ new Vue({
     this.song.addSequenceAtTime(seq1, new MusicTime(2,0,0));
     this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
     this.song.addSequenceAtTime(seq2, new MusicTime(1,0,0));
+    this.song.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
 
     this.editor.setSong(this.song);
   },

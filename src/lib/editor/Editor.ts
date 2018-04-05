@@ -10,6 +10,7 @@ import {
   musicTimeToPixels,
   createVerticalLine,
   createEventElement,
+  applyPosAndSize,
 } from '../util/editorUtils';
 import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
@@ -110,23 +111,20 @@ export default class Editor {
       const sequenceIndex = this.song.sequences.indexOf(timedSequence.sequence);
       const existingElement = this.elementsMap.get(timedSequence);
 
+      const pos = this.getPositionForTimesSequence(timedSequence, sequenceIndex);
+      const size = this.getSizeForTimedSequence(timedSequence);
       if (existingElement) {
         // element already exists, resize/reposition
-        const newPos = this.getPositionForTimesSequence(timedSequence, sequenceIndex);
-        const newSize = this.getSizeForTimedSequence(timedSequence);
-        existingElement.style.top = `${newPos.y}px`;
-        existingElement.style.left = `${newPos.x}px`;
-        existingElement.style.width = `${newSize.width}px`;
-        existingElement.style.height = `${newSize.height}px`;
+        applyPosAndSize(existingElement, pos, size);
 
         this.updateEventsPosition(existingElement);
       } else {
         // element doesnt exist, create new
+        const label = `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`;
         const el = createSequenceElement(
-          // timedSequence.sequence,
-          `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`,
-          this.getPositionForTimesSequence(timedSequence, sequenceIndex),
-          this.getSizeForTimedSequence(timedSequence),
+          label,
+          pos,
+          size,
           this.colors[sequenceIndex % 2],
           this.seqLabelheight,
         );
@@ -142,15 +140,12 @@ export default class Editor {
     const sections = this.song.getSections();
     sections.forEach(section => {
       const existingElement = this.elementsMap.get(section);
-
+      const pos = this.getSectionPosition(section);
+      const size = this.getSectionSize(section);
       if (existingElement) {
-        // todo
+        applyPosAndSize(existingElement, pos, size);
       } else {
-        const el = createSection(
-          section,
-          this.getSectionPosition(section),
-          this.getSectionSize(section),
-        );
+        const el = createSection(section, pos, size);
         this.elementsMap.set(section, el);
         this.element.appendChild(el);
       }
