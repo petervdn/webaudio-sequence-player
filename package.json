@@ -103,7 +103,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
-    "musictime": "^1.0.7",
+    "musictime": "^1.2.0",
     "sample-manager": "^2.1.1",
     "seng-event": "^1.2.3"
   }
