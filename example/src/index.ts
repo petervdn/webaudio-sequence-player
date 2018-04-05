@@ -67,8 +67,8 @@ new Vue({
     }
   },
 });
-/*
 
+/*
 song2.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
 
 const testTime = 0;
@@ -78,5 +78,4 @@ startSection.startedAt = testTime;
 
 const items = getEventScheduleList(song2, testTime, 1.1, startSection);
 console.log(items);
-
 */

@@ -1,19 +1,15 @@
-import { ISequence, ISection, ISampleEvent } from '../../../src/lib/data/interface';
+import { ISequence, ISection, ISampleEvent, ISequenceEvent } from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
 import { IPoint, ISize } from '../../../src/lib/editor/Editor';
 import Song from '../Song';
 
 export function createSequenceElement(
-  sequence: ISequence,
+  // sequence: ISequence,
   label: string,
   position: IPoint,
   size: ISize,
   color: string,
   labelHeight: number,
-  pixelsPerSecond: number,
-  bpm: number,
-  eventWidth: number,
-  eventVerticalSpread = 3,
 ): HTMLElement {
   const wrapper = createRectElement(position, size, color);
 
@@ -30,28 +26,56 @@ export function createSequenceElement(
 
   const eventWrapHeight = size.height - labelHeight;
   const eventWrap = document.createElement('div');
+  eventWrap.classList.add('events');
   eventWrap.style.height = `${eventWrapHeight}px`;
   eventWrap.style.position = 'relative';
   wrapper.appendChild(eventWrap);
 
-  const eventHeight = eventWrapHeight / eventVerticalSpread;
-  sequence.events.forEach((event, index) => {
-    const pos = {
-      x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
-      y: (index % eventVerticalSpread) * eventHeight,
-    };
-    const size = {
-      width: eventWidth - 1,
-      height: eventHeight - 1,
-    };
-
-    const eventEl = createRectElement(pos, size, 'rgba(255,255,255,1)');
-    eventEl.innerText = (<ISampleEvent>event).sampleName[0];
-    eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
-    eventWrap.appendChild(eventEl);
-  });
+  // const eventHeight = eventWrapHeight / eventVerticalSpread;
+  // sequence.events.forEach((event, index) => {
+  //   const pos = {
+  //     x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
+  //     y: (index % eventVerticalSpread) * eventHeight,
+  //   };
+  //   const size = {
+  //     width: eventWidth - 1,
+  //     height: eventHeight - 1,
+  //   };
+  //
+  //   const eventEl = createRectElement(pos, size, 'rgba(255,255,255,1)');
+  //   eventEl.innerText = (<ISampleEvent>event).sampleName[0];
+  //   eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
+  //   eventWrap.appendChild(eventEl);
+  // });
 
   return wrapper;
+}
+
+export function createEventElement(
+  event: ISequenceEvent,
+  position: IPoint,
+  size: ISize,
+  // index:number,
+  // pixelsPerSecond: number,
+  // bpm: number,
+  // eventContainerHeight: number,
+  // eventWidth: number,
+  // eventVerticalSpread = 3,
+): HTMLElement {
+  // const eventHeight = eventContainerHeight / eventVerticalSpread;
+  // const pos = {
+  //   x: musicTimeToPixels(event.relativeStart, bpm, pixelsPerSecond),
+  //   y: (index % eventVerticalSpread) * eventHeight,
+  // };
+  // const size = {
+  //   width: eventWidth - 1,
+  //   height: eventHeight - 1,
+  // };
+
+  const eventEl = createRectElement(position, size, 'rgba(255,255,255,1)');
+  eventEl.innerText = (<ISampleEvent>event).sampleName;
+  eventEl.title = `${(<ISampleEvent>event).sampleName} ${event.relativeStart.toString()}`;
+  return eventEl;
 }
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {

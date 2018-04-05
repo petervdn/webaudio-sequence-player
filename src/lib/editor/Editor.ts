@@ -1,6 +1,6 @@
 import Song from '../Song';
 import { getLatestEventInSequence } from '../util/sequenceUtils';
-import { ISequence } from '../data/interface';
+import { ISequence, ITimedSequence, ISection, ISequenceEvent } from '../data/interface';
 import MusicTime from 'musictime';
 import {
   createSequenceElement,
@@ -9,6 +9,7 @@ import {
   createSection,
   musicTimeToPixels,
   createVerticalLine,
+  createEventElement,
 } from '../util/editorUtils';
 import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
@@ -16,7 +17,7 @@ import { SequencePlayerState } from '../data/enum';
 import SequencePlayer from '../SequencePlayer';
 
 export default class Editor {
-  private minMaxPixelsPerSecond = [10, 100];
+  private minMaxPixelsPerSecond = [10, 200];
   private pixelsPerSecond = 40;
   private defaultEventDuration = MusicTime.fromString('0.0.1');
   private sequenceHeight = 70;
@@ -26,6 +27,7 @@ export default class Editor {
   private seqSpacing: IPoint = { x: 1, y: 1 };
   private timelineHeight = 30;
   private timelineSpacing = 40;
+  private eventVerticalSpread = 3;
 
   private element: HTMLElement;
   private timeLineContext: CanvasRenderingContext2D;
@@ -34,6 +36,7 @@ export default class Editor {
   private playHead: HTMLElement;
   private songEnd: HTMLElement;
   private updateFrame: AnimationFrame = new AnimationFrame(this.onUpdate.bind(this));
+  private elementsMap = new Map();
 
   constructor(element: HTMLElement, player: SequencePlayer) {
     this.element = element;
@@ -79,6 +82,8 @@ export default class Editor {
       value * (this.minMaxPixelsPerSecond[1] - this.minMaxPixelsPerSecond[0]);
 
     drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song);
+    this.drawSong();
+    this.positionSongEnd();
   }
 
   private onUpdate(): void {
@@ -90,55 +95,145 @@ export default class Editor {
     this.drawSong();
     this.setLineHeights();
     drawTimeline(this.timeLineContext, this.seqsOffset.x, this.pixelsPerSecond, this.song);
+    this.positionSongEnd();
+  }
 
-    // set song end
+  private positionSongEnd(): void {
     this.songEnd.style.left = `${this.seqsOffset.x +
-      musicTimeToPixels(song.getSongEndTime(), song.bpm, this.pixelsPerSecond)}px`;
+      musicTimeToPixels(this.song.getSongEndTime(), this.song.bpm, this.pixelsPerSecond)}px`;
   }
 
   private drawSong(): void {
-    // draw sequences
+    // sequences
     this.song.timedSequences.forEach(timedSequence => {
       const sequenceIndex = this.song.sequences.indexOf(timedSequence.sequence);
+      const existingElement = this.elementsMap.get(timedSequence);
 
-      // seq
-      const x = this.seqsOffset.x + this.musicTimeToPixels(timedSequence.absoluteStart);
-      const y = this.seqsOffset.y + sequenceIndex * (this.sequenceHeight + this.seqSpacing.y);
-      const width = this.getSequenceWidth(timedSequence.sequence) - this.seqSpacing.x;
-      const height = this.sequenceHeight;
+      if (existingElement) {
+        // element already exists, resize/reposition
+        const newPos = this.getPositionForTimesSequence(timedSequence, sequenceIndex);
+        const newSize = this.getSizeForTimedSequence(timedSequence);
+        existingElement.style.top = `${newPos.y}px`;
+        existingElement.style.left = `${newPos.x}px`;
+        existingElement.style.width = `${newSize.width}px`;
+        existingElement.style.height = `${newSize.height}px`;
 
-      const el = createSequenceElement(
-        timedSequence.sequence,
-        `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`,
-        { x, y },
-        {
-          width,
-          height,
-        },
-        this.colors[sequenceIndex % 2],
-        this.seqLabelheight,
-        this.pixelsPerSecond,
-        this.song.bpm,
-        this.musicTimeToPixels(this.defaultEventDuration),
-      );
+        this.updateEventsPosition(existingElement);
+      } else {
+        // element doesnt exist, create new
+        const el = createSequenceElement(
+          // timedSequence.sequence,
+          `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`,
+          this.getPositionForTimesSequence(timedSequence, sequenceIndex),
+          this.getSizeForTimedSequence(timedSequence),
+          this.colors[sequenceIndex % 2],
+          this.seqLabelheight,
+        );
 
-      this.element.appendChild(el);
+        this.element.appendChild(el);
+        this.addEventsToSequence(el, timedSequence);
+
+        this.elementsMap.set(timedSequence, el);
+      }
     });
 
     // draw sections
     const sections = this.song.getSections();
     sections.forEach(section => {
-      this.element.appendChild(
-        createSection(
+      const existingElement = this.elementsMap.get(section);
+
+      if (existingElement) {
+        // todo
+      } else {
+        const el = createSection(
           section,
-          {
-            x: this.seqsOffset.x + this.musicTimeToPixels(section.start),
-            y: this.seqsOffset.y - 20,
-          },
-          { width: this.musicTimeToPixels(section.end.subtract(section.start)), height: 10 },
-        ),
-      );
+          this.getSectionPosition(section),
+          this.getSectionSize(section),
+        );
+        this.elementsMap.set(section, el);
+        this.element.appendChild(el);
+      }
     });
+  }
+
+  private updateEventsPosition(sequenceElement: HTMLElement): void {
+    const elements = sequenceElement.querySelectorAll('.events div');
+    const size = this.getEventSize();
+    elements.forEach((el: HTMLElement, index: number) => {
+      const event = this.elementsMap.get(el);
+      const pos = this.getPositionForEvent(event, index, this.getEventSize().height);
+      el.style.left = `${pos.x}px`;
+      el.style.top = `${pos.y}px`;
+      el.style.width = `${size.width}px`;
+      el.style.height = `${size.height}px`;
+    });
+  }
+
+  private getEventContainerHeight(): number {
+    return this.sequenceHeight - this.seqLabelheight;
+  }
+
+  private addEventsToSequence(sequenceElement: HTMLElement, timedSequence: ITimedSequence): void {
+    const eventsContainer = sequenceElement.querySelector('.events');
+    // const timedSeqSize = this.getSizeForTimedSequence(timedSequence);
+    // const eventContainerHeight = timedSeqSize.height - this.seqLabelheight;
+
+    const eventSize = this.getEventSize();
+    timedSequence.sequence.events.forEach((event, index) => {
+      const eventEl = createEventElement(
+        event,
+        this.getPositionForEvent(event, index, eventSize.height),
+        eventSize,
+      );
+      eventEl.style.overflow = 'hidden';
+      eventEl.style.fontSize = '10px';
+      eventsContainer.appendChild(eventEl);
+
+      // store eventdata for element
+      this.elementsMap.set(eventEl, event);
+    });
+  }
+
+  private getPositionForEvent(event: ISequenceEvent, index: number, eventHeight: number): IPoint {
+    return {
+      x: this.musicTimeToPixels(event.relativeStart),
+      y: (index % this.eventVerticalSpread) * eventHeight,
+    };
+  }
+
+  private getEventSize(): ISize {
+    return {
+      width: this.musicTimeToPixels(this.defaultEventDuration) - 1,
+      height: this.getEventContainerHeight() / this.eventVerticalSpread - 1,
+    };
+  }
+
+  private getSectionPosition(section: ISection): IPoint {
+    return {
+      x: this.seqsOffset.x + this.musicTimeToPixels(section.start),
+      y: this.seqsOffset.y - 20,
+    };
+  }
+
+  private getSectionSize(section: ISection): ISize {
+    return {
+      width: this.musicTimeToPixels(section.end.subtract(section.start)),
+      height: 10,
+    };
+  }
+
+  private getPositionForTimesSequence(timedSequence: ITimedSequence, index: number): IPoint {
+    return {
+      x: this.seqsOffset.x + this.musicTimeToPixels(timedSequence.absoluteStart),
+      y: this.seqsOffset.y + index * (this.sequenceHeight + this.seqSpacing.y),
+    };
+  }
+
+  private getSizeForTimedSequence(timedSequence: ITimedSequence): ISize {
+    return {
+      width: this.getSequenceWidth(timedSequence.sequence) - this.seqSpacing.x,
+      height: this.sequenceHeight,
+    };
   }
 
   private updatePlayheadPosition(): void {
