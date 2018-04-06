@@ -1,5 +1,11 @@
 import Song from '../Song';
-import { IScheduleEventData, ISection, ISequenceEvent, ITimedSequence } from '../data/interface';
+import {
+  IScheduleEventData,
+  ISection,
+  ISequenceEvent,
+  ITimedSequence,
+  ISampleEvent,
+} from '../data/interface';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
@@ -42,19 +48,34 @@ function getEventScheduleListForSectionSong(
   /*tslint:disable*/
   let section = currentSection;
   let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
+  let sectionStart = section.start.toTime(song.bpm);
+  let sectionEnd = section.end.toTime(song.bpm);
+  let sectionLength = sectionEnd - sectionStart;
+  let eventsInSection = getEventsInSection(song, section);
 
   // let sectionIterationStart = sectionIteration
   // let section
   // let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
-  // console.log(`section "${section.start.toString()}"`, sectionIteration);
-  // console.log('from', fromTime, 'to', toTime);
-  // let counter = 0;
-  // while (counter < 10) {
-  //   counter++;
-  // }
+  console.log(
+    `section "${section.start.toString()}" - "${section.end.toString()}"`,
+    sectionIteration,
+  );
+  console.log('from', fromTime, 'to', toTime);
+  let counter = 0;
+  while (counter < 10) {
+    eventsInSection.forEach(timedEvent => {
+      const sampleEvent = <ISampleEvent>timedEvent.event;
+      console.log(
+        timedEvent.timeInSection,
+        sampleEvent.relativeStart.toString(),
+        sampleEvent.sampleName,
+      );
+    });
 
-  console.log(getEventsInSection(song, currentSection));
+    console.log('-----');
+    counter++;
+  }
 
   console.timeEnd('schedule');
   return results;
@@ -63,7 +84,7 @@ function getEventScheduleListForSectionSong(
 export interface ITimedSequenceEvent {
   timedSequence: ITimedSequence;
   event: ISequenceEvent;
-  absoluteStart: number;
+  timeInSection: number;
 }
 
 export function getEventsInSection(song: Song, section: ISection): ITimedSequenceEvent[] {
@@ -84,7 +105,7 @@ export function getEventsInSection(song: Song, section: ISection): ITimedSequenc
         results.push({
           event,
           timedSequence,
-          absoluteStart,
+          timeInSection: absoluteStart - sectionStart,
         });
       }
     });
@@ -92,7 +113,7 @@ export function getEventsInSection(song: Song, section: ISection): ITimedSequenc
 
   // order on startttime
   results.sort((a, b) => {
-    return a.absoluteStart - b.absoluteStart;
+    return a.timeInSection - b.timeInSection;
   });
 
   return results;

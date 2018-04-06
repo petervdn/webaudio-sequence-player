@@ -41,21 +41,21 @@ new Vue({
     this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
     this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
     //  this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
-    const section1 = this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
-    const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
+    const section1 = this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
+    // const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
 
     this.editor.setSong(this.song);
-    const events = getEventsInSection(this.song, section2);
-    console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
+    // const events = getEventsInSection(this.song, section2);
+    // console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
 
 
-    // const testTime = 4;
-    // const startSection = getSectionOnTime(this.song, testTime);
-    // startSection.startedAt = testTime;
-    // const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
+    const testTime = 0.5;
+    const startSection = getSectionOnTime(this.song, testTime);
+    startSection.startedAt = testTime;
+    const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
 
-    // console.log(items);
+    console.log(items);
     this.editor.setPixelsPerSecondFactor(0.7);
   },
   data: {
