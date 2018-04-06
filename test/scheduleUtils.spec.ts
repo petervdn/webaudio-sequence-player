@@ -63,6 +63,7 @@ describe('scheduleUtils', () => {
     expect(events1.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal(['kick', 'snare', 'hihat']);
     expect(events2.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['kick', 'hihat', 'snare', 'hihat', 'hihat']);
     expect(events3.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['snare', 'hihat', 'kick']);
+    expect(events2.map(item => item.timeInSection)).to.deep.equal( [0, 0.125, 0.5, 0.625, 1.125]);
     expect(events3.map(item => item.timeInSection)).to.deep.equal( [0, 0.125, 0.5]);
   });
 

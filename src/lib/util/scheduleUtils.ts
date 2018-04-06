@@ -58,17 +58,27 @@ function getEventScheduleListForSectionSong(
   // let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
   console.log(
-    `section "${section.start.toString()}" - "${section.end.toString()}"`,
+    `section "${section.start.toString()}" - "${section.end.toString()}" (${sectionLength})`,
     sectionIteration,
   );
   console.log('from', fromTime, 'to', toTime);
   let counter = 0;
-  while (counter < 10) {
+  while (counter < 1) {
+    const sectionIterationStart = sectionStart + sectionIteration * sectionLength;
     eventsInSection.forEach(timedEvent => {
       const sampleEvent = <ISampleEvent>timedEvent.event;
+      const eventStart = sectionIterationStart + timedEvent.timeInSection;
+
+      if (eventStart >= fromTime && eventStart < toTime) {
+        results.push({
+          event: timedEvent.event,
+          absoluteSeconds: eventStart,
+        });
+      }
       console.log(
         timedEvent.timeInSection,
-        sampleEvent.relativeStart.toString(),
+        eventStart,
+        // sampleEvent.relativeStart.toString(),
         sampleEvent.sampleName,
       );
     });
