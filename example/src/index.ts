@@ -6,8 +6,9 @@ import MusicTime from 'musictime';
 import { SequencePlayerEvent } from '../../src/lib/data/event';
 import { SequencePlayerState } from '../../src/lib/data/enum';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import { getEventScheduleList } from '../../src/lib/util/scheduleUtils';
+import { getEventScheduleList, getEventsInSection } from '../../src/lib/util/scheduleUtils';
 import { getSectionOnTime } from '../../src/lib/util/songUtils';
+import { ISampleEvent } from '../../src/lib/data/interface';
 
 declare const Vue;
 const notPlayingTime = '--.--.--';
@@ -26,8 +27,8 @@ new Vue({
     // create a song
     this.song = new Song(120);
     const seq1 = createSampleSequence('seq1', {
-      '0.0.0': ['kick'],
       '0.1.0': ['snare'],
+      '0.0.0': ['kick'],
     });
     const seq2 = createSampleSequence('seq2', {
       '0.0.0': ['hihat'],
@@ -36,15 +37,18 @@ new Vue({
       '0.3.0': ['hihat'],
     });
 
+    this.song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
     this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
     this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
     //  this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
-    this.song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
-    // this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
-    // this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
-    this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
+    const section1 = this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
+    const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
+    // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
 
     this.editor.setSong(this.song);
+    const events = getEventsInSection(this.song, section2);
+    console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
+
 
     // const testTime = 4;
     // const startSection = getSectionOnTime(this.song, testTime);

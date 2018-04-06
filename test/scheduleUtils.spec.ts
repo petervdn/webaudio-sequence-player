@@ -36,7 +36,7 @@ describe('scheduleUtils', () => {
     // todo
   });
 
-  it('collect events for section', () => {
+  it('collect ordered events for section', () => {
     // create a song
     const song = new Song(120);
     const seq1 = createSampleSequence('seq1', {
@@ -50,14 +50,19 @@ describe('scheduleUtils', () => {
       '0.3.0': ['hihat'],
     });
 
+    song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
     song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
     song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
-    song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
     const section1 = song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
-    const section2 = song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
+    const section2 = song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
+    const section3 = song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
     const events1 = getEventsInSection(song, section1);
     const events2 = getEventsInSection(song, section2);
-    console.log(events1.length, events2.length);
+    const events3 = getEventsInSection(song, section3);
+
+    expect(events1.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal(['kick', 'snare', 'hihat']);
+    expect(events2.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['kick', 'hihat', 'snare', 'hihat', 'hihat']);
+    expect(events3.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['snare', 'hihat']);
   });
 
 

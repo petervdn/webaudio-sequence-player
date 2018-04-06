@@ -63,6 +63,7 @@ function getEventScheduleListForSectionSong(
 export interface ITimedSequenceEvent {
   timedSequence: ITimedSequence;
   event: ISequenceEvent;
+  absoluteStart: number;
 }
 
 export function getEventsInSection(song: Song, section: ISection): ITimedSequenceEvent[] {
@@ -75,17 +76,23 @@ export function getEventsInSection(song: Song, section: ISection): ITimedSequenc
     // loop through all events in sequence
     timedSequence.sequence.events.forEach(event => {
       // get absolute start for event
-      const eventStart = event.relativeStart.toTime(song.bpm) + sequenceStart;
+      const absoluteStart = event.relativeStart.toTime(song.bpm) + sequenceStart;
 
       // check if it's in time window
-      if (eventStart >= sectionStart && eventStart < sectionEnd) {
+      if (absoluteStart >= sectionStart && absoluteStart < sectionEnd) {
         // event start is in window
         results.push({
           event,
           timedSequence,
+          absoluteStart,
         });
       }
     });
+  });
+
+  // order on startttime
+  results.sort((a, b) => {
+    return a.absoluteStart - b.absoluteStart;
   });
 
   return results;
