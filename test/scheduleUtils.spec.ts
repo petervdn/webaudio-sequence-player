@@ -7,6 +7,7 @@ import {
   getEventScheduleList, getEventsInSection,
   getSectionIterationAtTime
 } from '../src/lib/util/scheduleUtils';
+import {ISampleEvent} from "../src/lib/data/interface";
 
 describe('scheduleUtils', () => {
   it('should get correction section iteration', () => {
