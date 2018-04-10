@@ -58,12 +58,13 @@ function getEventScheduleListForSectionSong(
   // let fromTimeInSection = fromTime - section.startedAt;
   /*tslint:enable*/
   console.log(
-    `section "${section.start.toString()}" - "${section.end.toString()}" (${sectionLength})`,
+    `section "${section.start.toString()}" - "${section.end.toString()}" (length ${sectionLength})`,
+    'startIteration',
     sectionIteration,
   );
   console.log('from', fromTime, 'to', toTime);
   let counter = 0;
-  while (counter < 1) {
+  while (counter < 2) {
     const sectionIterationStart = sectionStart + sectionIteration * sectionLength;
     eventsInSection.forEach(timedEvent => {
       const sampleEvent = <ISampleEvent>timedEvent.event;
@@ -75,15 +76,11 @@ function getEventScheduleListForSectionSong(
           absoluteSeconds: eventStart,
         });
       }
-      console.log(
-        timedEvent.timeInSection,
-        eventStart,
-        // sampleEvent.relativeStart.toString(),
-        sampleEvent.sampleName,
-      );
+      console.log(timedEvent.timeInSection, eventStart, sampleEvent.sampleName);
     });
 
     console.log('-----');
+    sectionIteration++;
     counter++;
   }
 
@@ -97,6 +94,14 @@ export interface ITimedSequenceEvent {
   timeInSection: number;
 }
 
+/**
+ * Returns the event within the start/end time of a given section.
+ * The resulting event will be wrapped in an object containing the timedSequence the event is in
+ * and the relative time after the section's start.
+ * @param {Song} song
+ * @param {ISection} section
+ * @returns {ITimedSequenceEvent[]}
+ */
 export function getEventsInSection(song: Song, section: ISection): ITimedSequenceEvent[] {
   const sectionStart = section.start.toTime(song.bpm);
   const sectionEnd = section.end.toTime(song.bpm);

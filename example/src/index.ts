@@ -53,7 +53,7 @@ new Vue({
     const testTime = 0.5;
     const startSection = getSectionOnTime(this.song, testTime);
     startSection.startedAt = testTime;
-    const items = getEventScheduleList(this.song, testTime, testTime + 1.1, startSection);
+    const items = getEventScheduleList(this.song, testTime, testTime + 0.7, startSection);
 
     console.log(items);
     this.editor.setPixelsPerSecondFactor(0.7);
