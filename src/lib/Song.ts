@@ -68,14 +68,17 @@ export default class Song {
    * Add a section, and fill every remaining gap up with an isGap section (so every timewindow is covered)
    * @param {MusicTime} start
    * @param {MusicTime} end
+   * @param {number} loop
+   * @returns {ISection}
    */
-  public addSection(start: MusicTime, end: MusicTime): ISection {
+  public addSection(start: MusicTime, end: MusicTime, loop = -1): ISection {
     if (end <= start) {
       throw new Error('The end of a section should be later than its start');
     }
     const newSection = {
       start,
       end,
+      loop,
     };
     this.sections.push(newSection);
 

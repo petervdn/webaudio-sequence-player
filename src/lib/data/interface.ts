@@ -55,6 +55,7 @@ export interface ISection {
   end: MusicTime;
   startedAt?: number;
   isGap?: boolean;
+  loop: number; // how many times the seciton should loop. -1 is forever. 0 is not allowed
 }
 
 // export interface ISectionPlayData {

@@ -12,6 +12,8 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
       {
         start,
         end: end.clone(),
+        isGap: true,
+        loop: 1,
       },
     ];
   }
@@ -38,7 +40,7 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
     }
 
     if (start.toSixteenths() < end.toSixteenths()) {
-      results.push({ start: start.clone(), end: sectionStart.clone(), isGap: true });
+      results.push({ start: start.clone(), end: sectionStart.clone(), isGap: true, loop: 1 });
     }
     start = sectionEnd;
   }
@@ -50,6 +52,7 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
       start: latestResult.clone(),
       end: end.clone(),
       isGap: true,
+      loop: 1,
     });
   }
 

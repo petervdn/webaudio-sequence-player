@@ -49,7 +49,6 @@ new Vue({
     // const events = getEventsInSection(this.song, section2);
     // console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
 
-
     const testTime = 0.5;
     const startSection = getSectionOnTime(this.song, testTime);
     startSection.startedAt = testTime;
@@ -89,15 +88,3 @@ new Vue({
     }
   },
 });
-
-/*
-song2.addSection(MusicTime.fromString('2.0.0'), MusicTime.fromString('3.0.0'));
-
-const testTime = 0;
-editor.setSong(song2);
-const startSection = getSectionOnTime(song2, testTime);
-startSection.startedAt = testTime;
-
-const items = getEventScheduleList(song2, testTime, 1.1, startSection);
-console.log(items);
-*/
