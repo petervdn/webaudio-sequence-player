@@ -100,11 +100,16 @@ export function drawTimeline(
   context.strokeStyle = 'white';
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
+  context.textAlign = 'center';
+
   const beatWidth = new MusicTime(0, 1, 0).toTime(song.bpm) * pixelsPerSecond;
   let xPosition = xDrawOffset;
   let index = 0;
 
   while (xPosition < context.canvas.width) {
+    const time = new MusicTime(0, index, 0);
+    const label = `${time.toString()} (${time.toTime(song.bpm).toFixed(1)}s)`;
+
     context.beginPath();
     const x = Math.round(xPosition) + 0.5;
     context.moveTo(x, context.canvas.height);
@@ -115,20 +120,17 @@ export function drawTimeline(
     if (index % 4 === 0) {
       lineWidth = 2;
       lineLength = 0.4;
+
+      context.fillStyle = 'rgba(255,255,255, 1)';
+    } else {
+      context.fillStyle = 'rgba(255,255,255, 0.5)';
     }
 
     const lineEndY = context.canvas.height - context.canvas.height * lineLength;
     context.lineTo(x, lineEndY);
     context.lineWidth = lineWidth;
     context.stroke();
-
-    if (lineWidth === 2) {
-      context.fillStyle = 'white';
-      context.textAlign = 'center';
-      const time = new MusicTime(0, index, 0);
-      const label = `${time.toString()} (${time.toTime(song.bpm).toFixed(1)}s)`;
-      context.fillText(label, x, lineEndY - 3);
-    }
+    context.fillText(label, x, lineEndY - 3);
 
     xPosition += beatWidth;
     index += 1;
