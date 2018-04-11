@@ -49,7 +49,7 @@ new Vue({
     // const events = getEventsInSection(this.song, section2);
     // console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
 
-    const testTime = 0.5;
+    const testTime = 0.6;
     const startSection = getSectionOnTime(this.song, testTime);
     startSection.startedAt = testTime;
     const items = getEventScheduleList(this.song, testTime, testTime + 0.7, startSection);

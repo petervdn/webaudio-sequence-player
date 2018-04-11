@@ -64,22 +64,25 @@ function getEventScheduleListForSectionSong(
   );
   console.log('from', fromTime, 'to', toTime);
   let counter = 0;
-  while (counter < 2) {
+
+  whileSearch: while (counter < 3) {
     const sectionIterationStart = sectionStart + sectionIteration * sectionLength;
-    eventsInSection.forEach(timedEvent => {
+    for (let i = 0; i < eventsInSection.length; i++) {
+      const timedEvent = eventsInSection[i];
       const sampleEvent = <ISampleEvent>timedEvent.event;
       const eventStart = sectionIterationStart + timedEvent.timeInSection;
 
-      if (eventStart >= fromTime && eventStart < toTime) {
+      if (eventStart > toTime) {
+        break whileSearch;
+      } else if (eventStart >= fromTime && eventStart < toTime) {
         results.push({
           event: timedEvent.event,
           absoluteSeconds: eventStart,
         });
       }
-      console.log(timedEvent.timeInSection, eventStart, sampleEvent.sampleName);
-    });
+      console.log(eventStart, `${sampleEvent.sampleName} (${timedEvent.timeInSection})`);
+    }
 
-    console.log('-----');
     sectionIteration++;
     counter++;
   }
