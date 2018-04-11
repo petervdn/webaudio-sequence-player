@@ -1,6 +1,12 @@
 import { ISection } from '../data/interface';
 import MusicTime from 'musictime';
 
+/**
+ * Creates a list of gap-sections that fill the space between the given sections.
+ * @param {ISection[]} sections
+ * @param {MusicTime} end
+ * @returns {ISection[]}
+ */
 export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISection[] {
   let start = new MusicTime(0, 0, 0); // start of element that you want to add
   let sectionEnd = end;
@@ -8,14 +14,7 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
 
   // if there are no sections, return one from start to end
   if (sections.length === 0) {
-    return [
-      {
-        start,
-        end: end.clone(),
-        isGap: true,
-        loop: 1,
-      },
-    ];
+    return [createSection(start, end.clone(), 1, true)];
   }
   sections.sort((a, b) => a.start.toSixteenths() - b.start.toSixteenths());
   const results: ISection[] = [];
@@ -40,7 +39,10 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
     }
 
     if (start.toSixteenths() < end.toSixteenths()) {
-      results.push({ start: start.clone(), end: sectionStart.clone(), isGap: true, loop: 1 });
+      // apparently there can be invalid values here
+      if (start < sectionStart) {
+        results.push(createSection(start.clone(), sectionStart.clone(), 1, true));
+      }
     }
     start = sectionEnd;
   }
@@ -48,13 +50,27 @@ export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISe
   //  if last result doesnt reach to the end, add one that does
   const latestResult = sectionEnd;
   if (!reachedEnd && latestResult.toSixteenths() !== end.toSixteenths()) {
-    results.push({
-      start: latestResult.clone(),
-      end: end.clone(),
-      isGap: true,
-      loop: 1,
-    });
+    results.push(createSection(latestResult.clone(), end.clone(), 1, true));
   }
 
   return results;
+}
+
+export function createSection(
+  start: MusicTime,
+  end: MusicTime,
+  loop: number,
+  isGap: boolean,
+): ISection {
+  if (end <= start) {
+    console.log('Error', start.toString(), end.toString());
+    throw new Error("A section's end should be later than its start");
+  }
+  return {
+    start,
+    end,
+    isGap,
+    loop,
+    length: end.subtract(start),
+  };
 }
