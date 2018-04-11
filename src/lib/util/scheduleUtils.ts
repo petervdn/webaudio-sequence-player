@@ -48,32 +48,35 @@ function getEventScheduleListForSectionSong(
   /*tslint:disable*/
   let section = currentSection;
   let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
-  let sectionStart = section.start.toTime(song.bpm);
-  let sectionEnd = section.end.toTime(song.bpm);
-  let sectionLength = sectionEnd - sectionStart;
+  let sectionLength = section.end.toTime(song.bpm) - section.start.toTime(song.bpm);
   let eventsInSection = getEventsInSection(song, section);
 
-  // let sectionIterationStart = sectionIteration
-  // let section
-  // let fromTimeInSection = fromTime - section.startedAt;
+  // if there are no events ibn the section, we can already stop
+  if (eventsInSection.length === 0) {
+    return [];
+  }
+
   /*tslint:enable*/
   console.log(
     `section "${section.start.toString()}" - "${section.end.toString()}" (length ${sectionLength})`,
     'startIteration',
     sectionIteration,
+    'startedAt',
+    section.startedAt,
   );
   console.log('from', fromTime, 'to', toTime);
   let counter = 0;
 
-  whileSearch: while (counter < 3) {
-    const sectionIterationStart = sectionStart + sectionIteration * sectionLength;
+  whileIterationSearch: while (counter < 3) {
+    // check when the section starts for this iteration
+    const sectionIterationStart = section.startedAt + sectionIteration * sectionLength;
     for (let i = 0; i < eventsInSection.length; i++) {
       const timedEvent = eventsInSection[i];
       const sampleEvent = <ISampleEvent>timedEvent.event;
       const eventStart = sectionIterationStart + timedEvent.timeInSection;
 
       if (eventStart > toTime) {
-        break whileSearch;
+        break whileIterationSearch;
       } else if (eventStart >= fromTime && eventStart < toTime) {
         results.push({
           event: timedEvent.event,
