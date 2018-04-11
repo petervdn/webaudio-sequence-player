@@ -61,7 +61,8 @@ export function createEventElement(
 }
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
-  const color = section.isGap ? 'rgba(200,0, 0,0.8)' : 'rgba(0,200,0,0.8)';
+  const alpha = 0.5;
+  const color = section.isGap ? `rgba(200,0, 0, ${alpha})` : `rgba(0,200,0, ${alpha})`;
   return createRectElement(position, size, color);
 }
 

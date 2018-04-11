@@ -53,9 +53,10 @@ export interface IScheduleEventData {
 export interface ISection {
   start: MusicTime;
   end: MusicTime;
+  length: MusicTime;
   startedAt?: number;
   isGap?: boolean;
-  loop: number; // how many times the seciton should loop. -1 is forever. 0 is not allowed
+  loop: number; // how many times the section should loop. -1 is forever. 0 is not allowed
 }
 
 // export interface ISectionPlayData {

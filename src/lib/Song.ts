@@ -8,7 +8,7 @@ import {
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 import { getSongEndTime } from './util/songUtils';
-import { createSectionsForGaps } from './util/sectionUtils';
+import { createSectionsForGaps, createSection } from './util/sectionUtils';
 
 export default class Song {
   // todo make more stuff private?
@@ -72,14 +72,8 @@ export default class Song {
    * @returns {ISection}
    */
   public addSection(start: MusicTime, end: MusicTime, loop = -1): ISection {
-    if (end <= start) {
-      throw new Error('The end of a section should be later than its start');
-    }
-    const newSection = {
-      start,
-      end,
-      loop,
-    };
+    //    console.log(start.toString(), end.toString());
+    const newSection: ISection = createSection(start, end, loop, false);
     this.sections.push(newSection);
 
     // remove all gap-sections and re-add all gaps
