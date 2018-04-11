@@ -58,7 +58,6 @@ export default class SequencePlayer extends EventDispatcher {
   /**
    * Loads all samples in a song, and sets a reference to the sample on all SampleEvents in each sequence.
    * @param {Song} song
-   * @param {string} extension
    * @param {() => void} onProgress
    * @returns {Promise<void>}
    */
@@ -153,11 +152,6 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   private onScheduleInterval = () => {
-    // todo for now this is ok, but with loops songs can not have an end-time
-    // todo also: this is not very precise
-    if (this.getSongPlayTime() > this.song.getLength().toTime(this.song.bpm)) {
-      this.stop();
-    }
     this.scheduleAtTime(this.song, this.getSongPlayTime());
   };
 
@@ -174,7 +168,6 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {Song} song
    * @param {number} time
    * @param {number} lookAheadTime
-   * @param {boolean} silent
    */
   public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): void {
     // get all events in the timewindow
