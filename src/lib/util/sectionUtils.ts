@@ -7,7 +7,7 @@ import MusicTime from 'musictime';
  * @param {MusicTime} end
  * @returns {ISection[]}
  */
-export function createSectionsForGaps(sections: ISection[], end: MusicTime): ISection[] {
+export function createGapSections(sections: ISection[], end: MusicTime): ISection[] {
   let start = new MusicTime(0, 0, 0); // start of element that you want to add
   let sectionEnd = end;
   let reachedEnd = false;

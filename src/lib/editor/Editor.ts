@@ -102,7 +102,7 @@ export default class Editor {
 
   private positionSongEnd(): void {
     this.songEnd.style.left = `${this.seqsOffset.x +
-      musicTimeToPixels(this.song.getSongEndTime(), this.song.bpm, this.pixelsPerSecond)}px`;
+      musicTimeToPixels(this.song.getLength(), this.song.bpm, this.pixelsPerSecond)}px`;
   }
 
   private drawSong(): void {
@@ -138,9 +138,9 @@ export default class Editor {
 
     // draw sections
     const sections = this.song.getSections();
-    sections.forEach(section => {
+    sections.forEach((section, index) => {
       const existingElement = this.elementsMap.get(section);
-      const pos = this.getSectionPosition(section);
+      const pos = this.getSectionPosition(section, index);
       const size = this.getSectionSize(section);
       if (existingElement) {
         applyPosAndSize(existingElement, pos, size);
@@ -204,10 +204,10 @@ export default class Editor {
     };
   }
 
-  private getSectionPosition(section: ISection): IPoint {
+  private getSectionPosition(section: ISection, index: number): IPoint {
     return {
       x: this.seqsOffset.x + this.musicTimeToPixels(section.start),
-      y: this.seqsOffset.y - 20,
+      y: this.seqsOffset.y - 40 + index * 10,
     };
   }
 

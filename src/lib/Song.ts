@@ -8,7 +8,7 @@ import {
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 import { getSongEndTime } from './util/songUtils';
-import { createSectionsForGaps, createSection } from './util/sectionUtils';
+import { createGapSections, createSection } from './util/sectionUtils';
 
 export default class Song {
   // todo make more stuff private?
@@ -18,11 +18,13 @@ export default class Song {
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
   private sections: ISection[] = [];
-  private songEndTime: MusicTime = new MusicTime(0, 0, 0);
+  private length: MusicTime = null;
 
-  constructor(bpm: number) {
+  constructor(bpm: number = 120) {
     // todo force bpm within a range
     this.bpm = bpm;
+
+    this.updateSectionsAndLength();
   }
 
   /**
@@ -61,7 +63,8 @@ export default class Song {
       }
     });
 
-    this.songEndTime = getSongEndTime(this);
+    this.updateSectionsAndLength();
+    // this.songEndTime = getSongEndTime(this);
   }
 
   /**
@@ -72,16 +75,42 @@ export default class Song {
    * @returns {ISection}
    */
   public addSection(start: MusicTime, end: MusicTime, loop = -1): ISection {
-    //    console.log(start.toString(), end.toString());
+    if (start >= this.length) {
+      throw new Error('Start of section should be before end of song');
+    }
+    if (end > this.length) {
+      throw new Error('End of section should be before, or equal to, end of song');
+    }
     const newSection: ISection = createSection(start, end, loop, false);
     this.sections.push(newSection);
 
-    // remove all gap-sections and re-add all gaps
-    this.sections = this.sections.filter(section => !section.isGap);
-    const gaps = createSectionsForGaps(this.sections, this.songEndTime);
-    this.sections.push(...gaps);
+    this.updateSectionsAndLength();
 
     return newSection;
+  }
+
+  /**
+   * Remove all gap-sections and re-add all gaps
+   */
+  private updateSectionsAndLength(): void {
+    // if there are no sequences, set length of zero // todo also no events. should all probably be taken care of in getSongEndTime and just have a songlength of 0 result
+    if (this.sequences.length === 0) {
+      this.length = new MusicTime();
+      return;
+    }
+
+    // decide what the end of the song is
+    this.length = getSongEndTime(this);
+
+    // filter out all generated gaps
+    this.sections = this.sections.filter(section => !section.isGap);
+
+    // create new gaps
+    const gaps = createGapSections(this.sections, this.length);
+    this.sections.push(...gaps);
+
+    // sort all on start
+    this.sections.sort((a, b) => a.start.toSixteenths() - b.start.toSixteenths());
   }
 
   public getSections(): ISection[] {
@@ -92,8 +121,8 @@ export default class Song {
     return this.usedSampleNames;
   }
 
-  public getSongEndTime(): MusicTime {
-    return this.songEndTime;
+  public getLength(): MusicTime {
+    return this.length;
   }
 
   /**

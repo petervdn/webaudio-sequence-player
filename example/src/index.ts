@@ -24,7 +24,7 @@ new Vue({
 
     this.player.addEventListener('state-change', this.onPlayerStateChange);
 
-    /*// create a song
+    // create a song
     this.song = new Song(120);
     const seq1 = createSampleSequence('seq1', {
       '0.1.0': ['snare'],
@@ -41,9 +41,12 @@ new Vue({
     this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
     this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
     //  this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
-    const section1 = this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
+    // const section1 = this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
     // const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
+    this.song.addSection(MusicTime.fromString('0.0.2'), MusicTime.fromString('0.1.2'));
+    this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
+
 
     this.editor.setSong(this.song);
     // const events = getEventsInSection(this.song, section2);
@@ -54,31 +57,8 @@ new Vue({
     startSection.startedAt = testTime;
     const items = getEventScheduleList(this.song, testTime, testTime + 0.7, startSection);
 
-    console.log(items);
-    */
-    this.song = new Song(120);
-
-    const seq1 = createSampleSequence('seq1', {
-      '0.1.0': ['snare'],
-      '0.0.0': ['kick'],
-    });
-    const seq2 = createSampleSequence('seq2', {
-      '0.0.0': ['hihat'],
-      '0.1.0': ['hihat'],
-      '0.2.0': ['hihat'],
-      '0.3.0': ['hihat'],
-    });
-
-    this.song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
-    this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
-    this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
-
-    this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
-    this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
-    this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
-    this.editor.setSong(this.song);
-    this.editor.setPixelsPerSecondFactor(0.5);
-    console.log(this.song.getSections().map(s => s.length.toString()));
+    console.log(this.song.getSections());
+    this.editor.setPixelsPerSecondFactor(0.7);
   },
   data: {
     musicTime: notPlayingTime,

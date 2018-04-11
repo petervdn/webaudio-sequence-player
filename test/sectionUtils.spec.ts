@@ -16,4 +16,8 @@ describe('sectionUtils', () => {
       createSection(new MusicTime(1,2), new MusicTime(1,2), 1, false);
     }).to.throw("A section's end should be later than its start");
   });
+
+  it('should create gaps', () => {
+
+  });
 });
