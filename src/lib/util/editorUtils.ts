@@ -64,7 +64,7 @@ export function createSection(section: ISection, position: IPoint, size: ISize):
   const alpha = 1;
   const color = section.isGap ? `rgba(200,0, 0, ${alpha})` : `rgba(0,200,0, ${alpha})`;
   const p = document.createElement('p');
-  p.innerText = `Loop: ${section.loop}`;
+  p.innerText = `${section.start.toString()}-${section.end.toString()} loop: ${section.loop}`;
   p.style.padding = '0';
   p.style.margin = '0';
   p.style.color = 'white';
