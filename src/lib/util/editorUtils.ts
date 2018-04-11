@@ -61,9 +61,17 @@ export function createEventElement(
 }
 
 export function createSection(section: ISection, position: IPoint, size: ISize): HTMLElement {
-  const alpha = 0.5;
+  const alpha = 1;
   const color = section.isGap ? `rgba(200,0, 0, ${alpha})` : `rgba(0,200,0, ${alpha})`;
-  return createRectElement(position, size, color);
+  const p = document.createElement('p');
+  p.innerText = `Loop: ${section.loop}`;
+  p.style.padding = '0';
+  p.style.margin = '0';
+  p.style.color = 'white';
+  p.style.fontSize = '10px';
+  const wrap = createRectElement(position, size, color);
+  wrap.appendChild(p);
+  return wrap;
 }
 
 export function createRectElement(position: IPoint, size: ISize, color: string): HTMLElement {
