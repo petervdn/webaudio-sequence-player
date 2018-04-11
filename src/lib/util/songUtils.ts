@@ -20,7 +20,7 @@ export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManage
 
 // todo pass a reference time (so we dont have to check everything again)
 // todo this whole thing can probably be optimized a lot
-export function getSongEndTime(song: Song): MusicTime {
+export function calculateTimelineEnd(song: Song): MusicTime {
   let latestTime = new MusicTime(0, 0, 0);
   song.timedSequences.forEach(ts => {
     ts.sequence.events.forEach(e => {

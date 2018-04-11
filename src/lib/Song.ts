@@ -7,8 +7,8 @@ import {
 } from './data/interface';
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
-import { getSongEndTime } from './util/songUtils';
 import { createGapSections, createSection } from './util/sectionUtils';
+import { calculateTimelineEnd } from './util/songUtils';
 
 export default class Song {
   // todo make more stuff private?
@@ -18,13 +18,13 @@ export default class Song {
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
   private sections: ISection[] = [];
-  private length: MusicTime = null;
+  private timelineEnd: MusicTime = null;
 
   constructor(bpm: number = 120) {
     // todo force bpm within a range
     this.bpm = bpm;
 
-    this.updateSectionsAndLength();
+    this.updateSectionsAndTimelineLength();
   }
 
   /**
@@ -63,8 +63,7 @@ export default class Song {
       }
     });
 
-    this.updateSectionsAndLength();
-    // this.songEndTime = getSongEndTime(this);
+    this.updateSectionsAndTimelineLength();
   }
 
   /**
@@ -75,16 +74,16 @@ export default class Song {
    * @returns {ISection}
    */
   public addSection(start: MusicTime, end: MusicTime, loop = -1): ISection {
-    if (start >= this.length) {
-      throw new Error('Start of section should be before end of song');
+    if (start >= this.timelineEnd) {
+      throw new Error('Start of section should be before timelineEnd');
     }
-    if (end > this.length) {
-      throw new Error('End of section should be before, or equal to, end of song');
+    if (end > this.timelineEnd) {
+      throw new Error('End of section should be before, or equal to, timelineEnd');
     }
     const newSection: ISection = createSection(start, end, loop, false);
     this.sections.push(newSection);
 
-    this.updateSectionsAndLength();
+    this.updateSectionsAndTimelineLength();
 
     return newSection;
   }
@@ -92,21 +91,21 @@ export default class Song {
   /**
    * Remove all gap-sections and re-add all gaps
    */
-  private updateSectionsAndLength(): void {
+  private updateSectionsAndTimelineLength(): void {
     // if there are no sequences, set length of zero // todo also no events. should all probably be taken care of in getSongEndTime and just have a songlength of 0 result
     if (this.sequences.length === 0) {
-      this.length = new MusicTime();
+      this.timelineEnd = new MusicTime();
       return;
     }
 
     // decide what the end of the song is
-    this.length = getSongEndTime(this);
+    this.timelineEnd = calculateTimelineEnd(this);
 
     // filter out all generated gaps
     this.sections = this.sections.filter(section => !section.isGap);
 
     // create new gaps
-    const gaps = createGapSections(this.sections, this.length);
+    const gaps = createGapSections(this.sections, this.timelineEnd);
     this.sections.push(...gaps);
 
     // sort all on start
@@ -121,8 +120,8 @@ export default class Song {
     return this.usedSampleNames;
   }
 
-  public getLength(): MusicTime {
-    return this.length;
+  public getTimelineEnd(): MusicTime {
+    return this.timelineEnd;
   }
 
   /**

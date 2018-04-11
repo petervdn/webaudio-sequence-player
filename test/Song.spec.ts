@@ -58,7 +58,7 @@ describe('Song', () => {
     expect(song.getUsedSampleNames()).to.deep.equal(['kick', 'snare', 'clap']);
   });
 
-  it('should set song-end', () => {
+  it('should set timelineLength', () => {
     const song1 = new Song();
     const song2 = new Song();
     const song3 = new Song();
@@ -73,9 +73,9 @@ describe('Song', () => {
     song2.addSequenceAtTime(seq, new MusicTime(0, 0, 1));
     song3.addSequenceAtTime(seq, new MusicTime(0, 1, 0));
 
-    expect(song1.getLength().toString()).to.equal('1.0.0');
-    expect(song2.getLength().toString()).to.equal('1.0.0');
-    expect(song3.getLength().toString()).to.equal('2.0.0');
+    expect(song1.getTimelineEnd().toString()).to.equal('1.0.0');
+    expect(song2.getTimelineEnd().toString()).to.equal('1.0.0');
+    expect(song3.getTimelineEnd().toString()).to.equal('2.0.0');
   });
 
   it('should add 1 gap-section for full song when there are no sections', () => {
@@ -189,11 +189,11 @@ describe('Song', () => {
     // todo this goes wrong when one section fully overlaps the other one
   });
 
-  it('should not allow adding sections after the song-end', () => {
+  it('should not allow adding sections after timelineEnd', () => {
     const emptySong = new Song();
     expect(() => {
       emptySong.addSection(new MusicTime(0),new MusicTime(1));
-    }).to.throw('Start of section should be before end of song');
+    }).to.throw('Start of section should be before timelineEnd');
 
     const song = new Song();
     const seq = createSampleSequence('seq', {
@@ -206,11 +206,11 @@ describe('Song', () => {
     song.addSequenceAtTime(seq, new MusicTime());
     expect(() => {
       song.addSection(new MusicTime(1),new MusicTime(2));
-    }).to.throw('Start of section should be before end of song');
+    }).to.throw('Start of section should be before timelineEnd');
 
     expect(() => {
       song.addSection(new MusicTime(0,2), new MusicTime(2));
-    }).to.throw('End of section should be before, or equal to, end of song');
+    }).to.throw('End of section should be before, or equal to, timelineEnd');
   });
 
   it('should update songlength and sections while adding sections/sequences', () => {
