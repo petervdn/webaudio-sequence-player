@@ -102,7 +102,7 @@ export default class Editor {
 
   private positionSongEnd(): void {
     this.songEnd.style.left = `${this.seqsOffset.x +
-      musicTimeToPixels(this.song.getLength(), this.song.bpm, this.pixelsPerSecond)}px`;
+      musicTimeToPixels(this.song.getTimelineEnd(), this.song.bpm, this.pixelsPerSecond)}px`;
   }
 
   private drawSong(): void {
