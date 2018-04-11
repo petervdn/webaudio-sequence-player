@@ -63,7 +63,6 @@ export function createSection(
   isGap: boolean,
 ): ISection {
   if (end <= start) {
-    console.log('Error', start.toString(), end.toString());
     throw new Error("A section's end should be later than its start");
   }
   return {
