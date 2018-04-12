@@ -44,18 +44,18 @@ export function calculateTimelineEnd(song: Song): MusicTime {
 //   });
 // }
 
-/**
- * Calculates the duration of the song
- * @param {Song} song
- * @returns {number}
- */
 // export function getSongDuration(song: Song): number {
 //   let latestTime = 0;
 //   song.timedSequences.forEach(timedSequence => {
 //     const sequenceStartTime = timedSequence.absoluteStart.toTime(song.bpm);
 //   })
 // }
-
+/**
+ * Finds the first section on the where the time >= sectionStart and time < sectionEnd
+ * @param {Song} song
+ * @param {number} time
+ * @returns {ISection}
+ */
 export function getSectionOnTime(song: Song, time: number): ISection {
   return song
     .getSections()

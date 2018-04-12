@@ -6,6 +6,7 @@ import {
   ITimedSequence,
   ISampleEvent,
 } from '../data/interface';
+import { getSectionOnTime } from '../util/songUtils';
 
 /**
  * Returns all ISequenceEvents whose time is in a given time window
@@ -58,7 +59,7 @@ function getEventScheduleListForSectionSong(
 
   /*tslint:enable*/
   console.log(
-    `section "${section.start.toString()}" - "${section.end.toString()}" (length ${section.length.toTime(
+    `section "${section.start.toString()}"-"${section.end.toString()}" (length ${section.length.toTime(
       song.bpm,
     )})`,
     'startIteration',
@@ -80,9 +81,11 @@ function getEventScheduleListForSectionSong(
       const sampleEvent = <ISampleEvent>timedEvent.event;
       const eventStart = sectionIterationStart + timedEvent.timeInSection;
 
+      // when event is too far ahead, we can stop (since everything is ordered)
       if (eventStart > toTime) {
         break whileIterationSearch;
       } else if (eventStart >= fromTime && eventStart < toTime) {
+        // add events in timewindow to results
         results.push({
           event: timedEvent.event,
           absoluteSeconds: eventStart,
@@ -91,7 +94,28 @@ function getEventScheduleListForSectionSong(
       console.log(eventStart, `${sampleEvent.sampleName} (${timedEvent.timeInSection})`);
     }
 
-    sectionIteration++;
+    // looped through all events for the section, check what we need to do
+    console.log(`-- sectionIteration ${sectionIteration} repeat ${section.repeat}`);
+    if (section.repeat === -1 || sectionIteration < section.repeat) {
+      console.log('   next iteration');
+      // section should loop forever
+      sectionIteration++;
+    } else {
+      console.log('   next section');
+      // switch to next section, find it first
+      const nextSection = getSectionOnTime(song, section.end.toTime(song.bpm));
+
+      // next section starts at current end
+      const currentSectionEndTime =
+        section.startedAt + (sectionIteration + 1) * section.length.toTime(song.bpm);
+
+      // we now know enough to change the section
+      nextSection.startedAt = currentSectionEndTime;
+      section = nextSection;
+      eventsInSection = getEventsInSection(song, section);
+      sectionIteration = 0;
+    }
+
     counter++;
   }
 

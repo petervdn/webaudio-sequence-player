@@ -207,13 +207,13 @@ export default class Editor {
   private getSectionPosition(section: ISection, index: number): IPoint {
     return {
       x: this.seqsOffset.x + this.musicTimeToPixels(section.start),
-      y: this.seqsOffset.y - 40 + index * 10,
+      y: this.seqsOffset.y - 40 + (index % 2) * 11,
     };
   }
 
   private getSectionSize(section: ISection): ISize {
     return {
-      width: this.musicTimeToPixels(section.end.subtract(section.start)) - 2,
+      width: this.musicTimeToPixels(section.end.subtract(section.start)),
       height: 10,
     };
   }
