@@ -14,7 +14,7 @@ export function createGapSections(sections: ISection[], end: MusicTime): ISectio
 
   // if there are no sections, return one from start to end
   if (sections.length === 0) {
-    return [createSection(start, end.clone(), 1, true)];
+    return [createGapSection(start, end.clone())];
   }
   sections.sort((a, b) => a.start.toSixteenths() - b.start.toSixteenths());
   const results: ISection[] = [];
@@ -41,7 +41,7 @@ export function createGapSections(sections: ISection[], end: MusicTime): ISectio
     if (start.toSixteenths() < end.toSixteenths()) {
       // apparently there can be invalid values here
       if (start < sectionStart) {
-        results.push(createSection(start.clone(), sectionStart.clone(), 1, true));
+        results.push(createGapSection(start.clone(), sectionStart.clone()));
       }
     }
     start = sectionEnd;
@@ -50,16 +50,20 @@ export function createGapSections(sections: ISection[], end: MusicTime): ISectio
   //  if last result doesnt reach to the end, add one that does
   const latestResult = sectionEnd;
   if (!reachedEnd && latestResult.toSixteenths() !== end.toSixteenths()) {
-    results.push(createSection(latestResult.clone(), end.clone(), 1, true));
+    results.push(createGapSection(latestResult.clone(), end.clone()));
   }
 
   return results;
 }
 
+function createGapSection(start: MusicTime, end: MusicTime): ISection {
+  return createSection(start, end, 0, true);
+}
+
 export function createSection(
   start: MusicTime,
   end: MusicTime,
-  loop: number,
+  repeat: number,
   isGap: boolean,
 ): ISection {
   if (end <= start) {
@@ -69,7 +73,7 @@ export function createSection(
     start,
     end,
     isGap,
-    loop,
+    repeat,
     length: end.subtract(start),
   };
 }

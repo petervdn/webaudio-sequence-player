@@ -64,12 +64,13 @@ export function createSection(section: ISection, position: IPoint, size: ISize):
   const alpha = 1;
   const color = section.isGap ? `rgba(200,0, 0, ${alpha})` : `rgba(0,200,0, ${alpha})`;
   const p = document.createElement('p');
-  p.innerText = `${section.start.toString()}-${section.end.toString()} loop: ${section.loop}`;
+  p.innerText = `${section.start.toString()}-${section.end.toString()} repeat: ${section.repeat}`;
   p.style.padding = '0';
   p.style.margin = '0';
   p.style.color = 'white';
   p.style.fontSize = '10px';
   const wrap = createRectElement(position, size, color);
+  wrap.style.overflow = 'hidden';
   wrap.appendChild(p);
   return wrap;
 }
