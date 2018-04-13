@@ -44,18 +44,19 @@ new Vue({
     // const section1 = this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
     // const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
-    this.song.addSection(MusicTime.fromString('0.0.2'), MusicTime.fromString('0.1.2'), 1);
-    this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
+    // this.song.addSection(MusicTime.fromString('0.0.2'), MusicTime.fromString('0.1.2'), 1);
+    // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
+    this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('2.0.0'), 1);
 
 
     this.editor.setSong(this.song);
     // const events = getEventsInSection(this.song, section2);
     // console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
 
-    const testTime = 0.3;
-    const startSection = getSectionOnTime(this.song, testTime);
-    startSection.startedAt = startSection.start.toTime(this.song.bpm);
-    const items = getEventScheduleList(this.song, testTime, testTime + 1.7, startSection);
+    const testTime = 6;
+    const startSection = getSectionOnTime(this.song, 0);
+    startSection.startedAt = 0;// startSection.start.toTime(this.song.bpm);
+    const items = getEventScheduleList(this.song, testTime, testTime + 1, startSection);
     console.log(items);
     this.editor.setPixelsPerSecondFactor(0.5);
   },

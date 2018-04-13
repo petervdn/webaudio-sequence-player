@@ -81,33 +81,13 @@ export default class SequencePlayer extends EventDispatcher {
   }
 
   /**
-   * Finds and sets the section for the given time. This selection is based on where the section
-   * is on the timeline, and is always the first one (@0.0.0) unless playing is started from a certain time.
-   * @param {Song} song
-   * @param {number} time
-   */
-  public initFirstSection(song: Song, time: number): void {
-    if (song.getSections().length) {
-      this.currentSection = getSectionOnTime(song, time);
-
-      if (!this.currentSection) {
-        throw new Error(`No section found for time ${time}`);
-      }
-
-      this.currentSection.startedAt = 0;
-    } else {
-      this.currentSection = null;
-    }
-  }
-
-  /**
    * Play a song at the given bpm.
    * @param {Song} song
+   * @param {number} startTime
    * @param {boolean} updateTimeData
    */
-  public play(song: Song, updateTimeData = true): void {
+  public play(song: Song, startTime = 0, updateTimeData = true): void {
     // todo add play with timeoffset (related to pause)
-    // todo return promise?
     if (this.state !== SequencePlayerState.IDLE) {
       console.error('Can only play when idle');
       return;
@@ -119,9 +99,14 @@ export default class SequencePlayer extends EventDispatcher {
 
     this.song = song;
 
-    if (song.getSections().length) {
-      this.initFirstSection(song, 0);
+    // set the initial section
+    this.currentSection = getSectionOnTime(song, startTime);
+
+    if (!this.currentSection) {
+      throw new Error(`No section found for time ${startTime}`);
     }
+
+    this.currentSection.startedAt = 0;
 
     let loadPromise: Promise<void>;
     if (this.song.getIsLoaded()) {
