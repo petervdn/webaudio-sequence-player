@@ -98,7 +98,7 @@ export function getEventScheduleList(
       if (eventStart < fromTime) {
         // too early
         result = 'before window start';
-      } else if (eventStart > toTime) {
+      } else if (eventStart >= toTime) {
         // when event is too far ahead, we can stop (since everything is ordered)
         result = 'after window end';
         console.log(
