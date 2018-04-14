@@ -58,6 +58,26 @@ describe('Song', () => {
     expect(song.getUsedSampleNames()).to.deep.equal(['kick', 'snare', 'clap']);
   });
 
+  it('should collect unique sequences', () => {
+    const song = new Song();
+    const seq1 = createSampleSequence('seq1', {
+      '0.0.0': ['kick', 1, 'snare', 1],
+      '1.0.0': ['kick', 1, 'clap', 1]
+    });
+    const seq2 = createSampleSequence('seq2', {
+      '0.0.0': ['kick', 1, 'snare', 1],
+      '1.0.0': ['kick', 1, 'clap', 1]
+    });
+
+    song.addSequenceAtTime(seq1, new MusicTime());
+    song.addSequenceAtTime(seq1, new MusicTime());
+    song.addSequenceAtTime(seq2, new MusicTime());
+    song.addSequenceAtTime(seq2, new MusicTime());
+    const sequences = song.sequences.map(s => s.id);
+    expect(sequences).to.deep.equal(['seq1', 'seq2']);
+  });
+
+
   it('should set timelineLength', () => {
     const song1 = new Song();
     const song2 = new Song();

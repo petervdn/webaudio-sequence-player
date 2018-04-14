@@ -17,12 +17,15 @@ describe('sequenceUtils', () => {
     const startTimes = seq.events.map(e => e.relativeStart);
     seq.events.forEach(event => {
       delete event.relativeStart;
+
+      // also remove the map
+      delete event.lastScheduledData;
     });
     expect(startTimes.map(time => time.toString())).to.deep.equal(
       ['0.0.0', '0.0.0', '0.1.0'],
     );
 
-    // compare renaining object
+    // compare remaining object
     expect(seq).to.deep.equal({
       id: 'seq1',
       target: null,
@@ -32,21 +35,21 @@ describe('sequenceUtils', () => {
           volume: 1,
           sample: null,
           type: SequenceEventType.SAMPLE,
-          lastScheduledData: {},
+          // lastScheduledData: {},
         },
         {
           sampleName: 'synth',
           volume: 1,
           sample: null,
           type: SequenceEventType.SAMPLE,
-          lastScheduledData: {},
+          // lastScheduledData: {},
         },
         {
           sampleName: 'clap',
           volume: 0.5,
           sample: null,
           type: SequenceEventType.SAMPLE,
-          lastScheduledData: {},
+          // lastScheduledData: {},
         },
       ],
     });

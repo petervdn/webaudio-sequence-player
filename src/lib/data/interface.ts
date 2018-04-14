@@ -32,7 +32,7 @@ export interface ISequenceEvent {
 }
 
 export interface ILastScheduledData {
-  [key: string]: number; // todo make more specific once we know better what is in here?
+  [key: string]: number;
 }
 
 export interface ISampleEvent extends ISequenceEvent {
@@ -56,6 +56,7 @@ export interface ISection {
   length: MusicTime;
   startedAt?: number;
   isGap?: boolean;
+  id: string;
   repeat: number; // how many times the section should repeat (-1 is forever)
 }
 

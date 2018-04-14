@@ -74,6 +74,7 @@ export function createSection(
     end,
     isGap,
     repeat,
+    id: null,
     length: end.subtract(start),
   };
 }

@@ -50,7 +50,7 @@ export default class Song {
     this.timedSequences.push({
       sequence,
       absoluteStart: time,
-      id: `${this.timedSequences.length + 1}`,
+      id: `timedseq-${this.timedSequences.length + 1}`,
     });
 
     sequence.events.forEach(event => {
@@ -110,6 +110,9 @@ export default class Song {
 
     // sort all on start
     this.sections.sort((a, b) => a.start.toSixteenths() - b.start.toSixteenths());
+
+    // give id (based on index)
+    this.sections.forEach((section, index) => (section.id = `section-${index}`));
   }
 
   public getSections(): ISection[] {

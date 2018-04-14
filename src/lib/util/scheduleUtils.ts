@@ -7,36 +7,6 @@ import {
   ISampleEvent,
 } from '../data/interface';
 import { getSectionOnTime } from '../util/songUtils';
-import MusicTime from 'musictime/lib/MusicTime';
-
-/**
- * Returns all ISequenceEvents whose time is in a given time window
- * @param {number} fromTime
- * @param {number} toTime
- * @param {Song} song
- * @param {ISection} currentSection
- * @returns {ISequenceEvent[]}
- */
-// export function getEventScheduleList(
-//   song: Song,
-//   fromTime: number,
-//   toTime: number,
-//   currentSection: ISection,
-// ): IScheduleEventData[] {
-//   if (song.getSections().length === 0) {
-//     if (currentSection) {
-//       throw new Error('Song has no sections but there is a current section set');
-//     }
-//
-//     return getEventScheduleListForNonSectionSong(fromTime, toTime, song);
-//   }
-//
-//   if (!currentSection) {
-//     throw new Error('Song has sections but there is no current section');
-//   }
-//
-//   return getEventScheduleListForSectionSong(fromTime, toTime, song, currentSection);
-// }
 
 export function getEventScheduleList(
   song: Song,
@@ -44,7 +14,7 @@ export function getEventScheduleList(
   toTime: number,
   currentSection: ISection,
 ): IScheduleEventData[] {
-  console.log(`*** getEvents from ${fromTime} to ${toTime}`);
+  console.group(`getEvents from ${fromTime} to ${toTime}`);
   console.time('schedule');
   const results: IScheduleEventData[] = [];
 
@@ -79,6 +49,8 @@ export function getEventScheduleList(
     const sectionIterationStart =
       section.startedAt + sectionIteration * section.length.toTime(song.bpm);
 
+    // todo check section start (and break if too late)
+
     console.log(
       `%c-- section: ${section.start.toString()}-${section.end.toString()}, repeat:${
         section.repeat
@@ -91,7 +63,6 @@ export function getEventScheduleList(
     for (let i = 0; i < eventsInSection.length; i++) {
       // console.log(i, eventsInSection.length);
       const timedEvent = eventsInSection[i];
-      const sampleEvent = <ISampleEvent>timedEvent.event;
       const eventStart = sectionIterationStart + timedEvent.timeInSection;
 
       let result = '';
@@ -100,31 +71,29 @@ export function getEventScheduleList(
         result = 'before window start';
       } else if (eventStart >= toTime) {
         // when event is too far ahead, we can stop (since everything is ordered)
-        result = 'after window end';
-        console.log(
-          `%c${result} - ${sampleEvent.sampleName} (start: ${eventStart}, in section: ${
-            timedEvent.timeInSection
-          })`,
-          `color: ${result === 'added' ? 'green' : 'red'}`,
-        );
+
+        logEvent('after window end', eventStart, timedEvent);
         break whileIterationSearch;
       } else if (eventStart >= fromTime && eventStart < toTime) {
-        // add events in timewindow to results
-        results.push({
-          event: timedEvent.event,
-          absoluteSeconds: eventStart,
-        });
+        const lastScheduled = timedEvent.event.lastScheduledData[getIsScheduledKey(timedEvent)];
+        if (lastScheduled === void 0 || lastScheduled < sectionIteration) {
+          // add events in timewindow to results
+          results.push({
+            event: timedEvent.event,
+            absoluteSeconds: eventStart,
+          });
+          // mark the event as scheduleded for this section/iteration
+          markEventAsScheduled(timedEvent, sectionIteration);
 
-        result = 'added';
+          result = 'added';
+        } else {
+          result = `already scheduled (last iteration = ${lastScheduled})  `;
+        }
       } else {
         result = '??';
       }
-      console.log(
-        `%c${result} - ${sampleEvent.sampleName} (start: ${eventStart}, in section: ${
-          timedEvent.timeInSection
-        })`,
-        `color: ${result === 'added' ? 'green' : 'red'}`,
-      );
+
+      logEvent(result, eventStart, timedEvent);
     }
 
     // looped through all events for the section, check what we need to do
@@ -159,12 +128,24 @@ export function getEventScheduleList(
   }
 
   console.timeEnd('schedule');
+  console.groupEnd();
   return results;
+}
+
+function logEvent(result: string, eventStart: number, timedEvent: ITimedSequenceEvent): void {
+  console.log(JSON.stringify(timedEvent.event.lastScheduledData));
+  console.log(
+    `%c${result} - ${
+      (<ISampleEvent>timedEvent.event).sampleName
+    } (start: ${eventStart}, in section: ${timedEvent.timeInSection})`,
+    `color: ${result === 'added' ? 'green' : 'red'}`,
+  );
 }
 
 export interface ITimedSequenceEvent {
   timedSequence: ITimedSequence;
   event: ISequenceEvent;
+  section: ISection;
   timeInSection: number;
 }
 
@@ -192,6 +173,7 @@ export function getEventsInSection(song: Song, section: ISection): ITimedSequenc
       if (absoluteStart >= sectionStart && absoluteStart < sectionEnd) {
         // event start is in window
         results.push({
+          section,
           event,
           timedSequence,
           timeInSection: absoluteStart - sectionStart,
@@ -226,94 +208,17 @@ export function getSectionIterationAtTime(section: ISection, time: number, bpm: 
 }
 
 /**
- * Returns events in the given timewindow for a song without sections.
- * @param {number} fromTime
- * @param {number} toTime
- * @param {Song} song
- * @returns {IScheduleEventData[]}
- */
-// function getEventScheduleListForNonSectionSong(
-//   fromTime: number,
-//   toTime: number,
-//   song: Song,
-// ): IScheduleEventData[] {
-//   const results: IScheduleEventData[] = [];
-//   for (let ts = 0; ts < song.timedSequences.length; ts++) {
-//     // start time for this sequence
-//     const timedSequence = song.timedSequences[ts];
-//     const sequenceStart: number = timedSequence.absoluteStart.toTime(song.bpm);
-//
-//     // loop through events for sequence
-//     for (let e = 0; e < timedSequence.sequence.events.length; e++) {
-//       const event: ISequenceEvent = timedSequence.sequence.events[e];
-//
-//       // skip if event was already scheduled in a previous call
-//       if (eventHasBeenScheduled(song, event, timedSequence)) {
-//         continue;
-//       }
-//
-//       // calculate the absolute time for the event
-//       const absoluteSeconds = sequenceStart + event.relativeStart.toTime(song.bpm);
-//
-//       // and add to results if it's in the timewindow
-//       if (absoluteSeconds >= fromTime && absoluteSeconds < toTime) {
-//         results.push({
-//           event,
-//           absoluteSeconds,
-//         });
-//
-//         // and mark as scheduled
-//         markEventAsScheduled(song, event, timedSequence);
-//       }
-//     }
-//   }
-//
-//   return results;
-// }
-
-/**
- * So we can read and write the same value
- * @type {number}
- */
-// const nonSectionSongMarkedValue = 1;
-
-/**
- * Checks if the event was already scheduled in a previous schedule-call
- * @param {Song} song
- * @param {ISequenceEvent} event
- * @param {ITimedSequence} timedSequence
- * @returns {boolean}
- */
-// function eventHasBeenScheduled(
-//   song: Song,
-//   event: ISequenceEvent,
-//   timedSequence: ITimedSequence,
-// ): boolean {
-//   if (song.getSections().length === 0) {
-//     // when there are no loop-points, a scheduled event has a value 1 for the id of the timedSequence it is in
-//     return event.lastScheduledData[timedSequence.id] === nonSectionSongMarkedValue;
-//   }
-//   // todo
-//   return false;
-// }
-
-/**
  * Marks the event as scheduled.
- * @param {Song} song
- * @param {ISequenceEvent} event
- * @param {ITimedSequence} timedSequence
+ * @param {ITimedSequenceEvent} timedEvent
+ * @param {number} iteration
  */
-// function markEventAsScheduled(
-//   song: Song,
-//   event: ISequenceEvent,
-//   timedSequence: ITimedSequence,
-// ): void {
-//   if (song.getSections().length === 0) {
-//     event.lastScheduledData[timedSequence.id] = nonSectionSongMarkedValue;
-//   }
-//
-//   // todo else
-// }
+function markEventAsScheduled(timedEvent: ITimedSequenceEvent, iteration: number): void {
+  timedEvent.event.lastScheduledData[getIsScheduledKey(timedEvent)] = iteration;
+}
+
+function getIsScheduledKey(event: ITimedSequenceEvent): string {
+  return `${event.section.id}-${event.timedSequence.id}`;
+}
 
 export function clearAllLastScheduleData(song: Song): void {
   for (let s = 0; s < song.sequences.length; s++) {
