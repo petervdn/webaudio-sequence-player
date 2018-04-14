@@ -3,19 +3,15 @@ import 'web-audio-test-api';
 import { createSampleSequence } from '../src/lib/util/sequenceUtils';
 import MusicTime from 'musictime';
 import Song from '../src/lib/Song';
-import {
-  getEventScheduleList, getEventsInSection,
-  getSectionIterationAtTime
-} from '../src/lib/util/scheduleUtils';
-import {ISampleEvent} from "../src/lib/data/interface";
+import { getEventsInSection, getSectionIterationAtTime } from '../src/lib/util/scheduleUtils';
+import { ISampleEvent } from '../src/lib/data/interface';
+import { createSection } from '../src/lib/util/sectionUtils';
 
 describe('scheduleUtils', () => {
   it('should get correction section iteration', () => {
-    const section = {
-      startedAt: 8,
-      start: new MusicTime(4), // 8s
-      end: new MusicTime(8),   // 16s
-    };
+    const section = createSection(new MusicTime(4), new MusicTime(8), 0, false);
+    section.startedAt = 8;
+
     expect(getSectionIterationAtTime(section, 7, 120)).to.equal(-1);
     expect(getSectionIterationAtTime(section, 8, 120)).to.equal(0);
     expect(getSectionIterationAtTime(section, 16, 120)).to.equal(1);
@@ -23,15 +19,12 @@ describe('scheduleUtils', () => {
   });
 
   it('should throw an error when retrieving iteration without startedAt', () => {
-    const section = {
-      start: new MusicTime(4),
-      end: new MusicTime(8),
-    };
+    const section = createSection(new MusicTime(4), new MusicTime(8), 0, false);
+
     expect(() => {
-      getSectionIterationAtTime(section, 7, 128)
+      getSectionIterationAtTime(section, 7, 128);
     }).to.throw();
   });
-
 
   it('set correct initial section', () => {
     // todo
@@ -51,9 +44,9 @@ describe('scheduleUtils', () => {
       '0.3.0': ['hihat'],
     });
 
-    song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
-    song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
-    song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
+    song.addSequenceAtTime(seq2, new MusicTime(0, 1, 1));
+    song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
+    song.addSequenceAtTime(seq1, new MusicTime(0, 2, 0));
 
     const section1 = song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('0.2.0'));
     // console.log(2);
@@ -64,13 +57,16 @@ describe('scheduleUtils', () => {
     // const events2 = getEventsInSection(song, section2);
     // const events3 = getEventsInSection(song, section3);
 
-    expect(events1.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal(['kick', 'snare', 'hihat']);
+    expect(events1.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal([
+      'kick',
+      'snare',
+      'hihat',
+    ]);
     // expect(events2.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['kick', 'hihat', 'snare', 'hihat', 'hihat']);
     // expect(events3.map(item => (<ISampleEvent>item.event).sampleName)).to.deep.equal( ['snare', 'hihat', 'kick']);
     // expect(events2.map(item => item.timeInSection)).to.deep.equal( [0, 0.125, 0.5, 0.625, 1.125]);
     // expect(events3.map(item => item.timeInSection)).to.deep.equal( [0, 0.125, 0.5]);
   });
-
 
   // describe('scheduling a song without sections', () => {
   //   it('should collect scheduleList', () => {
