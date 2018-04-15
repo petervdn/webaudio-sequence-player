@@ -56,11 +56,12 @@ new Vue({
     const testTime = 0;
     const startSection = getSectionOnTime(this.song, 0);
     startSection.startedAt = 0;// startSection.start.toTime(this.song.bpm);
-    const items = getEventScheduleList(this.song, testTime, testTime + 2, startSection);
-    getEventScheduleList(this.song, testTime, testTime + 2, startSection);
+    // const items = getEventScheduleList(this.song, testTime, testTime + 2, startSection);
+    // getEventScheduleList(this.song, testTime, testTime + 2, startSection);
+    // getEventScheduleList(this.song, 2, 4, startSection);
     // getEventScheduleList(this.song, testTime, testTime + 1, startSection);
     // getEventScheduleList(this.song, 1, 2, startSection);
-    console.log(items);
+    // console.log(items);
     this.editor.setPixelsPerSecondFactor(0.5);
   },
   data: {

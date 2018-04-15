@@ -35,7 +35,7 @@ export function getEventScheduleList(
   }
 
   // if the initial section does not match the given time (with regards to repeats), throw an error
-  // this should not happen
+  // (this should not happen during playback)
   if (section.repeat > -1 && sectionIteration > section.repeat) {
     console.log(section.repeat > -1, sectionIteration > section.repeat);
     throw new Error('Initial section does not play at given time');
