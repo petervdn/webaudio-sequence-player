@@ -23,7 +23,7 @@ describe('Song', () => {
 
     song.addSequenceAtTime(seq, new MusicTime(1,2,3));
     expect(song.timedSequences.length).to.equal(1);
-    expect(song.timedSequences[0].id).to.equal('1');
+    expect(song.timedSequences[0].id).to.equal('timedseq-1');
     expect(song.timedSequences[0].absoluteStart.toString()).to.equal('1.2.3');
   });
 
