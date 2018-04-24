@@ -120,7 +120,9 @@ export default class Editor {
         this.updateEventsPosition(existingElement);
       } else {
         // element doesnt exist, create new
-        const label = `${timedSequence.sequence.id} (${timedSequence.absoluteStart.toString()})`;
+        const label = `${timedSequence.id}: ${
+          timedSequence.sequence.id
+        } (${timedSequence.absoluteStart.toString()})`;
         const el = createSequenceElement(
           label,
           pos,

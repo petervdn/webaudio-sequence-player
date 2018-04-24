@@ -1,4 +1,8 @@
-import { clearAllLastScheduleData, getEventScheduleList } from './util/scheduleUtils';
+import {
+  clearAllLastScheduleData,
+  getEventScheduleList,
+  getSectionIterationAtTime,
+} from './util/scheduleUtils';
 import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
@@ -155,6 +159,7 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} lookAheadTime
    */
   public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): void {
+    const reachedEnd = this.checkSection(time);
     // get all events in the timewindow
     const endTime = time + (lookAheadTime || this.scheduleTime.lookAhead);
     const items: IScheduleEventData[] = getEventScheduleList(
@@ -167,6 +172,16 @@ export default class SequencePlayer extends EventDispatcher {
     items.forEach(item => {
       this.samplePlayer.playSample(item, this.playStartTime);
     });
+  }
+
+  private checkSection(time: number): boolean {
+    const sectionIteration = getSectionIterationAtTime(this.currentSection, time, this.song.bpm);
+
+    if (this.currentSection.repeat > -1 && sectionIteration > this.currentSection.repeat) {
+      return true;
+    }
+
+    return false;
   }
 
   public stop(): void {
