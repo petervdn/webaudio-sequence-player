@@ -51,7 +51,7 @@ export function calculateTimelineEnd(song: Song): MusicTime {
 //   })
 // }
 /**
- * Finds the first section on the where the time >= sectionStart and time < sectionEnd
+ * Finds the first section where the time >= sectionStart and time < sectionEnd
  * @param {Song} song
  * @param {number} time
  * @returns {ISection}

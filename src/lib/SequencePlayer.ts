@@ -159,7 +159,8 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {number} lookAheadTime
    */
   public scheduleAtTime(song: Song, time: number, lookAheadTime?: number): void {
-    const reachedEnd = this.checkSection(time);
+    // const reachedEnd = this.checkSection(time);
+
     // get all events in the timewindow
     const endTime = time + (lookAheadTime || this.scheduleTime.lookAhead);
     const items: IScheduleEventData[] = getEventScheduleList(
@@ -174,15 +175,15 @@ export default class SequencePlayer extends EventDispatcher {
     });
   }
 
-  private checkSection(time: number): boolean {
-    const sectionIteration = getSectionIterationAtTime(this.currentSection, time, this.song.bpm);
-
-    if (this.currentSection.repeat > -1 && sectionIteration > this.currentSection.repeat) {
-      return true;
-    }
-
-    return false;
-  }
+  // private checkSection(time: number): boolean {
+  //   const sectionIteration = getSectionIterationAtTime(this.currentSection, time, this.song.bpm);
+  //
+  //   if (this.currentSection.repeat > -1 && sectionIteration > this.currentSection.repeat) {
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
 
   public stop(): void {
     if (this.state !== SequencePlayerState.PLAYING) {
