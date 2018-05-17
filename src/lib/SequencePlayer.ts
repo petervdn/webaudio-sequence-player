@@ -1,8 +1,4 @@
-import {
-  clearAllLastScheduleData,
-  getEventScheduleList,
-  getSectionIterationAtTime,
-} from './util/scheduleUtils';
+import { clearAllLastScheduleData, getEventScheduleList } from './util/scheduleUtils';
 import Song from './Song';
 import Interval from './util/Interval';
 import SampleManager from 'sample-manager';
