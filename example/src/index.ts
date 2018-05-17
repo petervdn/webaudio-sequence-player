@@ -46,7 +46,7 @@ new Vue({
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('1.2.0'));
     // this.song.addSection(MusicTime.fromString('0.0.2'), MusicTime.fromString('0.1.2'), 1);
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
-    this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('1.0.0'), 1);
+    this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('1.0.0'));
 
 
     this.editor.setSong(this.song);
@@ -60,9 +60,11 @@ new Vue({
     // getEventScheduleList(this.song, testTime, testTime + 2, startSection);
     // getEventScheduleList(this.song, 2, 4, startSection);
     // getEventScheduleList(this.song, testTime, testTime + 1, startSection);
+    // getEventScheduleList(this.song, 0, 1, startSection);
     // getEventScheduleList(this.song, 1, 2, startSection);
     // console.log(items);
     this.editor.setPixelsPerSecondFactor(0.5);
+
   },
   data: {
     musicTime: notPlayingTime,
@@ -82,6 +84,7 @@ new Vue({
       }
     },
     start() {
+      console.log('start');
       this.player.play(this.song);
     },
     stop() {
