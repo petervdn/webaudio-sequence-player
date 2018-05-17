@@ -1,14 +1,20 @@
 import Editor from '../../src/lib/editor/Editor';
-import SequencePlayer from '../../src/lib/SequencePlayer';
-import Song from '../../src/lib/Song';
-import { createSampleSequence } from '../../src/lib/util/sequenceUtils';
-import MusicTime from 'musictime';
-import { SequencePlayerEvent } from '../../src/lib/data/event';
-import { SequencePlayerState } from '../../src/lib/data/enum';
+import {
+  SequencePlayer,
+  Song,
+  MusicTime,
+  SequencePlayerEvent,
+  SequencePlayerState,
+  getSectionOnTime,
+  createSampleSequence,
+} from '../../src';
+
+// import { SequencePlayerEvent } from '../../src';
+// import { SequencePlayerState } from '../../src';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-import { getEventScheduleList, getEventsInSection } from '../../src/lib/util/scheduleUtils';
-import { getSectionOnTime } from '../../src/lib/util/songUtils';
-import { ISampleEvent } from '../../src/lib/data/interface';
+// import { getEventScheduleList, getEventsInSection } from '../../src/lib/util/scheduleUtils';
+// import { getSectionOnTime } from '../../src';
+// import { ISampleEvent } from '../../src/lib/data/interface';
 
 declare const Vue;
 const notPlayingTime = '--.--.--';
@@ -38,8 +44,8 @@ new Vue({
     });
 
     // this.song.addSequenceAtTime(seq2, new MusicTime(0,1,1));
-    this.song.addSequenceAtTime(seq1, new MusicTime(0,0,0));
-    this.song.addSequenceAtTime(seq1, new MusicTime(0,2,0));
+    this.song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
+    this.song.addSequenceAtTime(seq1, new MusicTime(0, 2, 0));
     //  this.song.addSequenceAtTime(seq1, new MusicTime(3,0,0));
     // const section1 = this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.1'));
     // const section2 = this.song.addSection(MusicTime.fromString('0.2.0'), MusicTime.fromString('1.2.0'));
@@ -48,14 +54,13 @@ new Vue({
     // this.song.addSection(MusicTime.fromString('0.1.0'), MusicTime.fromString('0.2.0'));
     this.song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('1.0.0'));
 
-
     this.editor.setSong(this.song);
     // const events = getEventsInSection(this.song, section2);
     // console.log(events.map(item => (<ISampleEvent>item.event).sampleName));
 
     const testTime = 0;
     const startSection = getSectionOnTime(this.song, 0);
-    startSection.startedAt = 0;// startSection.start.toTime(this.song.bpm);
+    startSection.startedAt = 0; // startSection.start.toTime(this.song.bpm);
     // const items = getEventScheduleList(this.song, testTime, testTime + 2, startSection);
     // getEventScheduleList(this.song, testTime, testTime + 2, startSection);
     // getEventScheduleList(this.song, 2, 4, startSection);
@@ -64,14 +69,13 @@ new Vue({
     // getEventScheduleList(this.song, 1, 2, startSection);
     // console.log(items);
     this.editor.setPixelsPerSecondFactor(0.5);
-
   },
   data: {
     musicTime: notPlayingTime,
   },
   methods: {
     onPlayerStateChange(event: SequencePlayerEvent) {
-      switch(event.data) {
+      switch (event.data) {
         case SequencePlayerState.IDLE: {
           this.musicTime = notPlayingTime;
           this.frame.stop();
@@ -95,6 +99,6 @@ new Vue({
     },
     onFrame() {
       this.musicTime = this.player.timeData.playMusicTime.toString();
-    }
+    },
   },
 });
