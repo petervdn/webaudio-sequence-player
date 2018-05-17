@@ -10,4 +10,3 @@ some use cases:
 This project is far from finished at the moment, feel free to help out!
 
 
-[Example](https://petervdn.github.io/webaudio-sequence-player/example/)
