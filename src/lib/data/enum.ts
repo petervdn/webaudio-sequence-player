@@ -3,8 +3,7 @@ export enum SequenceEventType {
   NOTE = 'note',
 }
 
-export enum SequencePlayerState {
+export enum SongPlayerState {
   IDLE = 'idle',
-  LOADING = 'loading',
   PLAYING = 'playing',
 }

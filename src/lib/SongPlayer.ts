@@ -1,7 +1,6 @@
 import { clearAllLastScheduleData, getEventScheduleList } from './util/scheduleUtils';
 import Song from './Song';
 import Interval from './util/Interval';
-import SampleManager from 'sample-manager';
 import EventDispatcher from 'seng-event';
 import {
   IScheduleEventData,
@@ -9,18 +8,17 @@ import {
   ISection,
   ISongPlayerTimeData,
 } from './data/interface';
-import { getSectionOnTime, setSamplesOnSampleEvents } from './util/songUtils';
-import { SequencePlayerState } from './data/enum';
-import { SequencePlayerEvent } from './data/event';
+import { getSectionOnTime } from './util/songUtils';
 import AnimationFrame from './util/AnimationFrame';
-
 import MusicTime from 'musictime';
 import { initTimeData } from './util/sequencePlayerUtils';
+import { SongPlayerEvent } from './SongPlayerEvent';
+import { SongPlayerState } from './data/enum';
 
 export default class SongPlayer extends EventDispatcher {
   public timeData: ISongPlayerTimeData = initTimeData();
 
-  private state: SequencePlayerState = SequencePlayerState.IDLE;
+  private state: SongPlayerState = SongPlayerState.IDLE;
   private context: AudioContext;
   private playStartTime: number = -1;
   private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
@@ -33,11 +31,7 @@ export default class SongPlayer extends EventDispatcher {
     super();
 
     this.context = context;
-    // todo allow external sample manager?
-    // this.sampleManager = new SampleManager(this.context, samplesBasePath, samplesExtension);
-    // this.samplePlayer = new SamplePlayer(this.context, this.context.destination);
 
-    // create interval to start when scheduling
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleTime.interval);
     this.timeDataUpdater = new AnimationFrame(this.onTimeDataUpdate);
   }
@@ -46,10 +40,10 @@ export default class SongPlayer extends EventDispatcher {
    * Sets the state and dispatches an event.
    * @param {SequencePlayerState} state
    */
-  private setState(state: SequencePlayerState): void {
+  private setState(state: SongPlayerState): void {
     if (state !== this.state) {
       this.state = state;
-      this.dispatchEvent(new SequencePlayerEvent('state-change', this.state));
+      this.dispatchEvent(new SongPlayerEvent(SongPlayerEvent.STATE_CHANGE));
     }
   }
 
@@ -86,7 +80,7 @@ export default class SongPlayer extends EventDispatcher {
    */
   public play(song: Song, startTime = 0, updateTimeData = true): void {
     // todo add play with timeoffset (related to pause)
-    if (this.state !== SequencePlayerState.IDLE) {
+    if (this.state !== SongPlayerState.IDLE) {
       console.error('Can only play when idle');
       return;
     }
@@ -118,7 +112,7 @@ export default class SongPlayer extends EventDispatcher {
     //   loadPromise = this.loadSong(this.song);
     // }
 
-    this.setState(SequencePlayerState.PLAYING);
+    this.setState(SongPlayerState.PLAYING);
     // store start time, so we know where we are in the song
     this.playStartTime = this.context.currentTime;
 
@@ -182,7 +176,7 @@ export default class SongPlayer extends EventDispatcher {
   // }
 
   public stop(): void {
-    if (this.state !== SequencePlayerState.PLAYING) {
+    if (this.state !== SongPlayerState.PLAYING) {
       console.error('Can only stop when playing');
       return;
     }
@@ -191,7 +185,7 @@ export default class SongPlayer extends EventDispatcher {
     this.timeDataUpdater.stop();
     this.timeData = initTimeData();
     clearAllLastScheduleData(this.song!);
-    this.setState(SequencePlayerState.IDLE);
+    this.setState(SongPlayerState.IDLE);
   }
 
   /**
@@ -206,7 +200,7 @@ export default class SongPlayer extends EventDispatcher {
    * Returns the current state
    * @returns {SequencePlayerState}
    */
-  public getState(): SequencePlayerState {
+  public getState(): SongPlayerState {
     return this.state;
   }
 

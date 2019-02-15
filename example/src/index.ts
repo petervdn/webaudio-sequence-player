@@ -1,8 +1,9 @@
 import Editor from '../../src/lib/editor/Editor';
-import { SongPlayer, Song, MusicTime, createSampleSequence } from '../../src';
+import { SongPlayer, Song, MusicTime, createSampleSequence  , SongPlayerState } from '../../src';
 
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
 import SampleManager from 'sample-manager/lib/SampleManager';
+import { SongPlayerEvent } from '../../src/lib/SongPlayerEvent';
 
 const notPlayingTime = '--.--.--';
 const frame = new AnimationFrame(() => {
@@ -17,19 +18,20 @@ sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
 sampleManager.loadAllSamples().then(() => {
   console.log('done');
 });
-// player.addEventListener('state-change', event => {
-//   switch (event.data) {
-//     case SequencePlayerState.IDLE: {
-//       musicTime = notPlayingTime;
-//       frame.stop();
-//       break;
-//     }
-//     case SequencePlayerState.PLAYING: {
-//       frame.start();
-//       break;
-//     }
-//   }
-// });
+player.addEventListener(SongPlayerEvent.STATE_CHANGE, () => {
+  const state = player.getState();
+  switch (state) {
+    case SongPlayerState.IDLE: {
+      musicTime = notPlayingTime;
+      frame.stop();
+      break;
+    }
+    case SongPlayerState.PLAYING: {
+      frame.start();
+      break;
+    }
+  }
+});
 // create a song
 const song = new Song(120);
 

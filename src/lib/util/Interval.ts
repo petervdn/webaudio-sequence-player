@@ -1,21 +1,20 @@
 export default class Interval {
+  private readonly callback: () => void;
+  private readonly intervalSeconds: number;
   private intervalId: number | undefined;
   private isRunning = false;
-  private callback: () => void;
-  private interval: number;
 
-  constructor(callback: () => void, interval: number) {
+  constructor(callback: () => void, intervalSeconds: number) {
     this.callback = callback;
-    this.interval = interval;
+    this.intervalSeconds = intervalSeconds;
   }
 
   public start(): void {
     if (this.isRunning) {
-      console.error('Interval is already running');
-      return;
+      throw new Error('Interval is already running');
     }
     this.isRunning = true;
-    this.intervalId = window.setInterval(this.callback, this.interval * 1000);
+    this.intervalId = window.setInterval(this.callback, this.intervalSeconds * 1000);
   }
 
   public stop(): void {

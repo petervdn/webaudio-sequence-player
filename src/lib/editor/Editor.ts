@@ -12,9 +12,7 @@ import {
   createEventElement,
   applyPosAndSize,
 } from '../util/editorUtils';
-import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
-import { SequencePlayerState } from '../data/enum';
 import SongPlayer from '../SongPlayer';
 import { getLatestEventInSequence } from '../util/sequenceUtils';
 
