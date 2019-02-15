@@ -38,11 +38,13 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
         throw new TypeError(`Expecting a volume value but found a ${typeof volume}`);
       }
 
+      const relativeStart = MusicTime.fromString(musicTimeString);
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
+        relativeStart,
+        relativeEnd: relativeStart.add(new MusicTime(0, 0, 4)),
         type: SequenceEventType.SAMPLE,
-        relativeStart: MusicTime.fromString(musicTimeString),
         lastScheduledData: {},
         // sample: null,
         // ...createBaseSequenceEventFromTimeString(

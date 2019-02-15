@@ -34,6 +34,7 @@ export interface ILastScheduledData {
 export interface IAbstractSequenceEvent {
   type: SequenceEventType;
   relativeStart: MusicTime; // todo rename to start?
+  relativeEnd: MusicTime;
   lastScheduledData: ILastScheduledData;
 }
 

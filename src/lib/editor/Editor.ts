@@ -158,10 +158,10 @@ export default class Editor {
 
   private updateEventsPosition(sequenceElement: HTMLElement): void {
     const elements = Array.from(sequenceElement.querySelectorAll('.events div')) as HTMLElement[];
-    const size = this.getEventSize();
     elements.forEach((el, index) => {
       const event = this.elementsMap.get(el);
-      const pos = this.getPositionForEvent(event, index, this.getEventSize().height);
+      const size = this.getEventSize(event);
+      const pos = this.getPositionForEvent(event, index, size.height);
       el.style.left = `${pos.x}px`;
       el.style.top = `${pos.y}px`;
       el.style.width = `${size.width}px`;
@@ -180,8 +180,8 @@ export default class Editor {
       throw new Error('eventsContainer element not found');
     }
 
-    const eventSize = this.getEventSize();
     timedSequence.sequence.events.forEach((event, index) => {
+      const eventSize = this.getEventSize(event);
       const eventEl = createEventElement(
         event,
         this.getPositionForEvent(event, index, eventSize.height),
@@ -205,9 +205,9 @@ export default class Editor {
     };
   }
 
-  private getEventSize(): ISize {
+  private getEventSize(event: SequenceEvent): ISize {
     return {
-      width: this.musicTimeToPixels(this.defaultEventDuration) - 1,
+      width: this.musicTimeToPixels(event.relativeEnd.subtract(event.relativeStart)) - 1,
       height: this.getEventContainerHeight() / this.eventVerticalSpread - 1,
     };
   }

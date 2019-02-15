@@ -1,10 +1,5 @@
 import Editor from '../../src/lib/editor/Editor';
-import {
-  SongPlayer,
-  Song,
-  MusicTime, createSampleSequence,
-  //  createSampleSequence,
-} from '../../src';
+import { SongPlayer, Song, MusicTime, createSampleSequence } from '../../src';
 
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
 import SampleManager from 'sample-manager/lib/SampleManager';
