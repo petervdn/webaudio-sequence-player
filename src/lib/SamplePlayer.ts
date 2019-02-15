@@ -16,7 +16,7 @@ export default class SamplePlayer {
     const playResult = playBuffer(
       this.context,
       this.output,
-      event.sample.audioBuffer,
+      event.sample!.audioBuffer,
       data.absoluteSeconds + playStartTime, // start time
       0, // play from
       -1, // play to

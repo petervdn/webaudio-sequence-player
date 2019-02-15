@@ -18,7 +18,7 @@ export default class Song {
 
   private usedSampleNames: string[] = []; // used by the player to decide what to load
   private sections: ISection[] = [];
-  private timelineEnd: MusicTime = null;
+  private timelineEnd: MusicTime | null = null;
 
   constructor(bpm: number = 120) {
     // todo force bpm within a range
@@ -74,6 +74,10 @@ export default class Song {
    * @returns {ISection}
    */
   public addSection(start: MusicTime, end: MusicTime, repeat = -1): ISection {
+    if (!this.timelineEnd) {
+      throw new Error('No timelineEnd set');
+    }
+
     if (start >= this.timelineEnd) {
       throw new Error('Start of section should be before timelineEnd');
     }
@@ -123,7 +127,7 @@ export default class Song {
     return this.usedSampleNames;
   }
 
-  public getTimelineEnd(): MusicTime {
+  public getTimelineEnd(): MusicTime | null {
     return this.timelineEnd;
   }
 
@@ -132,14 +136,14 @@ export default class Song {
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
-    for (let s = 0; s < this.sequences.length; s++) {
+    for (let s = 0; s < this.sequences.length; s += 1) {
       const sequence = this.sequences[s];
-      for (let e = 0; e < sequence.events.length; e++) {
+      for (let e = 0; e < sequence.events.length; e += 1) {
         const sequenceEvent: ISequenceEvent = sequence.events[e];
         if (
           (sequenceEvent.type === SequenceEventType.SAMPLE &&
             !(<ISampleEvent>sequenceEvent).sample) ||
-          !(<ISampleEvent>sequenceEvent).sample.audioBuffer
+          !(<ISampleEvent>sequenceEvent).sample!.audioBuffer
         ) {
           return false;
         }

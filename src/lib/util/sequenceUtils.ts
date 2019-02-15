@@ -75,9 +75,9 @@ function createBaseSequenceEventFromTimeString(
   };
 }
 
-export function getLatestEventInSequence(sequence: ISequence): ISequenceEvent {
+export function getLatestEventInSequence(sequence: ISequence): ISequenceEvent | null {
   let latestTime = 0;
-  let latestEvent: ISequenceEvent = null;
+  let latestEvent: ISequenceEvent | null = null;
   sequence.events.forEach(event => {
     const eventStart = event.relativeStart.toSixteenths();
     if (eventStart > latestTime) {

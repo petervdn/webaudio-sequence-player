@@ -24,12 +24,12 @@ export default class SequencePlayer extends EventDispatcher {
 
   private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
-  private playStartTime: number;
+  private playStartTime: number = -1;
   private scheduleTime: IScheduleTiming = { interval: 1, lookAhead: 1.5 };
   private scheduleInterval: Interval;
   private timeDataUpdater: AnimationFrame;
-  private song: Song;
-  private currentSection: ISection;
+  private song: Song | undefined;
+  private currentSection: ISection | undefined;
 
   constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
     super();
@@ -99,7 +99,11 @@ export default class SequencePlayer extends EventDispatcher {
 
     this.song = song;
 
-    // set the initial section
+    if (!this.song.getIsLoaded()) {
+      throw new Error('Song is not loaded');
+    }
+
+    // set the initial section // todo what happens with multiple sections here
     this.currentSection = getSectionOnTime(song, startTime);
 
     if (!this.currentSection) {
@@ -108,43 +112,41 @@ export default class SequencePlayer extends EventDispatcher {
 
     this.currentSection.startedAt = 0;
 
-    let loadPromise: Promise<void>;
-    if (this.song.getIsLoaded()) {
-      loadPromise = Promise.resolve();
-    } else {
-      // todo after loading, state quickly jumps to idle (and then to playing)
-      loadPromise = this.loadSong(this.song);
+    // let loadPromise: Promise<void>;
+    // if (this.song.getIsLoaded()) {
+    //   loadPromise = Promise.resolve();
+    // } else {
+    //   // todo after loading, state quickly jumps to idle (and then to playing)
+    //   loadPromise = this.loadSong(this.song);
+    // }
+
+    this.setState(SequencePlayerState.PLAYING);
+    // store start time, so we know where we are in the song
+    this.playStartTime = this.context.currentTime;
+
+    // start timedata updater
+    if (updateTimeData) {
+      this.timeDataUpdater.start();
     }
 
-    loadPromise.then(() => {
-      this.setState(SequencePlayerState.PLAYING);
-      // store start time, so we know where we are in the song
-      this.playStartTime = this.context.currentTime;
+    // do one schedule call for time=0
+    // todo this can give an error, when the moment comes the sampleplayer needs to play
+    // that time is already 0.000001 s in the past.
+    this.scheduleAtTime(this.song, 0);
 
-      // start timedata updater
-      if (updateTimeData) {
-        this.timeDataUpdater.start();
-      }
-
-      // do one schedule call for time=0
-      // todo this can give an error, when the moment comes the sampleplayer needs to play
-      // that time is already 0.000001 s in the past.
-      this.scheduleAtTime(this.song, 0);
-
-      // and more on interval
-      this.scheduleInterval.start();
-    });
+    // and more on interval
+    this.scheduleInterval.start();
   }
 
   private onScheduleInterval = () => {
-    this.scheduleAtTime(this.song, this.getSongPlayTime());
+    this.scheduleAtTime(this.song!, this.getSongPlayTime());
   };
 
   private onTimeDataUpdate = () => {
     const songPlayTime = this.getSongPlayTime();
     this.timeData = {
       playTime: songPlayTime,
-      playMusicTime: MusicTime.fromTime(songPlayTime, this.song.bpm),
+      playMusicTime: MusicTime.fromTime(songPlayTime, this.song!.bpm),
     };
   };
 
@@ -163,7 +165,7 @@ export default class SequencePlayer extends EventDispatcher {
       song,
       time,
       endTime,
-      this.currentSection,
+      this.currentSection!,
     );
 
     items.forEach(item => {
@@ -190,7 +192,7 @@ export default class SequencePlayer extends EventDispatcher {
     this.samplePlayer.stopAll();
     this.timeDataUpdater.stop();
     this.timeData = initTimeData();
-    clearAllLastScheduleData(this.song);
+    clearAllLastScheduleData(this.song!);
     this.setState(SequencePlayerState.IDLE);
   }
 

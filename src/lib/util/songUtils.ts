@@ -5,8 +5,8 @@ import SampleManager from 'sample-manager';
 import MusicTime from 'musictime';
 
 export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManager): void {
-  for (let s = 0; s < song.sequences.length; s++) {
-    for (let e = 0; e < song.sequences[s].events.length; e++) {
+  for (let s = 0; s < song.sequences.length; s += 1) {
+    for (let e = 0; e < song.sequences[s].events.length; e += 1) {
       const event: ISequenceEvent = song.sequences[s].events[e];
 
       if (event.type === SequenceEventType.SAMPLE) {
@@ -56,7 +56,7 @@ export function calculateTimelineEnd(song: Song): MusicTime {
  * @param {number} time
  * @returns {ISection}
  */
-export function getSectionOnTime(song: Song, time: number): ISection {
+export function getSectionOnTime(song: Song, time: number): ISection | undefined {
   return song
     .getSections()
     .find(section => time >= section.start.toTime(song.bpm) && time < section.end.toTime(song.bpm));

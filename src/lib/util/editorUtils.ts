@@ -93,13 +93,13 @@ export function createTimelineCanvas(
 ): CanvasRenderingContext2D {
   const canvas = document.createElement('canvas');
   const timeLineContext = canvas.getContext('2d');
-  canvas.width = parseInt(parent.style.width, 10);
+  canvas.width = parseInt(parent.style.width!, 10);
   canvas.height = height;
   canvas.style.position = 'absolute';
   canvas.style.top = `${yOffset}px`;
 
   parent.appendChild(canvas);
-  return timeLineContext;
+  return timeLineContext!;
 }
 
 export function drawTimeline(
@@ -156,7 +156,11 @@ export function applyPosAndSize(element: HTMLElement, pos: IPoint, size: ISize):
   element.style.height = `${size.height}px`;
 }
 
-export function musicTimeToPixels(musicTime: MusicTime, bpm, pixelsPerSecond): number {
+export function musicTimeToPixels(
+  musicTime: MusicTime,
+  bpm: number,
+  pixelsPerSecond: number,
+): number {
   return musicTime.toTime(bpm) * pixelsPerSecond;
 }
 

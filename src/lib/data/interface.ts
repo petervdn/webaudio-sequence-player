@@ -37,7 +37,7 @@ export interface ILastScheduledData {
 
 export interface ISampleEvent extends ISequenceEvent {
   sampleName: string;
-  sample: ISample;
+  sample: ISample | null;
   volume: number;
 }
 
@@ -56,7 +56,7 @@ export interface ISection {
   length: MusicTime;
   startedAt?: number;
   isGap?: boolean;
-  id: string;
+  id: string | null;
   repeat: number; // how many times the section should repeat (-1 is forever)
 }
 

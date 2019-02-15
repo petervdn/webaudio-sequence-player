@@ -32,7 +32,7 @@ export default class Editor {
 
   private element: HTMLElement;
   private timeLineContext: CanvasRenderingContext2D;
-  private song: Song;
+  private song!: Song;
   private player: SequencePlayer;
   private playHead: HTMLElement;
   private songEnd: HTMLElement;
@@ -47,19 +47,20 @@ export default class Editor {
 
     this.player = player;
 
-    player.addEventListener('state-change', (event: SequencePlayerEvent) => {
-      switch (event.data) {
-        case SequencePlayerState.IDLE: {
-          this.updateFrame.stop();
-          this.updatePlayheadPosition();
-          break;
-        }
-        case SequencePlayerState.PLAYING: {
-          this.updateFrame.start();
-          break;
-        }
-      }
-    });
+    // todo
+    // player.addEventListener('state-change', (event: SequencePlayerEvent) => {
+    //   switch (event.data) {
+    //     case SequencePlayerState.IDLE: {
+    //       this.updateFrame.stop();
+    //       this.updatePlayheadPosition();
+    //       break;
+    //     }
+    //     case SequencePlayerState.PLAYING: {
+    //       this.updateFrame.start();
+    //       break;
+    //     }
+    //   }
+    // });
 
     // playhead
     const x = this.seqsOffset.x + this.player.timeData.playTime * this.pixelsPerSecond;
@@ -102,7 +103,7 @@ export default class Editor {
 
   private positionSongEnd(): void {
     this.songEnd.style.left = `${this.seqsOffset.x +
-      musicTimeToPixels(this.song.getTimelineEnd(), this.song.bpm, this.pixelsPerSecond)}px`;
+      musicTimeToPixels(this.song.getTimelineEnd()!, this.song.bpm, this.pixelsPerSecond)}px`;
   }
 
   private drawSong(): void {
@@ -155,9 +156,9 @@ export default class Editor {
   }
 
   private updateEventsPosition(sequenceElement: HTMLElement): void {
-    const elements = sequenceElement.querySelectorAll('.events div');
+    const elements = Array.from(sequenceElement.querySelectorAll('.events div')) as HTMLElement[];
     const size = this.getEventSize();
-    elements.forEach((el: HTMLElement, index: number) => {
+    elements.forEach((el, index) => {
       const event = this.elementsMap.get(el);
       const pos = this.getPositionForEvent(event, index, this.getEventSize().height);
       el.style.left = `${pos.x}px`;
@@ -173,6 +174,10 @@ export default class Editor {
 
   private addEventsToSequence(sequenceElement: HTMLElement, timedSequence: ITimedSequence): void {
     const eventsContainer = sequenceElement.querySelector('.events');
+
+    if (!eventsContainer) {
+      throw new Error('eventsContainer element not found');
+    }
 
     const eventSize = this.getEventSize();
     timedSequence.sequence.events.forEach((event, index) => {
@@ -248,6 +253,10 @@ export default class Editor {
 
   private getSequenceWidth(sequence: ISequence): number {
     const latestEvent = getLatestEventInSequence(sequence);
+    if (!latestEvent) {
+      throw new Error('No latest event found');
+    }
+
     // ceil to next bar
     const seqEndTime = latestEvent.relativeStart.add(new MusicTime(0, 1, 0));
 

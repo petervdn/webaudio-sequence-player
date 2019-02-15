@@ -1,5 +1,5 @@
 export default class Interval {
-  private intervalId: number;
+  private intervalId: number | undefined;
   private isRunning = false;
   private callback: () => void;
   private interval: number;
@@ -20,7 +20,9 @@ export default class Interval {
 
   public stop(): void {
     this.isRunning = false;
-    clearInterval(this.intervalId);
+    if (this.intervalId !== undefined) {
+      clearInterval(this.intervalId);
+    }
   }
 
   public dispose() {

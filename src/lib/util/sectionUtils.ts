@@ -19,7 +19,7 @@ export function createGapSections(sections: ISection[], end: MusicTime): ISectio
   sections.sort((a, b) => a.start.toSixteenths() - b.start.toSixteenths());
   const results: ISection[] = [];
 
-  for (let i = 0; i < sections.length; i++) {
+  for (let i = 0; i < sections.length; i += 1) {
     const sectionStart = sections[i].start;
     sectionEnd = sections[i].end;
 
@@ -27,7 +27,7 @@ export function createGapSections(sections: ISection[], end: MusicTime): ISectio
       reachedEnd = true;
     }
 
-    for (let j = i + 1; j < sections.length; j++) {
+    for (let j = i + 1; j < sections.length; j += 1) {
       if (sections[j].start.toSixteenths() >= sectionEnd.toSixteenths()) {
         i = j - 1;
         break;

@@ -6,7 +6,7 @@ export function playBuffer(
   from: number,
   duration = -1,
   volume = 1,
-): IPlayBufferResult {
+): IPlayBufferResult | null {
   if (time < context.currentTime) {
     // time is already in the past
     return null;

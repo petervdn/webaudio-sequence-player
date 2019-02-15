@@ -25,6 +25,7 @@ export function getEventScheduleList(
     currentSection.startedAt,
   );
   /*tslint:disable*/
+
   let section = currentSection;
   let sectionIteration = getSectionIterationAtTime(section, fromTime, song.bpm);
   let eventsInSection = getEventsInSection(song, section);
@@ -47,7 +48,7 @@ export function getEventScheduleList(
     // todo get rid of this check eventually?
     // check when the section starts for this iteration
     const sectionIterationStart =
-      section.startedAt + sectionIteration * section.length.toTime(song.bpm);
+      section.startedAt! + sectionIteration * section.length.toTime(song.bpm);
 
     // todo check section start (and break if too late)
 
@@ -109,7 +110,7 @@ export function getEventScheduleList(
         console.log('   switch to next section');
         // next section starts at current end
         const currentSectionEndTime =
-          section.startedAt + (sectionIteration + 1) * section.length.toTime(song.bpm);
+          section.startedAt! + (sectionIteration + 1) * section.length.toTime(song.bpm);
 
         // we now know enough to change the section
         nextSection.startedAt = currentSectionEndTime;
