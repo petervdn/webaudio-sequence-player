@@ -1,6 +1,6 @@
 import Song from '../Song';
-import { getLatestEventInSequence } from '../util/sequenceUtils';
-import { ISequence, ITimedSequence, ISection, ISequenceEvent } from '../data/interface';
+// import { getLatestEventInSequence } from '../util/sequenceUtils';
+import { ISequence, ITimedSequence, ISection, SequenceEvent } from '../data/interface';
 import MusicTime from 'musictime';
 import {
   createSequenceElement,
@@ -15,7 +15,8 @@ import {
 import { SequencePlayerEvent } from '../data/event';
 import AnimationFrame from '../util/AnimationFrame';
 import { SequencePlayerState } from '../data/enum';
-import SequencePlayer from '../SequencePlayer';
+import SongPlayer from '../SongPlayer';
+import { getLatestEventInSequence } from '../util/sequenceUtils';
 
 export default class Editor {
   private minMaxPixelsPerSecond = [30, 500];
@@ -33,13 +34,13 @@ export default class Editor {
   private element: HTMLElement;
   private timeLineContext: CanvasRenderingContext2D;
   private song!: Song;
-  private player: SequencePlayer;
+  private player: SongPlayer;
   private playHead: HTMLElement;
   private songEnd: HTMLElement;
   private updateFrame: AnimationFrame = new AnimationFrame(this.onUpdate.bind(this));
   private elementsMap = new Map();
 
-  constructor(element: HTMLElement, player: SequencePlayer) {
+  constructor(element: HTMLElement, player: SongPlayer) {
     this.element = element;
     element.style.position = 'relative';
     element.style.backgroundColor = '#444';
@@ -197,7 +198,7 @@ export default class Editor {
     });
   }
 
-  private getPositionForEvent(event: ISequenceEvent, index: number, eventHeight: number): IPoint {
+  private getPositionForEvent(event: SequenceEvent, index: number, eventHeight: number): IPoint {
     return {
       x: this.musicTimeToPixels(event.relativeStart),
       y: (index % this.eventVerticalSpread) * eventHeight,

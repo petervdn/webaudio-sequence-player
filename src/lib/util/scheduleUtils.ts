@@ -2,7 +2,7 @@ import Song from '../Song';
 import {
   IScheduleEventData,
   ISection,
-  ISequenceEvent,
+  SequenceEvent,
   ITimedSequence,
   ISampleEvent,
 } from '../data/interface';
@@ -145,7 +145,7 @@ function logEvent(result: string, eventStart: number, timedEvent: ITimedSequence
 
 export interface ITimedSequenceEvent {
   timedSequence: ITimedSequence;
-  event: ISequenceEvent;
+  event: SequenceEvent;
   section: ISection;
   timeInSection: number;
 }

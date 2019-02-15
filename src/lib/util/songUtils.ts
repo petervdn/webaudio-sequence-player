@@ -1,5 +1,5 @@
 import Song from '../Song';
-import { ISampleEvent, ISection, ISequenceEvent } from '../data/interface';
+import { ISampleEvent, ISection, SequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
 import SampleManager from 'sample-manager';
 import MusicTime from 'musictime';
@@ -7,13 +7,13 @@ import MusicTime from 'musictime';
 export function setSamplesOnSampleEvents(song: Song, sampleManager: SampleManager): void {
   for (let s = 0; s < song.sequences.length; s += 1) {
     for (let e = 0; e < song.sequences[s].events.length; e += 1) {
-      const event: ISequenceEvent = song.sequences[s].events[e];
+      const event: SequenceEvent = song.sequences[s].events[e];
 
-      if (event.type === SequenceEventType.SAMPLE) {
-        (<ISampleEvent>event).sample = sampleManager.getSampleByName(
-          (<ISampleEvent>event).sampleName,
-        );
-      }
+      // if (event.type === SequenceEventType.SAMPLE) {
+      //   (<ISampleEvent>event).sample = sampleManager.getSampleByName(
+      //     (<ISampleEvent>event).sampleName,
+      //   );
+      // }
     }
   }
 }

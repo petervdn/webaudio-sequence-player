@@ -6,8 +6,8 @@
   </head>
   <body style="padding: 20px">
     <div id="app">
-      <button @click="start">start</button>
-      <button @click="stop">stop</button>
+      <button id="start">start</button>
+      <button id="stop">stop</button>
       <p>{{musicTime}}</p>
       <input type="range" ref="scaleSlider" @input="onScaleChange">
       <div id="editor" style="width: 1200px; height: 800px"></div>

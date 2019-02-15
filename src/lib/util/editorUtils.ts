@@ -1,7 +1,7 @@
 import {
   ISection,
   ISampleEvent,
-  ISequenceEvent,
+  SequenceEvent,
   ITimedSequence,
 } from '../../../src/lib/data/interface';
 import MusicTime from 'musictime';
@@ -42,7 +42,7 @@ export function createSequenceElement(
 }
 
 export function createEventElement(
-  event: ISequenceEvent,
+  event: SequenceEvent,
   position: IPoint,
   size: ISize,
   timedSequence: ITimedSequence,

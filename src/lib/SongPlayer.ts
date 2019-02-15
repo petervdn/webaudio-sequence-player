@@ -7,20 +7,18 @@ import {
   IScheduleEventData,
   IScheduleTiming,
   ISection,
-  ISequencePlayerTimeData,
+  ISongPlayerTimeData,
 } from './data/interface';
 import { getSectionOnTime, setSamplesOnSampleEvents } from './util/songUtils';
-import SamplePlayer from './SamplePlayer';
 import { SequencePlayerState } from './data/enum';
 import { SequencePlayerEvent } from './data/event';
 import AnimationFrame from './util/AnimationFrame';
-import { initTimeData } from './util/sequencePlayerUtils';
-import MusicTime from 'musictime';
 
-export default class SequencePlayer extends EventDispatcher {
-  public sampleManager: SampleManager;
-  public samplePlayer: SamplePlayer;
-  public timeData: ISequencePlayerTimeData = initTimeData();
+import MusicTime from 'musictime';
+import { initTimeData } from './util/sequencePlayerUtils';
+
+export default class SongPlayer extends EventDispatcher {
+  public timeData: ISongPlayerTimeData = initTimeData();
 
   private state: SequencePlayerState = SequencePlayerState.IDLE;
   private context: AudioContext;
@@ -31,13 +29,13 @@ export default class SequencePlayer extends EventDispatcher {
   private song: Song | undefined;
   private currentSection: ISection | undefined;
 
-  constructor(context: AudioContext, samplesBasePath: string, samplesExtension: string) {
+  constructor(context: AudioContext) {
     super();
 
     this.context = context;
     // todo allow external sample manager?
-    this.sampleManager = new SampleManager(this.context, samplesBasePath, samplesExtension);
-    this.samplePlayer = new SamplePlayer(this.context, this.context.destination);
+    // this.sampleManager = new SampleManager(this.context, samplesBasePath, samplesExtension);
+    // this.samplePlayer = new SamplePlayer(this.context, this.context.destination);
 
     // create interval to start when scheduling
     this.scheduleInterval = new Interval(this.onScheduleInterval, this.scheduleTime.interval);
@@ -61,24 +59,24 @@ export default class SequencePlayer extends EventDispatcher {
    * @param {() => void} onProgress
    * @returns {Promise<void>}
    */
-  public loadSong(song: Song, onProgress?: () => void): Promise<void> {
-    if (this.state !== SequencePlayerState.IDLE) {
-      return Promise.reject('Can only load when idle');
-    }
-
-    this.setState(SequencePlayerState.LOADING);
-
-    return this.sampleManager
-      .loadSamplesByName(song.getUsedSampleNames(), onProgress)
-      .then(() => {
-        setSamplesOnSampleEvents(song, this.sampleManager);
-        this.setState(SequencePlayerState.IDLE);
-      })
-      .catch(e => {
-        this.setState(SequencePlayerState.IDLE);
-        return Promise.reject(e);
-      });
-  }
+  // public loadSong(song: Song, onProgress?: () => void): Promise<void> {
+  //   if (this.state !== SequencePlayerState.IDLE) {
+  //     return Promise.reject('Can only load when idle');
+  //   }
+  //
+  //   this.setState(SequencePlayerState.LOADING);
+  //
+  //   return this.sampleManager
+  //     .loadSamplesByName(song.getUsedSampleNames(), onProgress)
+  //     .then(() => {
+  //       setSamplesOnSampleEvents(song, this.sampleManager);
+  //       this.setState(SequencePlayerState.IDLE);
+  //     })
+  //     .catch(e => {
+  //       this.setState(SequencePlayerState.IDLE);
+  //       return Promise.reject(e);
+  //     });
+  // }
 
   /**
    * Play a song at the given bpm.
@@ -169,7 +167,7 @@ export default class SequencePlayer extends EventDispatcher {
     );
 
     items.forEach(item => {
-      this.samplePlayer.playSample(item, this.playStartTime);
+      // this.samplePlayer.playSample(item, this.playStartTime); todo
     });
   }
 
@@ -189,7 +187,7 @@ export default class SequencePlayer extends EventDispatcher {
       return;
     }
     this.scheduleInterval.stop();
-    this.samplePlayer.stopAll();
+    // this.samplePlayer.stopAll();
     this.timeDataUpdater.stop();
     this.timeData = initTimeData();
     clearAllLastScheduleData(this.song!);

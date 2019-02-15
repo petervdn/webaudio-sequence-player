@@ -1,30 +1,27 @@
 import Editor from '../../src/lib/editor/Editor';
 import {
-  SequencePlayer,
+  SongPlayer,
   Song,
-  MusicTime,
-  SequencePlayerEvent,
-  SequencePlayerState,
-  getSectionOnTime,
-  createSampleSequence,
+  MusicTime, createSampleSequence,
+  //  createSampleSequence,
 } from '../../src';
 
-// import { SequencePlayerEvent } from '../../src';
-// import { SequencePlayerState } from '../../src';
 import AnimationFrame from '../../src/lib/util/AnimationFrame';
-// import { getEventScheduleList, getEventsInSection } from '../../src/lib/util/scheduleUtils';
-// import { getSectionOnTime } from '../../src';
-// import { ISampleEvent } from '../../src/lib/data/interface';
+import SampleManager from 'sample-manager/lib/SampleManager';
 
 const notPlayingTime = '--.--.--';
 const frame = new AnimationFrame(() => {
   musicTime = player.timeData.playMusicTime.toString();
 });
-const context = new AudioContext();
-const player = new SequencePlayer(context, 'samples/', 'wav');
-const editor = new Editor(document.querySelector('#editor') as HTMLElement, player);
-player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
 
+const context = new AudioContext();
+const sampleManager = new SampleManager(context, 'samples/', 'wav');
+const player = new SongPlayer(context);
+const editor = new Editor(document.querySelector('#editor') as HTMLElement, player);
+sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hihat']);
+sampleManager.loadAllSamples().then(() => {
+  console.log('done');
+});
 // player.addEventListener('state-change', event => {
 //   switch (event.data) {
 //     case SequencePlayerState.IDLE: {
@@ -40,26 +37,27 @@ player.sampleManager.addSamplesFromNames(['kick', 'clap', 'synth', 'snare', 'hih
 // });
 // create a song
 const song = new Song(120);
-const seq1 = createSampleSequence('seq1', {
-  '0.1.0': ['snare'],
-  '0.0.0': ['kick'],
-});
 
+const seq1 = createSampleSequence('seq1', {
+  '0.0.0': ['kick'],
+  '0.1.0': ['snare'],
+});
+console.log(seq1);
 song.addSequenceAtTime(seq1, new MusicTime(0, 0, 0));
 song.addSequenceAtTime(seq1, new MusicTime(0, 2, 0));
 
-song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('1.0.0'));
-
-editor.setSong(song); // todo this shouldnt have to be set on the player
+// song.addSection(MusicTime.fromString('0.0.0'), MusicTime.fromString('1.0.0'));
+console.log(song);
+editor.setSong(song);
 
 editor.setPixelsPerSecondFactor(0.5);
 let musicTime: string = notPlayingTime;
 
-const start = () => {
+(document.querySelector('#start') as HTMLElement).onclick = () => {
   console.log('start');
   player.play(song);
 };
-const stop = () => {
+(document.querySelector('#stop') as HTMLElement).onclick = () => {
   player.stop();
 };
 const onScaleChange = () => {

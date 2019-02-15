@@ -7,14 +7,14 @@ export interface IScheduleTiming {
   lookAhead: number;
 }
 
-export interface ISequencePlayerTimeData {
+export interface ISongPlayerTimeData {
   playTime: number;
   playMusicTime: MusicTime;
 }
 
 export interface ISequence {
   id: string;
-  events: ISequenceEvent[];
+  events: SequenceEvent[];
   outputId?: string;
   target: any; // todo iinstrument?
 }
@@ -25,19 +25,21 @@ export interface ITimedSequence {
   sequence: ISequence;
 }
 
-export interface ISequenceEvent {
+export type SequenceEvent = ISampleEvent;
+
+export interface ILastScheduledData {
+  [key: string]: number; // todo describe this
+}
+
+export interface IAbstractSequenceEvent {
   type: SequenceEventType;
-  relativeStart: MusicTime;
+  relativeStart: MusicTime; // todo rename to start?
   lastScheduledData: ILastScheduledData;
 }
 
-export interface ILastScheduledData {
-  [key: string]: number;
-}
-
-export interface ISampleEvent extends ISequenceEvent {
+export interface ISampleEvent extends IAbstractSequenceEvent {
+  type: SequenceEventType.SAMPLE;
   sampleName: string;
-  sample: ISample | null;
   volume: number;
 }
 
@@ -46,21 +48,16 @@ export interface ICreateSampleEvents {
 }
 
 export interface IScheduleEventData {
-  event: ISequenceEvent;
+  event: SequenceEvent;
   absoluteSeconds: number;
 }
 
 export interface ISection {
   start: MusicTime;
   end: MusicTime;
-  length: MusicTime;
-  startedAt?: number;
+  length: MusicTime; // todo what is this
+  startedAt?: number; // todo what is this
   isGap?: boolean;
   id: string | null;
   repeat: number; // how many times the section should repeat (-1 is forever)
 }
-
-// export interface ISectionPlayData {
-//   section: ISection;
-//   iteration: number;
-// }

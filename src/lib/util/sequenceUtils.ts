@@ -1,13 +1,17 @@
-import { ISampleEvent, ISequence, ICreateSampleEvents, ISequenceEvent } from '../data/interface';
+// import { ISampleEvent, ISequence, ICreateSampleEvents, ISequenceEvent } from '../data/interface';
+// import { SequenceEventType } from '../data/enum';
+// import MusicTime from 'musictime';
+//
+// /**
+//  * Creates a sequence with samplesEvents.
+//  * @param {string} id
+//  * @param {ICreateSampleEvents} events
+//  * @returns {ISequence}
+//  */
+import { ICreateSampleEvents, ISampleEvent, ISequence, SequenceEvent } from '../data/interface';
 import { SequenceEventType } from '../data/enum';
 import MusicTime from 'musictime';
 
-/**
- * Creates a sequence with samplesEvents.
- * @param {string} id
- * @param {ICreateSampleEvents} events
- * @returns {ISequence}
- */
 export function createSampleSequence(id: string, events: ICreateSampleEvents): ISequence {
   const sequence: ISequence = {
     id,
@@ -37,11 +41,14 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
       const sampleEvent: ISampleEvent = {
         sampleName,
         volume,
-        sample: null,
-        ...createBaseSequenceEventFromTimeString(
-          SequenceEventType.SAMPLE,
-          MusicTime.fromString(musicTimeString),
-        ),
+        type: SequenceEventType.SAMPLE,
+        relativeStart: MusicTime.fromString(musicTimeString),
+        lastScheduledData: {},
+        // sample: null,
+        // ...createBaseSequenceEventFromTimeString(
+        //   ,
+        //   MusicTime.fromString(musicTimeString),
+        // ),
       };
 
       sequence.events.push(sampleEvent);
@@ -51,33 +58,33 @@ export function createSampleSequence(id: string, events: ICreateSampleEvents): I
   orderEventsInSequence(sequence);
   return sequence;
 }
-
+//
 function orderEventsInSequence(sequence: ISequence): void {
   sequence.events.sort((a, b) => {
-    return a.relativeStart.toSixteenths() - b.relativeStart.toSixteenths();
+    return a.relativeStart.toSixteenths() - b.relativeStart.toSixteenths(); // todo is toSixteenths good enough?
   });
 }
-
-/**
- * Creates an ISequenceEvent object with properties that all extended types share.
- * @param {SequenceEventType} type
- * @param {MusicTime} musicTime
- * @returns {ISequenceEvent}
- */
-function createBaseSequenceEventFromTimeString(
-  type: SequenceEventType,
-  musicTime: MusicTime,
-): ISequenceEvent {
-  return {
-    type,
-    relativeStart: musicTime,
-    lastScheduledData: {},
-  };
-}
-
-export function getLatestEventInSequence(sequence: ISequence): ISequenceEvent | null {
+//
+// /**
+//  * Creates an ISequenceEvent object with properties that all extended types share.
+//  * @param {SequenceEventType} type
+//  * @param {MusicTime} musicTime
+//  * @returns {ISequenceEvent}
+//  */
+// function createBaseSequenceEventFromTimeString(
+//   type: SequenceEventType,
+//   musicTime: MusicTime,
+// ): ISequenceEvent {
+//   return {
+//     type,
+//     relativeStart: musicTime,
+//     lastScheduledData: {},
+//   };
+// }
+//
+export function getLatestEventInSequence(sequence: ISequence): SequenceEvent | null {
   let latestTime = 0;
-  let latestEvent: ISequenceEvent | null = null;
+  let latestEvent: SequenceEvent | null = null;
   sequence.events.forEach(event => {
     const eventStart = event.relativeStart.toSixteenths();
     if (eventStart > latestTime) {

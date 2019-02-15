@@ -1,10 +1,4 @@
-import {
-  ISampleEvent,
-  ISequence,
-  ISequenceEvent,
-  ITimedSequence,
-  ISection,
-} from './data/interface';
+import { ISampleEvent, ISequence, ITimedSequence, ISection } from './data/interface';
 import MusicTime from 'musictime';
 import { SequenceEventType } from './data/enum';
 import { createGapSections, createSection } from './util/sectionUtils';
@@ -136,20 +130,21 @@ export default class Song {
    * @returns {boolean}
    */
   public getIsLoaded(): boolean {
-    for (let s = 0; s < this.sequences.length; s += 1) {
-      const sequence = this.sequences[s];
-      for (let e = 0; e < sequence.events.length; e += 1) {
-        const sequenceEvent: ISequenceEvent = sequence.events[e];
-        if (
-          (sequenceEvent.type === SequenceEventType.SAMPLE &&
-            !(<ISampleEvent>sequenceEvent).sample) ||
-          !(<ISampleEvent>sequenceEvent).sample!.audioBuffer
-        ) {
-          return false;
-        }
-      }
-    }
-
     return true;
+    // for (let s = 0; s < this.sequences.length; s += 1) {
+    //   const sequence = this.sequences[s];
+    //   for (let e = 0; e < sequence.events.length; e += 1) {
+    //     const sequenceEvent: ISequenceEvent = sequence.events[e];
+    //     if (
+    //       (sequenceEvent.type === SequenceEventType.SAMPLE &&
+    //         !(<ISampleEvent>sequenceEvent).sample) ||
+    //       !(<ISampleEvent>sequenceEvent).sample!.audioBuffer
+    //     ) {
+    //       return false;
+    //     }
+    //   }
+    // }
+    //
+    // return true;
   }
 }
